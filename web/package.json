@@ -1,0 +1,11 @@
+{
+  "name": "tablehop",
+  "version": "1.0.1",
+  "description": "A restaurant app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "NUS Assignment Team",
+  "license": "ISC"
+}
