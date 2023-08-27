@@ -45,3 +45,8 @@ Contributions are welcome! If you find any issues or have ideas for improvements
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
+## References
+
+### UI Template:
+Admin side : https://www.nobleui.com/html/template/demo1-ds/dashboard.html

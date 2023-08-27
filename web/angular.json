@@ -25,9 +25,14 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/assets/css/app.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/js/app.min.js",
+              "src/assets/js/feather.min.js",
+              "src/assets/js/core.js"
+            ]
           },
           "configurations": {
             "production": {
