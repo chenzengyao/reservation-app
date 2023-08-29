@@ -49,4 +49,5 @@ This project is licensed under the [MIT License](LICENSE).
 ## References
 
 ### UI Template:
-Admin side : https://www.nobleui.com/html/template/demo1-ds/dashboard.html
+Admin side : https://skote-v-light.angular.themesbrand.com/dashboard
+example: https://github.com/id1945/skote-admin/tree/full-version-1.0
