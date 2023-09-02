@@ -1,16 +1,18 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { NgModule } from "@angular/core";
+import { Routes, RouterModule } from "@angular/router";
 
-import { DefaultComponent } from './dashboards/default/default.component';
+import { DefaultComponent } from "./dashboards/default/default.component";
+import { ComingSoonComponent } from "./coming-soon/coming-soon.component";
 
 const routes: Routes = [
-  { path: '', redirectTo: 'admin/dashboard' },
-  { path: 'admin/dashboard', component: DefaultComponent },
-  { path: 'admin/dashboard', loadChildren: () => import('./dashboards/dashboards.module').then(m => m.DashboardsModule) },
+  // { path: '', redirectTo: 'admin/dashboard' },
+  { path: "", component: ComingSoonComponent },
+  { path: "admin/dashboard", component: DefaultComponent },
+  { path: "admin/dashboard", loadChildren: () => import("./dashboards/dashboards.module").then((m) => m.DashboardsModule),},
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class PagesRoutingModule { }
+export class PagesRoutingModule {}

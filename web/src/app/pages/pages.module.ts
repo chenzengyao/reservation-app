@@ -18,6 +18,7 @@ import { PagesRoutingModule } from './pages-routing.module';
 
 import { DashboardsModule } from './dashboards/dashboards.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ComingSoonComponent } from './coming-soon/coming-soon.component';
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -26,7 +27,9 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
 ]);
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    ComingSoonComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
