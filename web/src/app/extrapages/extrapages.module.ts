@@ -1,20 +1,21 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
 
-import { CarouselModule } from 'ngx-owl-carousel-o';
-import { NgOtpInputModule } from  'ng-otp-input';
+import { CarouselModule } from "ngx-owl-carousel-o";
+import { NgOtpInputModule } from "ng-otp-input";
 
-import { ExtrapagesRoutingModule } from './extrapages-routing.module';
+import { ExtrapagesRoutingModule } from "./extrapages-routing.module";
 
-import { Page404Component } from './page404/page404.component';
+import { Page404Component } from "./page404/page404.component";
+import { ComingSoonComponent } from "./coming-soon/coming-soon.component";
 
 @NgModule({
-  declarations: [ Page404Component ],
+  declarations: [Page404Component, ComingSoonComponent],
   imports: [
     CommonModule,
     CarouselModule,
     ExtrapagesRoutingModule,
-    NgOtpInputModule
-  ]
+    NgOtpInputModule,
+  ],
 })
-export class ExtrapagesModule { }
+export class ExtrapagesModule {}
