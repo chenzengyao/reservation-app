@@ -11,9 +11,13 @@ import { NgbDropdownModule, NgbTooltipModule, NgbNavModule } from '@ng-bootstrap
 import { SimplebarAngularModule } from 'simplebar-angular';
 
 import { DefaultComponent } from './default/default.component';
+import { UsersComponent } from './users/users.component';
+import { MenusComponent } from './menus/menus.component';
+import { OrdersComponent } from './orders/orders.component';
+import { DeliveryComponent } from './delivery/delivery.component';
 
 @NgModule({
-  declarations: [DefaultComponent],
+  declarations: [DefaultComponent, UsersComponent, MenusComponent, OrdersComponent, DeliveryComponent],
   imports: [
     CommonModule,
     FormsModule,

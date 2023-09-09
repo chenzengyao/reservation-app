@@ -37,19 +37,19 @@ export const MENU: MenuItem[] = [
   },
   {
     id: 6,
-    label: "Reservation",
+    label: "Orders",
     icon: "bx-store",
     subItems: [
       {
         id: 7,
-        label: "Reservation Listing",
-        link: "/admin/reservation/listing",
+        label: "Orders Listing",
+        link: "/admin/orders/listing",
         parentId: 6,
       },
       {
         id: 8,
         label: "Add New",
-        link: "/admin/reservation/add",
+        link: "/admin/orders/add",
         parentId: 6,
       },
     ],
@@ -62,13 +62,13 @@ export const MENU: MenuItem[] = [
       {
         id: 10,
         label: "Menu Listing",
-        link: "/admin/menu/listing",
+        link: "/admin/menus/listing",
         parentId: 9,
       },
       {
         id: 11,
         label: "Add New",
-        link: "/admin/menu/add",
+        link: "/admin/menus/add",
         parentId: 9,
       },
     ],
@@ -94,19 +94,19 @@ export const MENU: MenuItem[] = [
   },
   {
     id: 15,
-    label: "MENUITEMS.ECOMMERCE.TEXT",
-    icon: "bx-store",
+    label: "Delivery",
+    icon: "bx-package",
     subItems: [
       {
         id: 16,
-        label: "MENUITEMS.ECOMMERCE.LIST.PRODUCTS",
-        link: "/admin/ecommerce/products",
+        label: "Delivery Listing",
+        link: "/admin/delivery/listing",
         parentId: 15,
       },
       {
         id: 17,
-        label: "MENUITEMS.ECOMMERCE.LIST.PRODUCTDETAIL",
-        link: "/admin/ecommerce/product-detail/1",
+        label: "Add New",
+        link: "/admin/delivery/add",
         parentId: 15,
       },
     ],
