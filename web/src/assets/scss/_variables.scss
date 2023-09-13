@@ -112,7 +112,7 @@ $indigo:  #564ab1;
 $purple:  #6f42c1;
 $pink:    #e83e8c;
 $red:     #f46a6a;
-$orange:  #f1734f;
+$orange:  #ff914d;
 $yellow:  #f1b44c;
 $green:   #34c38f;
 $teal:    #050505;
@@ -132,12 +132,12 @@ $colors: (
     "cyan":       $cyan,
     "white":      $white,
     "gray":       $gray-600,
-    "gray-dark":  $gray-800
+    "gray-dark":  $gray-800,
 );
 // scss-docs-end colors-map
 
-$primary:       $blue;
-$secondary:     $gray-600;
+$primary:       $orange;
+$secondary:     $blue;
 $success:       $green;
 $info:          $cyan;
 $warning:       $yellow;
@@ -623,7 +623,7 @@ $table-variants: (
   "primary":    shift-color($primary, $table-bg-scale),
   "secondary":  shift-color($secondary, $table-bg-scale),
   "success":    shift-color($success, $table-bg-scale),
-  "info":       shift-color($info, $table-bg-scale),
+  "info":       shift-color($info, $table-bg-scale), 
   "warning":    shift-color($warning, $table-bg-scale),
   "danger":     shift-color($danger, $table-bg-scale),
   "light":      $light,
