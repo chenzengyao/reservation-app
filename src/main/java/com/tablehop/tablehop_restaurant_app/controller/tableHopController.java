@@ -2,7 +2,6 @@ package com.tablehop.tablehop_restaurant_app.controller;
 
 import java.util.*;
 import org.slf4j.*;
-import org.springframework.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
