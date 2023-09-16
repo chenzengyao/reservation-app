@@ -6,11 +6,15 @@ import { AuthenticationService } from '../../../core/services/auth.service';
 import { environment } from '../../../../environments/environment';
 import { first } from 'rxjs/operators';
 import { UserProfileService } from '../../../core/services/user.service';
+import { Pipe, PipeTransform } from '@angular/core';
+import { DatePipe } from '@angular/common';
+
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
+
 })
 export class SignupComponent implements OnInit {
 
@@ -18,19 +22,34 @@ export class SignupComponent implements OnInit {
   submitted = false;
   error = '';
   successmsg = false;
+  minDate:String;
+  maxDate:String;
+  name :'dobdate';
 
-  // set the currenr year
+  transform(value: string) {
+       var datePipe = new DatePipe("en-US");
+        value = datePipe.transform(value, 'dd/MM/yyyy');
+        return value;
+    }
+    
+  // set the current year
   year: number = new Date().getFullYear();
 
   // tslint:disable-next-line: max-line-length
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private authenticationService: AuthenticationService,
-    private userService: UserProfileService) { }
+    private userService: UserProfileService) {
+  }
+
 
   ngOnInit() {
+    const today = new Date();
+    this.minDate = new Date(this.year - 100, 0, 1).toISOString().split('T')[0];
+    this.maxDate = new Date(this.year - 12, 0, 1).toISOString().split('T')[0];
     this.signupForm = this.formBuilder.group({
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
+      dob: ['', Validators.required],
     });
   }
 

@@ -37,22 +37,22 @@
                 <ngb-alert type="danger" *ngIf="error" [dismissible]="false">{{ error }}</ngb-alert>
 
                 <div class="mb-3">
-                  <label for="username" class="form-label">Username</label>
+<!--                  <label for="username" class="form-label">Username</label>-->
 
                   <input type="text" formControlName="username" class="form-control"
                     [ngClass]="{ 'is-invalid': submitted && f.username.errors }" id="username"
-                    placeholder="Enter username" />
+                    placeholder="Username" />
 
                   <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-                    <div *ngIf="f.username.errors.required">Userame is required</div>
+                    <div *ngIf="f.username.errors.required">Username is required</div>
                   </div>
                 </div>
 
                 <div class="mb-3">
-                  <label for="email" class="form-label">Email</label>
+<!--                  <label for="email" class="form-label">Email</label>-->
 
                   <input type="email" formControlName="email" class="form-control"
-                    [ngClass]="{ 'is-invalid': submitted && f.email.errors }" id="email" placeholder="Email" />
+                    [ngClass]="{ 'is-invalid': submitted && f.email.errors }" id="email" placeholder="Email Address" />
 
                   <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
                     <div *ngIf="f.email.errors.required">Email is required</div>
@@ -61,13 +61,36 @@
                 </div>
 
                 <div class="mb-3">
-                  <label for="password" class="form-label">Password</label>
+<!--                  <label for="password" class="form-label">Password</label>-->
 
                   <input type="password" formControlName="password" class="form-control"
                     [ngClass]="{ 'is-invalid': submitted && f.password.errors }" id="password" placeholder="Password" />
 
                   <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
                     <div *ngIf="f.password.errors.required">Password is required</div>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+<!--                  <label for="confirm_password" class="form-label">Confirm Password</label>-->
+
+                  <input type="password" formControlName="confirm_password" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.password.errors }" id="confirm_password" placeholder="Confirm Password" />
+
+                  <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                    <div *ngIf="f.password.errors.required">Confirm Password is required</div>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+<!--                  <label for="dob" class="form-label">Date of Birth</label>-->
+
+                  <input type="text" formControlName="dob" class="form-control" onfocus="(this.type='date')"
+                    [ngClass]="{ 'is-invalid': submitted && f.dob.errors }" id="dob" name ="dobdate"
+                    placeholder="Date of Birth" [min]="minDate" [max]="maxDate" />
+
+                  <div *ngIf="submitted && f.dob.errors" class="invalid-feedback">
+                    <div *ngIf="f.dob.errors.required">Date of Birth is required</div>
                   </div>
                 </div>
 

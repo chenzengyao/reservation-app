@@ -24,6 +24,8 @@ export class LoginComponent implements OnInit {
   submitted = false;
   error = '';
   returnUrl: string;
+  password;
+  show = false;
 
   // set the currenr year
   year: number = new Date().getFullYear();
@@ -33,6 +35,7 @@ export class LoginComponent implements OnInit {
     private authFackservice: AuthfakeauthenticationService) { }
 
   ngOnInit() {
+    this.password = 'password';
     this.loginForm = this.formBuilder.group({
       email: ['admin@themesbrand.com', [Validators.required, Validators.email]],
       password: ['123456', [Validators.required]],
@@ -76,6 +79,16 @@ export class LoginComponent implements OnInit {
               this.error = error ? error : '';
             });
       }
+    }
+  }
+
+  onClick() {
+    if (this.password === 'password') {
+      this.password = 'text';
+      this.show = true;
+    } else {
+      this.password = 'password';
+      this.show = false;
     }
   }
 }

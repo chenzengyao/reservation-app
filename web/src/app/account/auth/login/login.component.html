@@ -32,8 +32,8 @@
                 <ngb-alert type="danger" *ngIf="error" [dismissible]="false">{{ error }}</ngb-alert>
 
                 <div class="mb-3">
-                  <label for="email">Email</label>
-                  <input type="email" formControlName="email" class="form-control" id="email" placeholder="Email"
+<!--                  <label for="email">Email</label>-->
+                  <input type="email" class="form-control" id="email" placeholder="Email"
                     [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
                   <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
                     <div *ngIf="f.email.errors.required">Email is required</div>
@@ -42,14 +42,16 @@
                 </div>
 
                 <div class="mb-3">
-                  <label for="password">Password</label>
+<!--                  <label for="password">Password</label>-->
                   <div class="input-group auth-pass-inputgroup">
-                    <input type="password" class="form-control" formControlName="password" placeholder="Enter password"
-                      [ngClass]="{ 'is-invalid': submitted && f.password.errors }" aria-label="Password"
-                      aria-describedby="password-addon">
+                    <input [type]="password" class="form-control" placeholder="Enter password"
+                      [ngClass]="{ 'is-invalid': submitted && f.password.errors }" aria-label="Password" aria-describedby="password-addon" minlength="8">
 
-                    <button class="btn btn-light ms-0" type="button" id="password-addon"><i
-                        class="mdi mdi-eye-outline"></i></button>
+                    <button (click)="onClick()" class="btn btn-light ms-0" type="button" id="password-addon" >
+                        <i class="mdi mdi-eye-off-outline" aria-hidden="true" *ngIf="!show"></i>
+                        <i class="mdi mdi-eye-outline" aria-hidden="true" *ngIf="show"></i>
+                    </button>
+
                     <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
                       <span *ngIf="f.password.errors.required">Password is required</span>
                     </div>
