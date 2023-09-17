@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl,FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthenticationService } from '../../../core/services/auth.service';
@@ -22,16 +22,23 @@ export class SignupComponent implements OnInit {
   submitted = false;
   error = '';
   successmsg = false;
+  working = false;
   minDate:String;
   maxDate:String;
   name :'dobdate';
+  strongPassword = false;
+  password;
+  confirm_password;
+  show1: boolean = false;
+  show2: boolean = false;
+
 
   transform(value: string) {
        var datePipe = new DatePipe("en-US");
         value = datePipe.transform(value, 'dd/MM/yyyy');
         return value;
     }
-    
+
   // set the current year
   year: number = new Date().getFullYear();
 
@@ -42,15 +49,24 @@ export class SignupComponent implements OnInit {
 
 
   ngOnInit() {
+    this.password = 'password';
+    this.confirm_password = 'password2';
     const today = new Date();
     this.minDate = new Date(this.year - 100, 0, 1).toISOString().split('T')[0];
     this.maxDate = new Date(this.year - 12, 0, 1).toISOString().split('T')[0];
     this.signupForm = this.formBuilder.group({
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(8),Validators.pattern(
+        /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)]],
+      confirm_password: ['', [Validators.required, Validators.minLength(8),Validators.pattern(
+        /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)]],
       dob: ['', Validators.required],
     });
+  }
+
+  onPasswordStrengthChanged(event: boolean) {
+    this.strongPassword = event;
   }
 
   // convenience getter for easy access to form fields
@@ -61,6 +77,7 @@ export class SignupComponent implements OnInit {
    */
   onSubmit() {
     this.submitted = true;
+
 
     // stop here if form is invalid
     if (this.signupForm.invalid) {
@@ -91,5 +108,20 @@ export class SignupComponent implements OnInit {
             });
       }
     }
+
+    this.working = true;
+    setTimeout(() => {
+      this.signupForm.reset();
+      this.working = false;
+    }, 1000);
   }
+
+  onClick(fieldNumber: number) {
+    if (fieldNumber === 1) {
+      this.show1 = !this.show1;
+    } else if (fieldNumber === 2) {
+      this.show2 = !this.show2;
+    }
+  }
+
 }

@@ -62,24 +62,45 @@
 
                 <div class="mb-3">
 <!--                  <label for="password" class="form-label">Password</label>-->
-
-                  <input type="password" formControlName="password" class="form-control"
+                  <div class="input-group auth-pass-inputgroup">
+                  <input [type]="show1 ? 'text' : 'password'"  formControlName="password" class="form-control"
                     [ngClass]="{ 'is-invalid': submitted && f.password.errors }" id="password" placeholder="Password" />
+
+                      <button (click)="onClick(1)" id="eyebtn1" class="btn btn-light ms-0" type="button"  >
+                        <i class="mdi mdi-eye-off-outline" aria-hidden="true" *ngIf="!show1"></i>
+                        <i class="mdi mdi-eye-outline" aria-hidden="true" *ngIf="show1"></i>
+                      </button>
 
                   <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
                     <div *ngIf="f.password.errors.required">Password is required</div>
+                    <div *ngIf="f.password.errors.minlength">Password must be at least 8 characters long</div>
+                    <div *ngIf="f.password.errors.pattern">Password must contain at least one number, one uppercase and a
+                      lowercase letter. (Password cannot contain whitespace)
+                    </div>
                   </div>
+                  </div>
+<!--&lt;!&ndash;                  <app-password-strength [passwordToCheck]="signupForm.f.password" (passwordStrength)="onPasswordStrengthChanged($event)"></app-password-strength>&ndash;&gt;-->
                 </div>
 
                 <div class="mb-3">
-<!--                  <label for="confirm_password" class="form-label">Confirm Password</label>-->
+<!--                  <label for="confirm_password" class="form-label">Confirm Password</label>https://stackblitz.com/edit/angular-ivy-password-strength-meter?file=src%2Fapp%2Fapp.component.ts,src%2Fapp%2Fapp.component.html-->
+                  <div class="input-group auth-pass-inputgroup">
+                  <input [type]="show2 ? 'text' : 'password'" formControlName="confirm_password" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.confirm_password.errors }" id="confirm_password" placeholder="Confirm Password" />
 
-                  <input type="password" formControlName="confirm_password" class="form-control"
-                    [ngClass]="{ 'is-invalid': submitted && f.password.errors }" id="confirm_password" placeholder="Confirm Password" />
+                      <button (click)="onClick(2)" id="eyebtn2" class="btn btn-light ms-0" type="button"  >
+                        <i class="mdi mdi-eye-off-outline" aria-hidden="true" *ngIf="!show2"></i>
+                        <i class="mdi mdi-eye-outline" aria-hidden="true" *ngIf="show2"></i>
+                      </button>
 
-                  <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-                    <div *ngIf="f.password.errors.required">Confirm Password is required</div>
+                  <div *ngIf="submitted && f.confirm_password.errors" class="invalid-feedback">
+                    <div *ngIf="f.confirm_password.errors.required">Confirm Password is required</div>
+                    <div *ngIf="f.confirm_password.errors.minlength">Confirm Password must be at least 8 characters long</div>
+                    <div *ngIf="f.confirm_password.errors.pattern">Password must contain at least one number, one uppercase and a
+                      lowercase letter. (Password cannot contain whitespace)
+                    </div>
                   </div>
+                </div>
                 </div>
 
                 <div class="mb-3">
@@ -95,31 +116,32 @@
                 </div>
 
                 <div class="mt-4 d-grid">
-                  <button class="btn btn-primary" type="submit">Register</button>
+<!--                  <button class="btn btn-primary" type="submit" [disabled]="signupForm.invalid || !strongPassword || working">Register</button>-->
+                  <button class="btn btn-primary" type="submit" >Register</button>
                 </div>
                 <div class="mt-4 text-center">
                   <h5 class="font-size-14 mb-3">Sign in with</h5>
 
                   <ul class="list-inline">
                     <li class="list-inline-item">
-                      <a href="javascript::void()" class="social-list-item bg-secondary text-white border-secondary">
+                      <a href="" class="social-list-item bg-secondary text-white border-secondary">
                         <i class="mdi mdi-facebook"></i>
                       </a>
                     </li>
                     <li class="list-inline-item">
-                      <a href="javascript::void()" class="social-list-item bg-info text-white border-info">
+                      <a href="" class="social-list-item bg-info text-white border-info">
                         <i class="mdi mdi-twitter"></i>
                       </a>
                     </li>
                     <li class="list-inline-item">
-                      <a href="javascript::void()" class="social-list-item bg-danger text-white border-danger">
+                      <a href="" class="social-list-item bg-danger text-white border-danger">
                         <i class="mdi mdi-google"></i>
                       </a>
                     </li>
                   </ul>
                 </div>
                 <div class="mt-4 text-center">
-                  <p class="mb-0">By registering you agree to the TableHop <a href="javascript: void(0);"
+                  <p class="mb-0">By registering you agree to the TableHop <a href=""
                       class="text-secondary">Terms of
                       Use</a></p>
                 </div>
