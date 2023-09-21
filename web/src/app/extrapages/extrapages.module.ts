@@ -7,10 +7,10 @@ import { NgOtpInputModule } from "ng-otp-input";
 import { ExtrapagesRoutingModule } from "./extrapages-routing.module";
 
 import { Page404Component } from "./page404/page404.component";
-import { ComingSoonComponent } from "./coming-soon/coming-soon.component";
+import { ClientComponent } from "./client/client.component";
 
 @NgModule({
-  declarations: [Page404Component, ComingSoonComponent],
+  declarations: [Page404Component, ClientComponent],
   imports: [
     CommonModule,
     CarouselModule,

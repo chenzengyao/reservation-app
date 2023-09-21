@@ -3,11 +3,11 @@ import { interval } from "rxjs";
 import { map } from "rxjs/operators";
 
 @Component({
-  selector: "app-coming-soon",
-  templateUrl: "./coming-soon.component.html",
-  styleUrls: ["./coming-soon.component.scss"],
+  selector: "app-client",
+  templateUrl: "./client.component.html",
+  styleUrls: ["./client.component.scss"],
 })
-export class ComingSoonComponent implements OnInit {
+export class ClientComponent implements OnInit {
   constructor() {}
   private _diff: number;
   _days: number;
