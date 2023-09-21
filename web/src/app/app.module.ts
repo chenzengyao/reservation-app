@@ -12,6 +12,7 @@ import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 import { ExtrapagesModule } from './extrapages/extrapages.module';
 
 import { LayoutsModule } from './layouts/layouts.module';
+import { ClientLayoutsModule } from './clientlayouts/layouts.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { initFirebaseBackend } from './authUtils';
@@ -48,6 +49,7 @@ export function createTranslateLoader(http: HttpClient): any {
       }
     }),
     LayoutsModule,
+    ClientLayoutsModule,
     AppRoutingModule,
     ExtrapagesModule,
     CarouselModule,
