@@ -13,10 +13,10 @@ const routes: Routes = [
   { path: "", component: ClientComponent },
   { path: "dashboard", component: DefaultComponent },
   { path: "dashboard", loadChildren: () => import("./dashboards/dashboards.module").then((m) => m.DashboardsModule), },
-  { path: "users/listing", component: UsersComponent },
-  { path: "menus/listing", component: MenusComponent },
-  { path: "orders/listing", component: OrdersComponent },
-  { path: "delivery/listing", component: DeliveryComponent }
+  { path: "user/profile", component: UsersComponent },
+  { path: "menu", component: MenusComponent },
+  { path: "orders", component: OrdersComponent },
+  { path: "delivery", component: DeliveryComponent }
 ];
 
 @NgModule({

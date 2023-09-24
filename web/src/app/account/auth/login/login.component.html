@@ -44,7 +44,7 @@
                 <div class="mb-3">
 <!--                  <label for="password">Password</label>-->
                   <div class="input-group auth-pass-inputgroup">
-                    <input [type]="password" class="form-control" placeholder="Enter password"
+                    <input [type]="password" class="form-control" placeholder="Enter password" id="password"
                       [ngClass]="{ 'is-invalid': submitted && f.password.errors }" aria-label="Password" aria-describedby="password-addon" minlength="8">
 
                     <button (click)="onClick()" class="btn btn-light ms-0" type="button" id="password-addon" >
@@ -73,17 +73,17 @@
 
                   <ul class="list-inline">
                     <li class="list-inline-item">
-                      <a href="javascript::void()" class="social-list-item bg-secondary text-white border-secondary">
+                      <a href="" class="social-list-item bg-secondary text-white border-secondary">
                         <i class="mdi mdi-facebook"></i>
                       </a>
                     </li>
                     <li class="list-inline-item">
-                      <a href="javascript::void()" class="social-list-item bg-info text-white border-info">
+                      <a href="" class="social-list-item bg-info text-white border-info">
                         <i class="mdi mdi-twitter"></i>
                       </a>
                     </li>
                     <li class="list-inline-item">
-                      <a href="javascript::void()" class="social-list-item bg-danger text-white border-danger">
+                      <a href="" class="social-list-item bg-danger text-white border-danger">
                         <i class="mdi mdi-google"></i>
                       </a>
                     </li>
