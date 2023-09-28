@@ -27,10 +27,15 @@ export class SignupComponent implements OnInit {
   maxDate:String;
   name :'dobdate';
   strongPassword = false;
-  password;
-  confirm_password;
+  confirm_password: string;
   show1: boolean = false;
   show2: boolean = false;
+
+  //Parameter to pass to Controller
+  username: String;
+  email: String;
+  password: String;
+  dob: String;
 
 
   transform(value: string) {
@@ -83,30 +88,18 @@ export class SignupComponent implements OnInit {
     if (this.signupForm.invalid) {
       return;
     } else {
-      if (environment.defaultauth === 'firebase') {
-        this.authenticationService.register(this.f.email.value, this.f.password.value).then((res: any) => {
-          this.successmsg = true;
-          if (this.successmsg) {
-            this.router.navigate(['/dashboard']);
-          }
-        })
-          .catch(error => {
+      this.userService.register(this.username, this.email, this.password, this.dob)
+        .pipe(first())
+        .subscribe(
+          data => {
+            this.successmsg = true;
+            if (this.successmsg) {
+              this.router.navigate(['/account/login']);
+            }
+          },
+          error => {
             this.error = error ? error : '';
           });
-      } else {
-        this.userService.register(this.signupForm.value)
-          .pipe(first())
-          .subscribe(
-            data => {
-              this.successmsg = true;
-              if (this.successmsg) {
-                this.router.navigate(['/account/login']);
-              }
-            },
-            error => {
-              this.error = error ? error : '';
-            });
-      }
     }
 
     this.working = true;

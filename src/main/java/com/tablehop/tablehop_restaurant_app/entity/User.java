@@ -1,20 +1,25 @@
 package com.tablehop.tablehop_restaurant_app.entity;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "user")
-public class user {
+@DynamicInsert
+@DynamicUpdate
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String userID;
+    private int userID;
 
     @Column(name = "username")
     private String userName;
@@ -43,11 +48,11 @@ public class user {
     @Column(name = "updated_dt")
     private Date updated_dt;
 
-    public String getUserID() {
+    public int getUserID() {
         return this.userID;
     }
 
-    public void setUserID(String userID) {
+    public void setUserID(int userID) {
         this.userID = userID;
     }
 
