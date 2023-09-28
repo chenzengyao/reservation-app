@@ -11,7 +11,7 @@ export class UserProfileService {
         return this.http.get<User[]>(`/api/login`);
     }
 
-    register(username: String, email: String, password: String, dob: String) {
-        return this.http.post(`/users/register`, username, email, password, dob);
-    }
+    // register(username: String, email: String, password: String, dob: String) {
+    //     return this.http.post(`/users/register`, username, email, password, dob);
+    // }
 }

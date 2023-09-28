@@ -88,8 +88,7 @@ export class SignupComponent implements OnInit {
     if (this.signupForm.invalid) {
       return;
     } else {
-      this.userService.register(this.username, this.email, this.password, this.dob)
-        .pipe(first())
+      this.authenticationService.register(this.username, this.email, this.password, this.dob)
         .subscribe(
           data => {
             this.successmsg = true;

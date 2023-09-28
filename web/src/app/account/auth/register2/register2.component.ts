@@ -55,36 +55,36 @@ export class Register2Component implements OnInit {
    * On submit form
    */
   onSubmit() {
-    this.submitted = true;
-
-    // stop here if form is invalid
-    if (this.signupForm.invalid) {
-      return;
-    } else {
-      if (environment.defaultauth === 'firebase') {
-        this.authenticationService.register(this.f.email.value, this.f.password.value).then((res: any) => {
-          this.successmsg = true;
-          if (this.successmsg) {
-            this.router.navigate(['/dashboard']);
-          }
-        })
-          .catch(error => {
-            this.error = error ? error : '';
-          });
-      } else {
-        this.userService.register(this.signupForm.value)
-          .pipe(first())
-          .subscribe(
-            data => {
-              this.successmsg = true;
-              if (this.successmsg) {
-                this.router.navigate(['/account/login']);
-              }
-            },
-            error => {
-              this.error = error ? error : '';
-            });
-      }
-    }
+    // this.submitted = true;
+    //
+    // // stop here if form is invalid
+    // if (this.signupForm.invalid) {
+    //   return;
+    // } else {
+    //   if (environment.defaultauth === 'firebase') {
+    //     this.authenticationService.register(this.f.email.value, this.f.password.value).then((res: any) => {
+    //       this.successmsg = true;
+    //       if (this.successmsg) {
+    //         this.router.navigate(['/dashboard']);
+    //       }
+    //     })
+    //       .catch(error => {
+    //         this.error = error ? error : '';
+    //       });
+    //   } else {
+    //     this.userService.register(this.signupForm.value)
+    //       .pipe(first())
+    //       .subscribe(
+    //         data => {
+    //           this.successmsg = true;
+    //           if (this.successmsg) {
+    //             this.router.navigate(['/account/login']);
+    //           }
+    //         },
+    //         error => {
+    //           this.error = error ? error : '';
+    //         });
+    //   }
+    // }
   }
 }

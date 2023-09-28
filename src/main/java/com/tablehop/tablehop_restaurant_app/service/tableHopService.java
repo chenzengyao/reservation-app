@@ -5,4 +5,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class tableHopService {
 
+    public void register(String username, String email, String password, String dob) {
+        return ;
+    }
 }

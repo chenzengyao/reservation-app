@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-
 import { getFirebaseBackend } from '../../authUtils';
-
 import { User } from '../models/auth.models';
+import { HttpClient } from '@angular/common/http';
+
 
 @Injectable({ providedIn: 'root' })
 
@@ -10,8 +10,7 @@ export class AuthenticationService {
 
     user: User;
 
-    constructor() {
-    }
+    constructor(private http: HttpClient) { }
 
     /**
      * Returns the current user
@@ -37,12 +36,9 @@ export class AuthenticationService {
      * @param email email
      * @param password password
      */
-    register(email: string, password: string) {
-        return getFirebaseBackend().registerUser(email, password).then((response: any) => {
-            const user = response;
-            return user;
-        });
-    }
+      register(username: String, email: String, password: String, dob: String) {
+        return this.http.post(`/users/register?username=` + username + '&email=' + email + '&password=' + password + '&dob=' + dob,{ observe: 'response' });
+      }
 
     /**
      * Reset password
