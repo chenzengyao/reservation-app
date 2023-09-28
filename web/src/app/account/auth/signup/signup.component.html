@@ -61,6 +61,17 @@
                 </div>
 
                 <div class="mb-3">
+                  <!--                  <label for="number" class="form-label">Phone Number</label>-->
+                  <input type="text" formControlName="phone_no" class="form-control"
+                         [ngClass]="{ 'is-invalid': submitted && f.phone_no.errors }" id="phone_no" placeholder="Phone Number" />
+
+                  <div *ngIf="submitted && f.phone_no.errors" class="invalid-feedback">
+                    <div *ngIf="f.phone_no.errors.required">Phone Number is required</div>
+                    <div *ngIf="f.phone_no.errors.pattern||f.phone_no.errors.minlength||f.phone_no.errors.maxlength">Phone number should be 8 numbers</div>
+                  </div>
+                </div>
+
+                <div class="mb-3">
 <!--                  <label for="password" class="form-label">Password</label>-->
                   <div class="input-group auth-pass-inputgroup">
                   <input [type]="show1 ? 'text' : 'password'"  formControlName="password" class="form-control"

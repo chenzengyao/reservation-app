@@ -36,8 +36,9 @@ export class AuthenticationService {
      * @param email email
      * @param password password
      */
-      register(username: String, email: String, password: String, dob: String) {
-        return this.http.post(`/users/register?username=` + username + '&email=' + email + '&password=' + password + '&dob=' + dob,{ observe: 'response' });
+      register(username: String, email: String, phone_no: String, password: String, dob: String) {
+        console.log("dob", dob);
+        return this.http.post(`/users/register?username=` + username + '&email=' + email + '&phone_no=' + phone_no + '&password=' + password + '&dob=' + dob,{ observe: 'response' });
       }
 
     /**

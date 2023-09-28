@@ -1,0 +1,108 @@
+<div class="account-pages my-5 pt-sm-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6 col-xl-5">
+        <div class="card overflow-hidden">
+          <div class="bg-soft bg-primary">
+            <div class="row">
+              <div class="col-7">
+                <div class="text-dark p-4">
+                  <h5 class="text-dark">User Profile</h5>
+                  <p>Make sure your information is the latest.</p>
+                </div>
+              </div>
+              <div class="col-5 align-self-end">
+                <img src="assets/images/profile-img.png" alt="" class="img-fluid">
+              </div>
+            </div>
+          </div>
+          <div class="card-body pt-0">
+            <div>
+              <a routerLink="/">
+                <div class="avatar-md profile-user-wid mb-4">
+                  <span class="avatar-title rounded-circle bg-light">
+                    <img src="assets/images/logo-light.svg" alt="" class="rounded-circle" height="72">
+                  </span>
+                </div>
+              </a>
+            </div>
+            <div class="p-2">
+
+              <form class="needs-validation" name="userprofileForm" [formGroup]="userprofileForm" (ngSubmit)="onSubmit()"
+                novalidate>
+
+                <ngb-alert type="success" *ngIf="successmsg" [dismissible]="false">Updated successfully.
+                </ngb-alert>
+
+                <ngb-alert type="danger" *ngIf="error" [dismissible]="false">{{ error }}</ngb-alert>
+
+                <div class="mb-3">
+<!--                  <label for="username" class="form-label">Username</label>-->
+
+                  <input type="text" formControlName="username" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.username.errors }" id="username"
+                    placeholder="Username" />
+
+                  <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                    <div *ngIf="f.username.errors.required">Username is required</div>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+<!--                  <label for="email" class="form-label">Email</label>-->
+
+                  <input type="email" formControlName="email" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.email.errors }" id="email" placeholder="Email Address" readonly/>
+
+                  <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                    <div *ngIf="f.email.errors.required">Email is required</div>
+                    <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <!--                  <label for="username" class="form-label">Username</label>-->
+
+                  <input type="text" formControlName="phone_no" class="form-control"
+                         [ngClass]="{ 'is-invalid': submitted && f.phone_no.errors }" id="phone_no"
+                         placeholder="Phone Number" />
+
+                  <div *ngIf="submitted && f.phone_no.errors" class="invalid-feedback">
+                    <div *ngIf="f.phone_no.errors.required">Phone number is required</div>
+                  </div>
+                </div>
+                <div class="mb-3">
+<!--                  <label for="dob" class="form-label">Date of Birth</label>-->
+
+                  <input type="text" formControlName="dob" class="form-control" onfocus="(this.type='date')"
+                    [ngClass]="{ 'is-invalid': submitted && f.dob.errors }" id="dobdate" name ="dobdate"
+                    placeholder="Date of Birth" [min]="minDate" [max]="maxDate" />
+
+                  <div *ngIf="submitted && f.dob.errors" class="invalid-feedback">
+                    <div *ngIf="f.dob.errors.required">Date of Birth is required</div>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <!--                  <label for="address" class="form-label">Home Address</label>-->
+
+                  <input type="text" formControlName="address" class="form-control"
+                         [ngClass]="{ 'is-invalid': submitted && f.address.errors }" id="address"
+                         placeholder="Home Address" />
+                </div>
+
+                <div class="mt-4 d-grid">
+<!--                  <button class="btn btn-primary" type="submit" [disabled]="userprofileForm.invalid || !strongPassword || working">Register</button>-->
+                  <button class="btn btn-primary" type="submit" >Update</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- end card -->
+      </div> <!-- end col -->
+    </div>
+    <!-- end row -->
+  </div>
+  <!-- end container -->
+</div>

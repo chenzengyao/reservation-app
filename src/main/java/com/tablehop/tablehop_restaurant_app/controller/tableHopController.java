@@ -17,9 +17,9 @@ public class tableHopController {
     public tableHopService tableHopService;
 
     @RequestMapping(value = "/users/register", method = RequestMethod.POST)
-    public void register(@RequestParam String username, @RequestParam String email, @RequestParam String password, @RequestParam String dob) {
+    public void register(@RequestParam String username, @RequestParam String email, @RequestParam String phone_no, @RequestParam String password, @RequestParam String dob) {
         log.info("users register -----> controller");
-        tableHopService.register(username, email, password, dob);
+        tableHopService.register(username, email, phone_no, password, dob);
     }
 
 }
