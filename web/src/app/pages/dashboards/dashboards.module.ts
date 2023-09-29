@@ -15,9 +15,10 @@ import { UsersComponent } from './users/users.component';
 import { MenusComponent } from './menus/menus.component';
 import { OrdersComponent } from './orders/orders.component';
 import { DeliveryComponent } from './delivery/delivery.component';
+import { AddMenusComponent } from './menus/add-menus/add-menus.component';
 
 @NgModule({
-  declarations: [DefaultComponent, UsersComponent, MenusComponent, OrdersComponent, DeliveryComponent],
+  declarations: [DefaultComponent, UsersComponent, MenusComponent, OrdersComponent, DeliveryComponent, AddMenusComponent],
   imports: [
     CommonModule,
     FormsModule,
