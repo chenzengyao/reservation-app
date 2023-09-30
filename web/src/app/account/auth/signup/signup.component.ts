@@ -94,24 +94,33 @@ export class SignupComponent implements OnInit {
     if (this.signupForm.invalid) {
       return;
     } else {
-      this.authenticationService.register(this.username, this.email, this.phone_no, this.submittedPassword, this.dob)
-        .subscribe(
-          data => {
-            this.successmsg = true;
-            if (this.successmsg) {
-              this.router.navigate(['/account/login']);
-            }
-          },
-          error => {
-            this.error = error ? error : '';
-          });
+      this.authenticationService.checkExistEmail(this.email).subscribe(data=>{
+        console.log("checkExistEmail", data);
+        if(data == 1){
+          alert('This email account already exist.');
+        }
+        else {
+          this.authenticationService.register(this.username, this.email, this.phone_no, this.submittedPassword, this.dob)
+            .subscribe(
+              data => {
+                this.successmsg = true;
+                if (this.successmsg) {
+                  this.router.navigate(['/account/login']);
+                  alert('Register Successfully.');
+                }
+              },
+              error => {
+                this.error = error ? error : '';
+              });
+        }
+      });
     }
-
     this.working = true;
     setTimeout(() => {
-      this.signupForm.reset();
+      // this.signupForm.reset();
       this.working = false;
     }, 1000);
+
   }
 
   onClick(fieldNumber: number) {
@@ -121,5 +130,6 @@ export class SignupComponent implements OnInit {
       this.show2 = !this.show2;
     }
   }
+
 
 }

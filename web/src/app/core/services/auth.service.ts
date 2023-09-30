@@ -41,6 +41,25 @@ export class AuthenticationService {
         return this.http.post(`/users/register?username=` + username + '&email=' + email + '&phone_no=' + phone_no + '&password=' + password + '&dob=' + dob,{ observe: 'response' });
       }
 
+
+    /**
+     * Find exists email
+     * @param email email
+     */
+    checkExistEmail(email: String) {
+      return this.http.get(`/users/checkExistEmail?email=` + email);
+    }
+
+    /**
+     * Get User Detials
+     * @param email email
+     */
+    getUserDetails(email: String) {
+      return this.http.get(`/users/getDetails?email=` + email);
+    }
+
+
+
     /**
      * Reset password
      * @param email email
