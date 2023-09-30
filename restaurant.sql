@@ -53,13 +53,13 @@ CREATE TABLE `reservation` (
 
 CREATE TABLE `item` (
   `itemID` VARCHAR(32) NOT NULL,
-  `itam_category` VARCHAR(255) NOT NULL,
+  `item_category` VARCHAR(255) NOT NULL,
   `item_name` VARCHAR(255) NOT NULL,
   `item_description` VARCHAR(500) NOT NULL,
   `item_price` VARCHAR(10) NOT NULL,
-  `itam_remark` VARCHAR(255) NOT NULL,
-  `itam_status` VARCHAR(255) NOT NULL,
-  `itam_image` VARCHAR(255) NOT NULL,
+  `item_remark` VARCHAR(255) NOT NULL,
+  `item_status` VARCHAR(255) NOT NULL,
+  `item_image` VARCHAR(255) NOT NULL,
   `item_created_dt` DATETIME NOT NULL,
   `item_updated_dt` DATETIME DEFAULT NULL,
   `created_by` VARCHAR(255) NOT NULL,

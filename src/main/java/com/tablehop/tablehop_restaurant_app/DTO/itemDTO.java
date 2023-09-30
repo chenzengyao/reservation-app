@@ -13,12 +13,12 @@ public class itemDTO {
         this.itemID = itemID;
     }
 
-    public String getItam_category() {
-        return itam_category;
+    public String getItem_category() {
+        return item_category;
     }
 
-    public void setItam_category(String itam_category) {
-        this.itam_category = itam_category;
+    public void setItem_category(String item_category) {
+        this.item_category = item_category;
     }
 
     public String getItem_name() {
@@ -45,20 +45,20 @@ public class itemDTO {
         this.item_price = item_price;
     }
 
-    public String getItam_remark() {
-        return itam_remark;
+    public String getItem_remark() {
+        return item_remark;
     }
 
-    public void setItam_remark(String itam_remark) {
-        this.itam_remark = itam_remark;
+    public void setItem_remark(String item_remark) {
+        this.item_remark = item_remark;
     }
 
-    public String getItam_status() {
-        return itam_status;
+    public String getItem_status() {
+        return item_status;
     }
 
-    public void setItam_status(String itam_status) {
-        this.itam_status = itam_status;
+    public void setItem_status(String item_status) {
+        this.item_status = item_status;
     }
 
     public Date getItem_created_dt() {
@@ -97,12 +97,12 @@ public class itemDTO {
     public String toString() {
         return "itemDTO{" +
                 "itemID='" + itemID + '\'' +
-                ", itam_category='" + itam_category + '\'' +
+                ", item_category='" + item_category + '\'' +
                 ", item_name='" + item_name + '\'' +
                 ", item_description='" + item_description + '\'' +
                 ", item_price='" + item_price + '\'' +
-                ", itam_remark='" + itam_remark + '\'' +
-                ", itam_status='" + itam_status + '\'' +
+                ", item_remark='" + item_remark + '\'' +
+                ", item_status='" + item_status + '\'' +
                 ", item_created_dt=" + item_created_dt +
                 ", item_updated_dt=" + item_updated_dt +
                 ", created_by='" + created_by + '\'' +
@@ -114,8 +114,8 @@ public class itemDTO {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String itemID;
 
-    @Column(name = "itam_category")
-    private String itam_category;
+    @Column(name = "item_category")
+    private String item_category;
 
     @Column(name = "item_name")
     private String item_name;
@@ -126,11 +126,11 @@ public class itemDTO {
     @Column(name = "item_price")
     private String item_price;
 
-    @Column(name = "itam_remark")
-    private String itam_remark;
+    @Column(name = "item_remark")
+    private String item_remark;
 
-    @Column(name = "itam_status")
-    private String itam_status;
+    @Column(name = "item_status")
+    private String item_status;
 
     @Column(name = "item_created_dt")
     private Date item_created_dt;

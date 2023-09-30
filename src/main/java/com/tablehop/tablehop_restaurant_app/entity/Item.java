@@ -16,8 +16,8 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String itemID;
 
-    @Column(name = "itam_category")
-    private String itam_category;
+    @Column(name = "item_category")
+    private String item_category;
 
     @Column(name = "item_name")
     private String item_name;
@@ -28,11 +28,11 @@ public class Item {
     @Column(name = "item_price")
     private String item_price;
 
-    @Column(name = "itam_remark")
-    private String itam_remark;
+    @Column(name = "item_remark")
+    private String item_remark;
 
-    @Column(name = "itam_status")
-    private String itam_status;
+    @Column(name = "item_status")
+    private String item_status;
 
     @Column(name = "item_created_dt")
     private Date item_created_dt;
@@ -54,12 +54,12 @@ public class Item {
         this.itemID = itemID;
     }
 
-    public String getItam_category() {
-        return this.itam_category;
+    public String getItem_category() {
+        return this.item_category;
     }
 
-    public void setItam_category(String itam_category) {
-        this.itam_category = itam_category;
+    public void setItem_category(String item_category) {
+        this.item_category = item_category;
     }
 
     public String getItem_name() {
@@ -86,20 +86,20 @@ public class Item {
         this.item_price = item_price;
     }
 
-    public String getItam_remark() {
-        return this.itam_remark;
+    public String getItem_remark() {
+        return this.item_remark;
     }
 
-    public void setItam_remark(String itam_remark) {
-        this.itam_remark = itam_remark;
+    public void setItem_remark(String item_remark) {
+        this.item_remark = item_remark;
     }
 
-    public String getItam_status() {
-        return this.itam_status;
+    public String getItem_status() {
+        return this.item_status;
     }
 
-    public void setItam_status(String itam_status) {
-        this.itam_status = itam_status;
+    public void setItem_status(String item_status) {
+        this.item_status = item_status;
     }
 
     public Date getItem_created_dt() {
@@ -138,12 +138,12 @@ public class Item {
     public String toString() {
         return "{" +
                 " itemID='" + getItemID() + "'" +
-                ", itam_category='" + getItam_category() + "'" +
+                ", item_category='" + getItem_category() + "'" +
                 ", item_name='" + getItem_name() + "'" +
                 ", item_description='" + getItem_description() + "'" +
                 ", item_price='" + getItem_price() + "'" +
-                ", itam_remark='" + getItam_remark() + "'" +
-                ", itam_status='" + getItam_status() + "'" +
+                ", item_remark='" + getItem_remark() + "'" +
+                ", item_status='" + getItem_status() + "'" +
                 ", item_created_dt='" + getItem_created_dt() + "'" +
                 ", item_updated_dt='" + getItem_updated_dt() + "'" +
                 ", created_by='" + getCreated_by() + "'" +
