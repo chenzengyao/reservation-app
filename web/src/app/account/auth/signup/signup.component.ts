@@ -30,11 +30,12 @@ export class SignupComponent implements OnInit {
   confirm_password: string;
   show1: boolean = false;
   show2: boolean = false;
+  password;
 
   //Parameter to pass to Controller
   username: String;
   email: String;
-  password: String;
+  submittedPassword: String;
   phone_no: String;
   dob: String;
 
@@ -86,12 +87,14 @@ export class SignupComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
 
+    console.log(this.username, this.email, this.phone_no, this.submittedPassword, this.dob);
+
 
     // stop here if form is invalid
     if (this.signupForm.invalid) {
       return;
     } else {
-      this.authenticationService.register(this.username, this.email, this.phone_no, this.password, this.dob)
+      this.authenticationService.register(this.username, this.email, this.phone_no, this.submittedPassword, this.dob)
         .subscribe(
           data => {
             this.successmsg = true;
