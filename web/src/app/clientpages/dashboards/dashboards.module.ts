@@ -16,9 +16,11 @@ import { MenusComponent } from './menus/menus.component';
 import { TablesComponent } from './tables/tables.component';
 import { OrdersComponent } from './orders/orders.component';
 import { DeliveryComponent } from './delivery/delivery.component';
+import { SettingsComponent } from './settings/settings.component';
+
 
 @NgModule({
-  declarations: [DefaultComponent, UsersComponent, MenusComponent, TablesComponent, OrdersComponent, DeliveryComponent],
+  declarations: [DefaultComponent, UsersComponent, MenusComponent, TablesComponent, OrdersComponent, DeliveryComponent, SettingsComponent],
   imports: [
     CommonModule,
     FormsModule,
