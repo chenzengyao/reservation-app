@@ -9,7 +9,14 @@ export class AddUsersComponent implements OnInit {
 
   constructor() { }
 
+  breadCrumbItems: Array<{}>;
+
   ngOnInit(): void {
+    this.breadCrumbItems = [{ label: 'Reservation' }, { label: 'Add Users', active: true }];
+  }
+
+  submitUser() {
+    console.log("submit user");
   }
 
 }
