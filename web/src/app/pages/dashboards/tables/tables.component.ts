@@ -11,8 +11,11 @@ export class TablesComponent implements OnInit {
   constructor(private modalService: NgbModal) { }
 
   transactions: any[]
+  breadCrumbItems: Array<{}>;
 
   ngOnInit(): void {
+    this.breadCrumbItems = [{ label: 'Reservation' }, { label: 'Tables', active: true }];
+
     this.transactions = [
       {
         id: "#SK2540",

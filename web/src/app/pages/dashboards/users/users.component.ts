@@ -12,7 +12,11 @@ export class UsersComponent implements OnInit {
 
   transactions: any[]
 
+  breadCrumbItems: Array<{}>;
+
   ngOnInit(): void {
+    this.breadCrumbItems = [{ label: 'Reservation' }, { label: 'Users', active: true }];
+
     this.transactions = [
       {
         id: "#SK2540",

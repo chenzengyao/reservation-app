@@ -1,1 +1,43 @@
-<p>add-tables works!</p>
+<div class="container-fluid">
+    <app-page-title title="New Tables" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+    <div class="row">
+        <div class="col-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Table Name</label>
+                                <input type="text" name="" id="" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Status</label>
+                                <select name="" class="form-select" id="">
+                                    <option value="">Pending</option>
+                                    <option value="">Confirmed</option>
+                                    <option value="">Cancelled</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="d-flex w-100 gap-3">
+                                <button class="btn btn-primary btn-sm" (click)="submitTables()">Submit</button>
+                                <a class="btn btn-debug btn-sm" href="/admin/tables/listing">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
