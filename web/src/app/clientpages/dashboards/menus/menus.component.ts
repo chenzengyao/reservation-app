@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-menus',
   templateUrl: './menus.component.html',
-  styleUrls: ['./menus.component.scss']
+  styleUrls: ['./menus.component.scss', './menus.component.css']
 })
 export class MenusComponent implements OnInit {
 

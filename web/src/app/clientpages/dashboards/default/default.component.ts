@@ -9,7 +9,7 @@ import { ConfigService } from '../../../core/services/config.service';
 @Component({
   selector: 'app-default',
   templateUrl: './default.component.html',
-  styleUrls: ['./default.component.scss']
+  styleUrls: ['./default.component.scss', './default.component.css']
 })
 export class DefaultComponent implements OnInit {
 
