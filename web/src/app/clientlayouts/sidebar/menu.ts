@@ -60,7 +60,7 @@ export const MENU: MenuItem[] = [
     id: 9,
     label: "Menu",
     icon: "bx-food-menu",
-    link: "/menu",
+    link: "/user/menu",
     // subItems: [
     //   {
     //     id: 10,
@@ -74,7 +74,7 @@ export const MENU: MenuItem[] = [
     id: 12,
     label: "Table Reservation",
     icon: "bx-table",
-    link: "/tables",
+    link: "/user/tables",
     // subItems: [
     //   {
     //     id: 13,
@@ -88,7 +88,7 @@ export const MENU: MenuItem[] = [
     id: 15,
     label: "Delivery Tracking",
     icon: "bx-package",
-    link: "/user/delivery/tracking",
+    link: "/user/delivery",
     // subItems: [
     //   {
     //     id: 16,
