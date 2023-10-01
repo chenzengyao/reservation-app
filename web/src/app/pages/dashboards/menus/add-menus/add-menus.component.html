@@ -1,6 +1,6 @@
 <div class="form-section">
     <h1>Add New Item</h1>
-    <form name="addMenuForm"  (ngSubmit)="onSubmit()" [formGroup]="addMenuForm"  class="form-control" novalidate>
+    <form name="addMenuForm"  (ngSubmit)="onSubmit()" [formGroup]="addMenuForm"  class="needs-validation" novalidate>
         <div class="form-sub-section">
             <div class="image-section">
                 <label for="image">Select an image:</label>
@@ -20,34 +20,52 @@
             </div>
             <div class="info-section">
                 <label>Item Name<span>*</span></label><br>
-                <textarea  id="item_name" formControlName="item_name" required ></textarea>
+                <textarea  id="item_name" formControlName="item_name" [ngClass]="{ 'is-invalid': submitted && f.item_name.errors }"  required ></textarea>
+                <div *ngIf="submitted && f.item_name.errors" class="invalid-feedback">
+                  <div *ngIf="f.item_name.errors.required">Item name is required</div>
+                </div>
 
                 <label>Item Description<span>*</span></label>
-                <textarea id="item_description" formControlName="item_description" required></textarea>
+                <textarea id="item_description" formControlName="item_description" [ngClass]="{ 'is-invalid': submitted && f.item_description.errors }" required></textarea>
+                <div *ngIf="submitted && f.item_description.errors" class="invalid-feedback">
+                  <div *ngIf="f.item_description.errors.required">Item description is required</div>
+                </div>
 
                 <label>Item Remark<span>*</span></label>
-                <textarea  id="item_remark" formControlName="item_remark" required></textarea>
+                <textarea  id="item_remark" formControlName="item_remark" [ngClass]="{ 'is-invalid': submitted && f.item_remark.errors }" required></textarea>
+                <div *ngIf="submitted && f.item_remark.errors" class="invalid-feedback">
+                  <div *ngIf="f.item_remark.errors.required">Item remark is required</div>
+                </div>
 
                 <label>Price<span>*</span></label>
-                <input class="price-input" currencyMask  formControlName="item_price" id="item_price" type="number" min="0.00"  placeholder="0.00" pattern="^\d*(\.\d{0,2})?$" oninput="formatDecimal(this)" required>
+                <input class="price-input" currencyMask  formControlName="item_price" id="item_price" type="number" min="0.00"  placeholder="0.00" pattern="^\d*(\.\d{0,2})?$" [ngClass]="{ 'is-invalid': submitted && f.item_price.errors }" required>
+                <div *ngIf="submitted && f.item_price.errors" class="invalid-feedback">
+                  <div *ngIf="f.item_price.errors.required">Item price is required</div>
+                </div>
 
                 <div class="form-sub-section">
                     <div>
                         <label>Category<span>*</span></label>
-                            <select id="item_category" formControlName = "item_category" required>
+                            <select id="item_category" formControlName = "item_category" [ngClass]="{ 'is-invalid': submitted && f.item_price.errors }" required>
                             <option value="Starter">Starter</option>
                             <option value="Main Course">Main Course</option>
                             <option value="Dessert">Dessert</option>
                             <option value="Beverages">Beverages</option>
                             <option value="Other">Other</option>
                             </select>
+                      <div *ngIf="submitted && f.item_category.errors" class="invalid-feedback">
+                        <div *ngIf="f.item_category.errors.required">Item category is required</div>
+                      </div>
                     </div>
                     <div>
                         <label>Status<span>*</span></label>
-                            <select id ="item_status" formControlName = "item_status" required>
+                            <select id ="item_status" formControlName = "item_status" [ngClass]="{ 'is-invalid': submitted && f.item_status.errors }" required>
                             <option value="Available">Available</option>
                             <option value="Sold Out">Sold Out</option>
                             </select>
+                      <div *ngIf="submitted && f.item_status.errors" class="invalid-feedback">
+                        <div *ngIf="f.item_status.errors.required">Item status is required</div>
+                      </div>
                     </div>
                 </div>
             </div>
