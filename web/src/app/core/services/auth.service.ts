@@ -51,13 +51,48 @@ export class AuthenticationService {
     }
 
     /**
-     * Get User Detials
+     * Get User Details
      * @param email email
      */
     getUserDetails(email: String) {
       return this.http.get(`/users/getDetails?email=` + email);
     }
 
+    /**
+     * Find exists email with password
+     * @param email email
+     * @param password password
+     */
+    checkExistUser(email: String, password: String) {
+      return this.http.get(`/users/checkExistUser?email=` + email + '&password=' + password);
+    }
+
+    /**
+     * Get Login User Details
+     * @param email email
+     * @param password password
+     */
+    getLoginDetails(email: String, password: String) {
+      return this.http.get(`/users/getLoginDetails?email=` + email + '&password=' + password);
+    }
+
+    /**
+     * Match current password
+     * @param email email
+     * @param current_password current_password
+     */
+    checkCurrentPassword(email: String, current_password: String) {
+      return this.http.get(`/users/checkCurrentPassword?email=` + email + '&current_password=' + current_password);
+    }
+
+    /**
+     * Update the current password to new password
+     * @param email email
+     * @param new_password new_password
+     */
+    UpdateNewPassword(email: String, new_password: String) {
+      return this.http.post(`/users/UpdateNewPassword?email=` + email + '&new_password=' + new_password,{ observe: 'response' });
+    }
 
 
     /**
