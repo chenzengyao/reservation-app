@@ -7,11 +7,16 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
   styleUrls: ["./menus.component.scss"],
 })
 export class MenusComponent implements OnInit {
-  constructor(private modalService: NgbModal) {}
+  constructor(private modalService: NgbModal) { }
 
   transactions: any[] = [];
+  breadCrumbItems: Array<{}>;
 
   ngOnInit(): void {
+    this.breadCrumbItems = [
+      { label: "Reservation" },
+      { label: "Menus", active: true },
+    ];
     this.transactions = [
       {
         id: "#SK2540",
