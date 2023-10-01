@@ -23,16 +23,12 @@ export class ChangepasswordComponent implements OnInit {
   error = '';
   successmsg = false;
   working = false;
-  minDate:String;
-  maxDate:String;
-  // name :'dobdate';
-  strongPassword = false;
-  dobdate;
-  phone_no;
-  address;
-  current_password;
-  new_password;
-  confirm_new_password;
+
+  //Parameter to pass to Controller
+  email: 'liz@gmail.com';
+  current_password: String;
+  new_password: String;
+  confirm_new_password: String;
   show1: boolean = false;
   show2: boolean = false;
   show3: boolean = false;
@@ -54,12 +50,8 @@ export class ChangepasswordComponent implements OnInit {
 
 
   ngOnInit() {
-    this.current_password = 'password';
-    this.new_password = 'password';
-    this.confirm_new_password = 'password2';
-    const today = new Date();
-    this.minDate = new Date(this.year - 100, 0, 1).toISOString().split('T')[0];
-    this.maxDate = new Date(this.year - 12, 0, 1).toISOString().split('T')[0];
+    this.email = 'liz@gmail.com';
+
     this.changepasswordForm = this.formBuilder.group({
       current_password: ['', [Validators.required, Validators.minLength(8),Validators.pattern(
         /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)]],
@@ -71,10 +63,6 @@ export class ChangepasswordComponent implements OnInit {
     });
   }
 
-  onPasswordStrengthChanged(event: boolean) {
-    this.strongPassword = event;
-  }
-
   // convenience getter for easy access to form fields
   get f() { return this.changepasswordForm.controls; }
 
@@ -83,41 +71,43 @@ export class ChangepasswordComponent implements OnInit {
    */
   onSubmit() {
     this.submitted = true;
-
+    console.log(this.email, this.current_password);
 
     // stop here if form is invalid
     if (this.changepasswordForm.invalid) {
       return;
     } else {
-      // if (environment.defaultauth === 'firebase') {
-      //   this.authenticationService.register(this.f.email.value, this.f.password.value).then((res: any) => {
-      //     this.successmsg = true;
-      //     if (this.successmsg) {
-      //       this.router.navigate(['/dashboard']);
-      //     }
-      //   })
-      //     .catch(error => {
-      //       this.error = error ? error : '';
-      //     });
-      // } else {
-      //   this.userService.register(this.changepasswordForm.value)
-      //     .pipe(first())
-      //     .subscribe(
-      //       data => {
-      //         this.successmsg = true;
-      //         if (this.successmsg) {
-      //           this.router.navigate(['/account/login']);
-      //         }
-      //       },
-      //       error => {
-      //         this.error = error ? error : '';
-      //       });
-      // }
+      this.authenticationService.checkCurrentPassword(this.email,this.current_password).subscribe(data=>{
+        console.log("checkCurrentPassword", data);
+        if(data == 1){
+          // alert('Current Password is found');
+          if(this.new_password == this.confirm_new_password) {
+            console.log(this.email, this.new_password);
+            this.authenticationService.UpdateNewPassword(this.email,this.new_password)
+              .subscribe(
+                data => {
+                  this.successmsg = true;
+                  if (this.successmsg) {
+                    this.router.navigate(['/account/changepassword']);
+                  }
+                },
+                error => {
+                  this.error = error ? error : '';
+                });
+          }
+          else{
+            alert('New Password and Confirm New Password unmatched.');
+          }
+        }
+        else {
+          alert('Current Password is wrong');
+        }
+      });
     }
 
     this.working = true;
     setTimeout(() => {
-      this.changepasswordForm.reset();
+      // this.changepasswordForm.reset();
       this.working = false;
     }, 1000);
   }

@@ -33,8 +33,8 @@
 
                 <div class="mb-3">
 <!--                  <label for="email">Email</label>-->
-                  <input type="email" class="form-control" id="email" placeholder="Email"
-                    [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+                  <input type="email" class="form-control" id="email" placeholder="Email" formControlName="email"
+                    [ngClass]="{ 'is-invalid': submitted && f.email.errors }" [(ngModel)]="email" />
                   <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
                     <div *ngIf="f.email.errors.required">Email is required</div>
                     <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
@@ -44,7 +44,7 @@
                 <div class="mb-3">
 <!--                  <label for="password">Password</label>-->
                   <div class="input-group auth-pass-inputgroup">
-                    <input [type]="password" class="form-control" placeholder="Enter password" id="password"
+                    <input [type]="password" class="form-control" placeholder="Enter password" id="password" formControlName="password" [(ngModel)]="submittedPassword"
                       [ngClass]="{ 'is-invalid': submitted && f.password.errors }" aria-label="Password" aria-describedby="password-addon" minlength="8">
 
                     <button (click)="onClick()" class="btn btn-light ms-0" type="button" id="password-addon" >

@@ -26,6 +26,8 @@ export class LoginComponent implements OnInit {
   returnUrl: string;
   password;
   show = false;
+  email: String;
+  submittedPassword: String;
 
   // set the currenr year
   year: number = new Date().getFullYear();
@@ -56,29 +58,21 @@ export class LoginComponent implements OnInit {
    */
   onSubmit() {
     this.submitted = true;
-
+    console.log("checkExistUser", this.email, this.submittedPassword);
     // stop here if form is invalid
     if (this.loginForm.invalid) {
       return;
     } else {
-      if (environment.defaultauth === 'firebase') {
-        this.authenticationService.login(this.f.email.value, this.f.password.value).then((res: any) => {
-          this.router.navigate(['/dashboard']);
-        })
-          .catch(error => {
-            this.error = error ? error : '';
-          });
-      } else {
-        this.authFackservice.login(this.f.email.value, this.f.password.value)
-          .pipe(first())
-          .subscribe(
-            data => {
-              this.router.navigate(['/dashboard']);
-            },
-            error => {
-              this.error = error ? error : '';
-            });
-      }
+      this.authenticationService.checkExistUser(this.email, this.submittedPassword).subscribe(data=>{
+        console.log("checkExistUser", data);
+
+        if(data == 1){
+            this.router.navigate(['/dashboard']);
+        } else {
+          alert('This account is invalid. Please register first.');
+          // this.router.navigate(['/account/signup']);
+        }
+      });
     }
   }
 
