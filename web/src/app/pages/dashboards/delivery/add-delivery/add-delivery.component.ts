@@ -9,7 +9,14 @@ export class AddDeliveryComponent implements OnInit {
 
   constructor() { }
 
+  breadCrumbItems: Array<{}>;
+
   ngOnInit(): void {
+    this.breadCrumbItems = [{ label: 'Reservation' }, { label: 'Add Delivery', active: true }];
+  }
+
+  submitDelivery() {
+    console.log("submit delivery");
   }
 
 }
