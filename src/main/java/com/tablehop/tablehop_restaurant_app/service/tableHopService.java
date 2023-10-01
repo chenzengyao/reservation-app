@@ -47,7 +47,7 @@ public class tableHopService {
 
     public void addMenu(String item_category, String item_name, String item_description,
                         String item_price, String item_remark, String item_status,
-                        String item_image, String item_created_dt, String current_user) {
+                        String item_image, String item_created_dt, String created_by) {
         //Init
         Item menu = new Item();
         menu.setItem_category(item_category);
@@ -58,7 +58,7 @@ public class tableHopService {
         menu.setItem_status(item_status);
         menu.setItem_image(item_image);
         menu.setItem_created_dt(item_created_dt);
-        menu.setCreated_by(current_user);
+        menu.setCreated_by(created_by);
         itemRepository.saveAndFlush(menu);
     }
 }

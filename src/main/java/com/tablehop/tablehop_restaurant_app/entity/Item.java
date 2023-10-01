@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String itemID;
+    private int itemID;
 
     @Column(name = "item_category")
     private String item_category;
@@ -49,11 +49,11 @@ public class Item {
     @Column(name = "updated_by")
     private String updated_by;
 
-    public String getItemID() {
+    public int getItemID() {
         return this.itemID;
     }
 
-    public void setItemID(String itemID) {
+    public void setItemID(int itemID) {
         this.itemID = itemID;
     }
 

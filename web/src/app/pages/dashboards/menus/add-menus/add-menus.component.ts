@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormControl, Validators, FormBuilder} from '@angular/forms';
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-
 import{ MenusService } from'../../../../core/services/menus.service';
 import { AuthenticationService } from'../../../../core/services/auth.service';
+
 @Component({
   selector: 'app-add-menus',
   templateUrl: './add-menus.component.html',
@@ -24,9 +24,9 @@ export class AddMenusComponent implements OnInit {
     item_status: String;
     item_image: String;
     item_created_dt: String;
-    item_updated_dt;
-    created_by;
-    updated_by;
+    item_updated_dt: String;
+    created_by: String;
+    updated_by: String;
     submitted = false;
     successmsg = false;
     error = '';
@@ -37,9 +37,9 @@ export class AddMenusComponent implements OnInit {
     retrievedImage: any;
     message: string;
     isDisabled: boolean = true;
-    event;
-    url;
-    current_user;
+    event: any;
+    url: any;
+    current_user: String;
 
     ngOnInit(): void {
       //this one currently invalid, hardcode it first
@@ -47,15 +47,14 @@ export class AddMenusComponent implements OnInit {
 
       this.current_user = "Admin";
       this.addMenuForm = this.formBuilder.group({
-        item_category: ['', Validators.required],
-        item_name: ['', Validators.required],
-        item_description: ['', Validators.required],
-        item_price: ['', Validators.required],
-        item_remark: ['', Validators.required],
-        item_status: ['', Validators.required],
-        item_image: ['', Validators.required],
-        item_created_dt: ['', Validators.required],
-        created_by: ['', Validators.required],
+        item_category: [''],
+        item_name: [''],
+        item_description: [''],
+        item_price: [''],
+        item_remark: [''],
+        item_status: [''],
+        item_image: [''],
+        item_created_dt: [''],
       });
     }
 
@@ -70,17 +69,6 @@ export class AddMenusComponent implements OnInit {
 
       // image
       console.log("image: "+this.addMenuForm.value.item_image);
-      var imageurl2 = this.addMenuForm.value.item_image.split("\\");
-      console.log("imageurl2: "+ imageurl2);
-      this.item_image = "itemImages/" + imageurl2[imageurl2.length - 1];
-      console.log(this.item_image);
-
-      console.log("menu parameter", this.addMenuForm.value.item_category, this.addMenuForm.value.item_name,
-        this.addMenuForm.value.item_description, this.addMenuForm.value.item_price,
-        this.addMenuForm.value.item_remark, this.addMenuForm.value.item_status, this.addMenuForm.value.item_image,
-        this.addMenuForm.value.item_created_dt,
-        this.current_user);
-
 
       // stop here if form is invalid
       if (this.addMenuForm.invalid) {
@@ -88,10 +76,13 @@ export class AddMenusComponent implements OnInit {
         return;
       } else {
         //used to debug
-
+        const pathParts = this.addMenuForm.value.item_image.split('\\');
+        const processName = pathParts[pathParts.length - 1];
+        const fileName = processName.replace(/\s/g, '');
+        console.log("image2: "+fileName);
         this.menusService.add(this.addMenuForm.value.item_category, this.addMenuForm.value.item_name,
           this.addMenuForm.value.item_description, this.addMenuForm.value.item_price,
-          this.addMenuForm.value.item_remark, this.addMenuForm.value.item_status, this.addMenuForm.value.item_image,
+          this.addMenuForm.value.item_remark, this.addMenuForm.value.item_status, fileName,
           this.addMenuForm.value.item_created_dt,
           this.current_user)
           .subscribe(
