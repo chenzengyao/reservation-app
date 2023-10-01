@@ -1,0 +1,175 @@
+div.form-section{
+    margin: 25px;
+    border-radius: 10px;
+    background-color: rgb(243, 241, 241);
+    width: auto;
+    height: auto;
+    padding: 30px;
+    box-shadow: 0px 5px 5px 0px rgba(128, 128, 128, 0.555);
+    display: flex;
+    flex-direction: column;
+}
+
+h1{
+    padding-bottom: 10px;
+}
+
+div.form-sub-section{
+    display: flex;
+    // margin: 0;
+    // padding: 0;
+    // display: flex;
+    // flex-direction: row;
+    // width: 100%;
+    justify-content: space-between;
+    // align-items: center;
+}
+
+div.image-section{
+    width: 40%;
+}
+
+div.info-section{
+    width: 80%;
+}
+
+img.img-preview{
+    width: 200px;
+    height: 100px;
+}
+
+span{
+    color: red;
+}
+
+textarea{
+    border: 1px solid grey;
+    border-radius: 5px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: medium;
+    width: 100%;
+    height: auto;
+    resize: none;
+    padding: 8px 8px 8px 8px ;
+    margin: 3px 0 6px 0;
+    display: inline-block;
+}
+
+input[type=text] {
+    border: 1px solid grey;
+    border-radius: 5px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: medium;
+    width: 100%;
+    height: auto;
+    resize: none;
+    padding: 8px 8px 8px 8px ;
+    margin: 3px 0 6px 0;
+}
+
+    
+select{
+    flex: 50%;
+    padding: 10px;
+    width: 200px;
+    padding: 10px 10px;
+    margin: 15px 0 20px 0;
+    border: 1px solid grey;
+    border-radius: 5px;
+    font-size: medium;
+}
+    
+option{
+    size: 100%;
+    font-size: medium;
+    padding: 10px 0;
+}
+.price-input{
+    width: 100%;
+    padding: 10px 0px 10px 0;
+    margin: 10px 0px;
+    border: 1px solid grey;
+    border-radius: 5px;
+    font-size: medium;
+}
+
+
+
+input[type=submit]{
+    width: 100%;
+    padding: 15px 0;
+    margin: 20px 0 0 0;
+    border: none;
+    border-radius: 10px;
+    background-color: rgb(222, 134, 2);
+    font-weight: 800;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: white;
+}
+
+input[name=upload]{
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 15px;
+    margin: 20px 0 20px 0;
+    border: none;
+    border-radius: 10px;
+    background-color: rgb(222, 134, 2);
+    font-weight: 800;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: white;
+}
+
+input[type=number]{
+    padding: 8px 8px 8px 8px ;
+    margin: 3px 0 6px 0;
+    width: 100%;
+    // padding: 10px 0px 10px 0;
+    // margin: 3px 0 6px 0;
+    border: 1px solid grey;
+    border-radius: 5px;
+    font-size: medium;
+}
+
+/*--Responsive Page--*/
+/*--For mobile--*/
+@media only screen and (max-width: 600px){
+
+    div.form-section{
+        padding: 20px;
+    }
+
+    div.form-sub-section{
+        display: inline;
+    }
+
+    h1{
+        font-size: x-large;
+    }
+
+    div.image-section{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    img.img-preview{
+        width: 250px;
+        height: 170px;
+    }
+
+    div.image-section{
+        width: 100%;
+    }
+    
+    div.info-section{
+        width: 100%;
+    }
+
+    h1{
+        padding-bottom: 30px;
+    }
+}
