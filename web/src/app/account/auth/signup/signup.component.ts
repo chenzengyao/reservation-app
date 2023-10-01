@@ -30,11 +30,12 @@ export class SignupComponent implements OnInit {
   confirm_password: string;
   show1: boolean = false;
   show2: boolean = false;
+  password;
 
   //Parameter to pass to Controller
   username: String;
   email: String;
-  password: String;
+  submittedPassword: String;
   phone_no: String;
   dob: String;
 
@@ -86,29 +87,40 @@ export class SignupComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
 
+    console.log(this.username, this.email, this.phone_no, this.submittedPassword, this.dob);
+
 
     // stop here if form is invalid
     if (this.signupForm.invalid) {
       return;
     } else {
-      this.authenticationService.register(this.username, this.email, this.phone_no, this.password, this.dob)
-        .subscribe(
-          data => {
-            this.successmsg = true;
-            if (this.successmsg) {
-              this.router.navigate(['/account/login']);
-            }
-          },
-          error => {
-            this.error = error ? error : '';
-          });
+      this.authenticationService.checkExistEmail(this.email).subscribe(data=>{
+        console.log("checkExistEmail", data);
+        if(data == 1){
+          alert('This email account already exist.');
+        }
+        else {
+          this.authenticationService.register(this.username, this.email, this.phone_no, this.submittedPassword, this.dob)
+            .subscribe(
+              data => {
+                this.successmsg = true;
+                if (this.successmsg) {
+                  this.router.navigate(['/account/login']);
+                  alert('Register Successfully.');
+                }
+              },
+              error => {
+                this.error = error ? error : '';
+              });
+        }
+      });
     }
-
     this.working = true;
     setTimeout(() => {
-      this.signupForm.reset();
+      // this.signupForm.reset();
       this.working = false;
     }, 1000);
+
   }
 
   onClick(fieldNumber: number) {
@@ -118,5 +130,6 @@ export class SignupComponent implements OnInit {
       this.show2 = !this.show2;
     }
   }
+
 
 }
