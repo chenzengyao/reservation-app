@@ -13,11 +13,14 @@ import { SimplebarAngularModule } from 'simplebar-angular';
 import { DefaultComponent } from './default/default.component';
 import { UsersComponent } from './users/users.component';
 import { MenusComponent } from './menus/menus.component';
+import { TablesComponent } from './tables/tables.component';
 import { OrdersComponent } from './orders/orders.component';
 import { DeliveryComponent } from './delivery/delivery.component';
+import { SettingsComponent } from './settings/settings.component';
+
 
 @NgModule({
-  declarations: [DefaultComponent, UsersComponent, MenusComponent, OrdersComponent, DeliveryComponent],
+  declarations: [DefaultComponent, UsersComponent, MenusComponent, TablesComponent, OrdersComponent, DeliveryComponent, SettingsComponent],
   imports: [
     CommonModule,
     FormsModule,

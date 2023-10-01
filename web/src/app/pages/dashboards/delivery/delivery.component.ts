@@ -12,7 +12,11 @@ export class DeliveryComponent implements OnInit {
 
   transactions: any[]
 
+  breadCrumbItems: Array<{}>;
+
   ngOnInit(): void {
+    this.breadCrumbItems = [{ label: 'Reservation' }, { label: 'Delivery', active: true }];
+
     this.transactions = [
       {
         id: "#SK2540",

@@ -1,1 +1,68 @@
-<p>add-users works!</p>
+<div class="container-fluid">
+    <app-page-title title="New User" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+    <div class="row">
+        <div class="col-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Name</label>
+                                <input type="text" name="" id="" class="form-control" placeholder="Please enter name...">
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Birth of Date</label>
+                                <input type="date" name="" id="" class="form-control" placeholder="Birth of date...">
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Gender</label>
+                                <div class="d-flex gap-4">
+                                    <div class="form-check">
+                                        <input type="radio" class="form-check-input" id="male" name="gender">
+                                        <label for="male" class="form-check-label">Male</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="radio" class="form-check-input" id="female" name="gender">
+                                        <label for="female" class="form-check-label">Female</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Email</label>
+                                <input type="email" name="" id="" class="form-control" placeholder="Please enter email...">
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Phone</label>
+                                <input type="tel" name="" id="" class="form-control" placeholder="Please enter phone number...">
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Role</label>
+                                <select name="" class="form-select" id="">
+                                    <option value="">Pending</option>
+                                    <option value="">Confirmed</option>
+                                    <option value="">Cancelled</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="d-flex w-100 gap-3">
+                                <button class="btn btn-primary btn-sm" (click)="submitUser()">Submit</button>
+                                <a class="btn btn-debug btn-sm" href="/admin/users/listing">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
