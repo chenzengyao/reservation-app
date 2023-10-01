@@ -2,12 +2,12 @@ package com.tablehop.tablehop_restaurant_app.entity;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "item")
@@ -34,11 +34,14 @@ public class Item {
     @Column(name = "item_status")
     private String item_status;
 
+    @Column(name = "item_image")
+    private String item_image;
+
     @Column(name = "item_created_dt")
-    private Date item_created_dt;
+    private String item_created_dt;
 
     @Column(name = "item_updated_dt")
-    private Date item_updated_dt;
+    private String item_updated_dt;
 
     @Column(name = "created_by")
     private String created_by;
@@ -102,19 +105,23 @@ public class Item {
         this.item_status = item_status;
     }
 
-    public Date getItem_created_dt() {
+    public String getItem_image() { return item_image; }
+
+    public void setItem_image(String item_image) { this.item_image = item_image;}
+
+    public String getItem_created_dt() {
         return this.item_created_dt;
     }
 
-    public void setItem_created_dt(Date item_created_dt) {
+    public void setItem_created_dt(String item_created_dt) {
         this.item_created_dt = item_created_dt;
     }
 
-    public Date getItem_updated_dt() {
+    public String getItem_updated_dt() {
         return this.item_updated_dt;
     }
 
-    public void setItem_updated_dt(Date item_updated_dt) {
+    public void setItem_updated_dt(String item_updated_dt) {
         this.item_updated_dt = item_updated_dt;
     }
 
@@ -144,6 +151,7 @@ public class Item {
                 ", item_price='" + getItem_price() + "'" +
                 ", item_remark='" + getItem_remark() + "'" +
                 ", item_status='" + getItem_status() + "'" +
+                ", item_image='" + getItem_image() + "'" +
                 ", item_created_dt='" + getItem_created_dt() + "'" +
                 ", item_updated_dt='" + getItem_updated_dt() + "'" +
                 ", created_by='" + getCreated_by() + "'" +

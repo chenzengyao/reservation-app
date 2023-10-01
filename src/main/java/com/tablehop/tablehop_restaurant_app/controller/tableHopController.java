@@ -27,6 +27,15 @@ public class tableHopController {
         tableHopService.register(username, email, phone_no, password, dob);
     }
 
+    @RequestMapping(value = "/admin/menu/add", method = RequestMethod.POST)
+    public void addMenu(@RequestParam String item_category, @RequestParam String item_name, @RequestParam String item_description,
+                        @RequestParam String item_price, @RequestParam String item_remark,@RequestParam String item_status,
+                        @RequestParam String item_image, @RequestParam String item_created_dt, @RequestParam String current_user) {
+        log.info("admin add menu -----> controller");
+        tableHopService.addMenu(item_category, item_name, item_description, item_price, item_remark, item_status, item_image,
+                item_created_dt, current_user);
+    }
+
     @RequestMapping(value = "/users/getDetails", method = RequestMethod.GET)
     public User getDetails(@RequestParam String email) {
         log.info("getDetails -----> controller");
