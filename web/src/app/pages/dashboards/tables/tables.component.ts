@@ -2,15 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-orders',
-  templateUrl: './orders.component.html',
-  styleUrls: ['./orders.component.scss']
+  selector: 'app-tables',
+  templateUrl: './tables.component.html',
+  styleUrls: ['./tables.component.scss']
 })
-export class OrdersComponent implements OnInit {
+export class TablesComponent implements OnInit {
 
   constructor(private modalService: NgbModal) { }
 
-  transactions: any[];
+  transactions: any[]
 
   ngOnInit(): void {
     this.transactions = [
