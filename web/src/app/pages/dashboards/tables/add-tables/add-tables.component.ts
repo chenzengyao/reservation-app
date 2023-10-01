@@ -9,7 +9,12 @@ export class AddTablesComponent implements OnInit {
 
   constructor() { }
 
+  breadCrumbItems: Array<{}>;
+
   ngOnInit(): void {
+    this.breadCrumbItems = [{ label: 'Reservation' }, { label: 'Add Tables', active: true }];
   }
+
+  submitTables() {}
 
 }
