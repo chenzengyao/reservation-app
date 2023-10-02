@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import javax.persistence.Entity;
 
 @SpringBootApplication(scanBasePackages = { "com.tablehop.tablehop_restaurant_app" })
 public class TablehopRestaurantAppApplication {

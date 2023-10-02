@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl,FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-// import { MatDialog } from '@angular/material';
 import { AuthenticationService } from '../../../core/services/auth.service';
-import { environment } from '../../../../environments/environment';
-import { first } from 'rxjs/operators';
 import { UserProfileService } from '../../../core/services/user.service';
-import { Pipe, PipeTransform } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { dataService } from "../../../dataService";
 
 
 @Component({
@@ -25,7 +22,7 @@ export class ChangepasswordComponent implements OnInit {
   working = false;
 
   //Parameter to pass to Controller
-  email: 'liz@gmail.com';
+  email: String;
   current_password: String;
   new_password: String;
   confirm_new_password: String;
@@ -44,13 +41,18 @@ export class ChangepasswordComponent implements OnInit {
   year: number = new Date().getFullYear();
 
   // tslint:disable-next-line: max-line-length
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private authenticationService: AuthenticationService,
-              private userService: UserProfileService) {
-  }
+  constructor(
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private authenticationService: AuthenticationService,
+    private userService: UserProfileService,
+    private dataService: dataService
+  ) {}
 
 
   ngOnInit() {
-    this.email = 'liz@gmail.com';
+    this.email = this.dataService.getCurrentEmail();
 
     this.changepasswordForm = this.formBuilder.group({
       current_password: ['', [Validators.required, Validators.minLength(8),Validators.pattern(

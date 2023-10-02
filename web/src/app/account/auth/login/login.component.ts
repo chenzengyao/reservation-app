@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
 import { AuthenticationService } from '../../../core/services/auth.service';
 import { AuthfakeauthenticationService } from '../../../core/services/authfake.service';
-
 import { ActivatedRoute, Router } from '@angular/router';
-import { first } from 'rxjs/operators';
+import { dataService } from "../../../dataService";
 
-import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -33,8 +30,12 @@ export class LoginComponent implements OnInit {
   year: number = new Date().getFullYear();
 
   // tslint:disable-next-line: max-line-length
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private authenticationService: AuthenticationService,
-    private authFackservice: AuthfakeauthenticationService) { }
+  constructor(private formBuilder: FormBuilder,
+              private route: ActivatedRoute,
+              private router: Router,
+              private authenticationService: AuthenticationService,
+              private dataService: dataService
+  ) { }
 
   ngOnInit() {
     this.password = 'password';
@@ -67,7 +68,8 @@ export class LoginComponent implements OnInit {
         console.log("checkExistUser", data);
 
         if(data == 1){
-            this.router.navigate(['/dashboard']);
+          this.dataService.setCurrentEmail(this.email);
+          this.router.navigate(['/dashboard']);
         } else {
           alert('This account is invalid. Please register first.');
           // this.router.navigate(['/account/signup']);

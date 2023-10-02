@@ -16,6 +16,8 @@ import java.util.Objects;
 @Service
 public class tableHopService {
 
+    private static final Logger log = LoggerFactory.getLogger(tableHopController.class);
+
     @Resource
     private userRepository userRepository;
 
