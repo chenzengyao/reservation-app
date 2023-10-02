@@ -11,6 +11,7 @@ import com.tablehop.tablehop_restaurant_app.repository.itemRepository;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -91,6 +92,11 @@ public class tableHopService {
         User set_new_password = userRepository.checkExistEmail(email);
         set_new_password.setPassword(new_password);
         userRepository.saveAndFlush(set_new_password);
+    }
+
+    public List<Item> getAllMenu() {
+        List<Item> itemList = itemRepository.findAll();
+        return itemList;
     }
 
 }

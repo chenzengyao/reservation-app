@@ -1,6 +1,8 @@
 package com.tablehop.tablehop_restaurant_app.controller;
 
 import java.util.*;
+
+import com.tablehop.tablehop_restaurant_app.entity.Item;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -59,5 +61,11 @@ public class tableHopController {
     public void updateNewPassword(@RequestParam String email, @RequestParam String new_password) {
         log.info("users UpdateNewPassword -----> controller");
         tableHopService.updateNewPassword(email, new_password);
+    }
+
+    @RequestMapping(value = "/admin/getAllMenu", method = RequestMethod.GET)
+    public List<Item> updateNewPassword() {
+        log.info("admin getAllMenu -----> controller");
+        return tableHopService.getAllMenu();
     }
 }

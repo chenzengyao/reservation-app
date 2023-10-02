@@ -1,5 +1,5 @@
 <div class="container-fluid">
-    <app-page-title title="Menus" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+    <app-page-title title="Menus"></app-page-title>
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -17,7 +17,7 @@
                             <div class="text-sm-end">
                                 <a href="/admin/menus/add" type="button"
                                     class="btn btn-success btn-rounded mb-2 me-2"><i class="mdi mdi-plus mr-1"></i>
-                                    Add New Order</a>
+                                    Add New Menu</a>
                             </div>
                         </div><!-- end col-->
                     </div>
@@ -25,30 +25,25 @@
                         <table class="table table-centered table-nowrap">
                             <thead class="table-light">
                                 <tr>
-                                    <th class="align-middle">Order ID</th>
-                                    <th class="align-middle">Billing Name</th>
-                                    <th class="align-middle">Date</th>
-                                    <th class="align-middle">Total</th>
-                                    <th class="align-middle">Payment Status</th>
-                                    <th class="align-middle">Payment Method</th>
+                                    <th class="align-middle">S/N</th>
+                                    <th class="align-middle">Item Name</th>
+                                    <th class="align-middle">Item Description</th>
+                                    <th class="align-middle">Item Price</th>
+                                    <th class="align-middle">Item Remark</th>
+                                    <th class="align-middle">Item Status</th>
                                     <th class="align-middle">View Details</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let data of transactions">
+                                <tr *ngFor="let data of menu ; let i = index">
+                                    <td>{{i+1}}</td>
+                                    <td>{{data.item_name}}</td>
+                                    <td>{{data.item_description}}</td>
+                                    <td>{{data.item_price}}</td>
+                                    <td>{{data.item_remark}}</td>
                                     <td>
-                                        <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
-                                    </td>
-                                    <td>{{data.name}}</td>
-                                    <td>{{data.date}}</td>
-                                    <td>{{data.total}}</td>
-                                    <td>
-                                        <span class="badge badge-pill badge-soft-success font-size-11" [ngClass]=" { 'badge-soft-danger': data.status === 'Chargeback',
-                                              'badge-soft-warning':data.status === 'Refund' }">{{data.status}}</span>
-                                    </td>
-                                    <td>
-                                        <i :class="`fab ${data.payment[0]} mr-1`"></i>
-                                        {{data.payment[1]}}
+                                        <span class="badge badge-pill badge-soft-success font-size-11" [ngClass]=" { 'badge-soft-danger': data.item_status === 'Sold Out',
+                                             'badge-soft-warning':data.item_status === 'Available' }">{{data.item_status}}</span>
                                     </td>
                                     <td>
                                         <!-- Button trigger modal -->

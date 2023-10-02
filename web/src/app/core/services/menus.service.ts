@@ -3,14 +3,13 @@ import { Injectable } from "@angular/core";
 import { apiLink } from "../helpers/helper";
 import { getFirebaseBackend } from '../../authUtils';
 import { Menu } from '../models/menu.models'
+
 @Injectable({ providedIn: "root" })
 export class MenusService {
   constructor(private http: HttpClient) {}
 
-  getAllMenus() {
-    return this.http.get<any[]>(`${apiLink()}/api/menus`, {
-      observe: "response",
-    });
+  getAllMenu() {
+    return this.http.get('/admin/getAllMenu', {observe: 'response',});
   }
 
   add(item_category: String, item_name: String, item_description: String, item_price: String,
@@ -20,4 +19,6 @@ export class MenusService {
     '&item_remark=' + item_remark + '&item_status=' + item_status + '&item_image=' + item_image+ '&item_created_dt=' + item_created_dt +
     '&created_by=' + created_by ,{ observe: 'response' });
   }
+
+
 }
