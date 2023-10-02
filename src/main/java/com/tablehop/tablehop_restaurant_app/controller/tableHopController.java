@@ -63,6 +63,15 @@ public class tableHopController {
         tableHopService.updateNewPassword(email, new_password);
     }
 
+    @RequestMapping(value = "/user/reservation/add", method = RequestMethod.POST)
+    public void addReservation(@RequestParam Number pax_no, @RequestParam String reservation_dt, @RequestParam String reserve_status,
+                        @RequestParam String reserve_remark, @RequestParam String reserve_created_dt,@RequestParam String userID,
+                        @RequestParam String tableID) {
+        log.info("admin add menu -----> controller");
+        tableHopService.addMenu(pax_no, reservation_dt, reserve_status, reserve_remark,
+//      reserve_created_dt, userID, tableID);
+    }
+
     @RequestMapping(value = "/admin/getAllMenu", method = RequestMethod.GET)
     public List<Item> updateNewPassword() {
         log.info("admin getAllMenu -----> controller");
