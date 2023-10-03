@@ -3,6 +3,7 @@ package com.tablehop.tablehop_restaurant_app.service;
 import com.tablehop.tablehop_restaurant_app.controller.tableHopController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.tablehop.tablehop_restaurant_app.entity.User;
 import com.tablehop.tablehop_restaurant_app.entity.Item;
@@ -10,9 +11,15 @@ import com.tablehop.tablehop_restaurant_app.repository.userRepository;
 import com.tablehop.tablehop_restaurant_app.repository.itemRepository;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Service
 public class tableHopService {
@@ -24,6 +31,9 @@ public class tableHopService {
 
     @Resource
     private itemRepository itemRepository;
+
+    @Value("${image.upload.directory}")
+    private String imageUploadDirectory;
 
     public void register(String username, String email, String phone_no, String password, String dob) {
         //Init
@@ -54,7 +64,7 @@ public class tableHopService {
 
     public void addMenu(String item_category, String item_name, String item_description,
                         String item_price, String item_remark, String item_status,
-                        String item_image, String item_created_dt, String created_by) {
+                        String item_created_dt, String created_by, String image) {
         //Init
         Item menu = new Item();
         menu.setItem_category(item_category);
@@ -63,9 +73,9 @@ public class tableHopService {
         menu.setItem_description(item_description);
         menu.setItem_remark(item_remark);
         menu.setItem_status(item_status);
-        menu.setItem_image(item_image);
         menu.setItem_created_dt(item_created_dt);
         menu.setCreated_by(created_by);
+        menu.setItem_image(image);
         itemRepository.saveAndFlush(menu);
     }
 
@@ -98,5 +108,17 @@ public class tableHopService {
         List<Item> itemList = itemRepository.findAll();
         return itemList;
     }
+
+    public String saveImageToStorage(MultipartFile image) throws IOException {
+        String fileName = UUID.randomUUID().toString() + "_" + image.getOriginalFilename();
+
+        Path imagePath = Path.of(imageUploadDirectory, fileName);
+
+        Files.createDirectories(imagePath.getParent());
+        Files.copy(image.getInputStream(), imagePath, StandardCopyOption.REPLACE_EXISTING);
+
+        return imagePath.toString();
+    }
+
 
 }
