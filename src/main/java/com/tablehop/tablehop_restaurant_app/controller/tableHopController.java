@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.*;
 
 import com.tablehop.tablehop_restaurant_app.entity.Item;
+import com.tablehop.tablehop_restaurant_app.entity.Reservation;
+
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -91,5 +93,14 @@ public class tableHopController {
         String imagePath = tableHopService.saveImageToStorage(image);
         tableHopService.addMenu(itemCategory, itemName, itemDescription, itemPrice, itemRemark, itemStatus, itemCreatedDt, "Admin", imagePath);
         return ResponseEntity.ok("Product created successfully.");
+    }
+
+    @RequestMapping(value = "/admin/reservation/addReservation", method = RequestMethod.POST)
+    public ResponseEntity<Object> adminAddReservation(@RequestBody Map<String, Object> payload) {
+        log.info("admin add reservation -----> controller");
+        // log.info("controller data: {}", payload.values().stream().filter((x) -> x instanceof Reservation).findFirst().get());
+        Object result = tableHopService.adminSaveReservation(payload);
+        log.info("Result ----> {} ",result);
+        return ResponseEntity.ok(result);
     }
 }

@@ -9,85 +9,38 @@
                             <div class="mb-3">
                                 <label for="" class="form-label">Customer Name</label>
                                 <input type="text" name="" id="" class="form-control"
-                                    placeholder="Please enter customer name...">
+                                    placeholder="Please enter customer name..." required>
+                                <input type="hidden" [(ngModel)]="reservation.user_id">
                             </div>
                             <div class="mb-3">
                                 <label for="" class="form-label">Number of People</label>
-                                <input type="number" name="" id="" class="form-control"
-                                    placeholder="Please enter number of people...">
-                            </div>
-                            <div class="mb-3">
-                                <label for="" class="form-label">Remarks</label>
-                                <textarea name="" id="" class="form-control"
-                                    placeholder="Please enter remarks (if any)"></textarea>
+                                <input type="number" name="" id="" class="form-control" [(ngModel)]="reservation.pax_no"
+                                    placeholder="Please enter number of people..." required>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="mb-3">
                                 <label for="" class="form-label">Reservation Date</label>
-                                <input type="date" name="" id="" class="form-control">
-                            </div>
-                            <div class="mb-3">
-                                <label for="" class="form-label">Reservation Time</label>
-                                <input type="time" name="" id="" class="form-control">
+                                <input type="datetime-local" name="" id="" class="form-control"
+                                    [(ngModel)]="reservation.reservation_dt" required>
                             </div>
                             <div class="mb-3">
                                 <label for="" class="form-label">Status</label>
-                                <select name="" class="form-select" id="">
-                                    <option value="">Pending</option>
-                                    <option value="">Confirmed</option>
-                                    <option value="">Cancelled</option>
+                                <select name="" class="form-select" id="" [(ngModel)]="reservation.reservation_status" required>
+                                    <option value="Pending" selected>Pending</option>
+                                    <option value="Confirmed">Confirmed</option>
+                                    <option value="Cancelled">Cancelled</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <div class="table-responsive">
-                                <table class="table table-centered table-nowrap">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Menu</th>
-                                            <th>Quality</th>
-                                            <th>Price</th>
-                                            <th>Total</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <!-- <tr *ngIf="orderItems.length == 0"></tr> -->
-                                        <tr *ngFor="let items of orderItems; let i = index">
-                                            <td>{{i+1}}</td>
-                                            <td>{{items.item_name}}</td>
-                                            <td>
-                                                <input type="number" [(ngModel)]="items.order_quantity"
-                                                    class="form-control">
-                                            </td>
-                                            <td>
-                                                <input type="text" [(ngModel)]="items.item_price" class="form-control">
-                                            </td>
-                                            <td>{{items.total}}</td>
-                                            <td>
-                                                <button class="btn btn-sm" (click)="removeOrderItem(i, items)">
-                                                    <i class="text-danger mdi mdi-delete font-size-18"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <div class="d-flex justify-content-between gap-3">
-                                    <input type="text" class="form-control" placeholder="Search for items..."
-                                        list="menu" [(ngModel)]="searchItem" (change)="checkValue()">
-                                    <datalist id="menu">
-                                        <option value="Chicken Adobo"></option>
-                                        <option value="Pork Adobo"></option>
-                                        <option value="Beef Adobo"></option>
-                                        <option value="Fish Adobo"></option>
-                                    </datalist>
-                                    <button class="btn btn-primary btn-sm" (click)="addOrderItem()"
-                                        [disabled]="searchDisabled">Add</button>
-                                </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Remarks</label>
+                                <textarea name="" id="" class="form-control"
+                                    [(ngModel)]="reservation.reservation_remark"
+                                    placeholder="Please enter remarks (if any)"></textarea>
                             </div>
                         </div>
                     </div>
@@ -108,7 +61,88 @@
 
                     <div class="row mt-5">
                         <div class="col-12">
-                            Total Amount: <span class="font-weight-semibold">{{totalAmount}}</span>
+                            Total Amount: <span class="font-weight-semibold">$ {{totalAmount}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Table</label>
+                                <select name="" class="form-select" id="" [(ngModel)]="reservation.table_id">
+                                    <option value="" selected>Please select table...</option>
+                                    <option value="1">Table 1</option>
+                                    <option value="2">Confirmed</option>
+                                    <option value="3">Cancelled</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="label">Order Items</h4>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="table-responsive">
+                                <table class="table table-centered table-nowrap">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Menu</th>
+                                            <th>Quality</th>
+                                            <th>Price</th>
+                                            <th>Remarks</th>
+                                            <th>Total</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- <tr *ngIf="orderItems.length == 0"></tr> -->
+                                        <tr *ngFor="let items of orderItemsList; let i = index">
+                                            <td>{{i+1}}</td>
+                                            <td>{{items.item_name}}</td>
+                                            <td>
+                                                <input type="number" [(ngModel)]="items.order_quantity"
+                                                    class="form-control" min="0" (change)="setTotalAmount(i)">
+                                            </td>
+                                            <td>
+                                                <input type="text" [(ngModel)]="items.item_price" class="form-control"
+                                                    min="0" (change)="setTotalAmount(i)">
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control"
+                                                [(ngModel)]="items.order_remark">
+                                            </td>
+                                            <td>$ {{items.total}}</td>
+                                            <td>
+                                                <button class="btn btn-sm" (click)="removeOrderItem(i, items)">
+                                                    <i class="text-danger mdi mdi-delete font-size-18"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="d-flex justify-content-between gap-3">
+                                    <input type="text" class="form-control" placeholder="Search for items..."
+                                        list="menu" [(ngModel)]="searchItem" (change)="checkValue()">
+                                    <datalist id="menu">
+                                        <option *ngFor="let menu of menuList" [value]="menu.item_name"
+                                            [attr.data-menu]="menu"></option>
+                                    </datalist>
+                                    <button class="btn btn-primary btn-sm" (click)="addOrderItem()"
+                                        [disabled]="searchDisabled">Add</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
