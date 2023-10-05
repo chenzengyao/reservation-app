@@ -1,5 +1,5 @@
 export class Menu {
-    id: number;
+    itemID: number;
     item_category: string;
     item_name: string;
     item_description: string;
