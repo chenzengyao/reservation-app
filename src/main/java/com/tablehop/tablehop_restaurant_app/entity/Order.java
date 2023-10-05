@@ -14,7 +14,7 @@ import javax.persistence.Table;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String orderID;
+    private Integer orderID;
 
     @Column(name = "order_type")
     private String order_type;
@@ -40,11 +40,14 @@ public class Order {
     @Column(name = "deliveryID")
     private String deliveryID;
 
-    public String getOrderID() {
+    @Column(name = "reservationID")
+    private String reservationID;
+
+    public Integer getOrderID() {
         return this.orderID;
     }
 
-    public void setOrderID(String orderID) {
+    public void setOrderID(Integer orderID) {
         this.orderID = orderID;
     }
 
@@ -112,6 +115,14 @@ public class Order {
         this.deliveryID = deliveryID;
     }
 
+    public String getReservationID() {
+        return this.reservationID;
+    }
+
+    public void setReservationID(String reservationID) {
+        this.reservationID = reservationID;
+    }
+
     @Override
     public String toString() {
         return "{" +
@@ -124,6 +135,7 @@ public class Order {
                 ", updated_by='" + getUpdated_by() + "'" +
                 ", tableID='" + getTableID() + "'" +
                 ", deliveryID='" + getDeliveryID() + "'" +
+                ", reservationID='" + getReservationID() + "'" +
                 "}";
     }
 
