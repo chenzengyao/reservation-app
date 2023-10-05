@@ -1,7 +1,7 @@
 DROP SCHEMA restaurant;
 DROP TABLE IF EXISTS `user`;
 DROP TABLE IF EXISTS `tables`;
-DROP TABLE IF EXISTS `order`;
+DROP TABLE IF EXISTS `orders`;
 DROP TABLE IF EXISTS `order_item`;
 DROP TABLE IF EXISTS `item`;
 DROP TABLE IF EXISTS `reservation`;
@@ -78,7 +78,7 @@ CREATE TABLE `item` (
   UNIQUE KEY `Unique_itemID` (`itemID`)
 ) ENGINE=INNODB DEFAULT CHARSET=UTF8;
 
-CREATE TABLE `order` (
+CREATE TABLE `orders` (
   `orderID` INT NOT NULL AUTO_INCREMENT,
   `order_type` VARCHAR(255) NOT NULL,
   `order_status` VARCHAR(255) NOT NULL,
@@ -151,9 +151,9 @@ CREATE TABLE `deliveryman` (
   UNIQUE KEY `Unique_deliverymanID` (`deliverymanID`)
 ) ENGINE=INNODB DEFAULT CHARSET=UTF8;
 
-ALTER TABLE `order` ADD CONSTRAINT `delivery_FK1` FOREIGN KEY (`deliveryID`) REFERENCES `delivery` (`deliveryID`);
-ALTER TABLE `order_item` ADD CONSTRAINT `order_FK1` FOREIGN KEY (`orderID`) REFERENCES `order` (`orderID`);
-ALTER TABLE `payment` ADD CONSTRAINT `order_FK2` FOREIGN KEY (`orderID`) REFERENCES `order` (`orderID`);
-ALTER TABLE `delivery` ADD CONSTRAINT `order_FK3` FOREIGN KEY (`orderID`) REFERENCES `order` (`orderID`);
+ALTER TABLE `orders` ADD CONSTRAINT `delivery_FK1` FOREIGN KEY (`deliveryID`) REFERENCES `delivery` (`deliveryID`);
+ALTER TABLE `order_item` ADD CONSTRAINT `orders_FK1` FOREIGN KEY (`orderID`) REFERENCES `orders` (`orderID`);
+ALTER TABLE `payment` ADD CONSTRAINT `orders_FK2` FOREIGN KEY (`orderID`) REFERENCES `orders` (`orderID`);
+ALTER TABLE `delivery` ADD CONSTRAINT `orders_FK3` FOREIGN KEY (`orderID`) REFERENCES `orders` (`orderID`);
 ALTER TABLE `delivery` ADD CONSTRAINT `deliverymanID_FK1` FOREIGN KEY (`deliverymanID`) REFERENCES `deliveryman` (`deliverymanID`);
 ALTER TABLE `deliveryman` ADD CONSTRAINT `delivery_FK2` FOREIGN KEY (`deliveryID`) REFERENCES `delivery` (`deliveryID`);

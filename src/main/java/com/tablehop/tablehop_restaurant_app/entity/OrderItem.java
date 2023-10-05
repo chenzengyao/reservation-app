@@ -1,24 +1,24 @@
 package com.tablehop.tablehop_restaurant_app.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "order_item")
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String order_itemID;
+    private Integer order_itemID;
 
     @Column(name = "item_category")
     private String item_category;
 
     @Column(name = "order_quantity")
-    private String order_quantity;
+    private Integer order_quantity;
 
     @Column(name = "order_remark")
     private String order_remark;
@@ -30,16 +30,16 @@ public class OrderItem {
     private String item_price;
 
     @Column(name = "orderID")
-    private String orderID;
+    private Integer orderID;
 
     @Column(name = "itemID")
-    private String itemID;
+    private Integer itemID;
 
-    public String getOrder_itemID() {
+    public Integer getOrder_itemID() {
         return this.order_itemID;
     }
 
-    public void setOrder_itemID(String order_itemID) {
+    public void setOrder_itemID(Integer order_itemID) {
         this.order_itemID = order_itemID;
     }
 
@@ -51,11 +51,11 @@ public class OrderItem {
         this.item_category = item_category;
     }
 
-    public String getOrder_quantity() {
+    public Integer getOrder_quantity() {
         return this.order_quantity;
     }
 
-    public void setOrder_quantity(String order_quantity) {
+    public void setOrder_quantity(Integer order_quantity) {
         this.order_quantity = order_quantity;
     }
 
@@ -83,19 +83,19 @@ public class OrderItem {
         this.item_price = item_price;
     }
 
-    public String getOrderID() {
+    public Integer getOrderID() {
         return this.orderID;
     }
 
-    public void setOrderID(String orderID) {
+    public void setOrderID(Integer orderID) {
         this.orderID = orderID;
     }
 
-    public String getItemID() {
+    public Integer getItemID() {
         return this.itemID;
     }
 
-    public void setItemID(String itemID) {
+    public void setItemID(Integer itemID) {
         this.itemID = itemID;
     }
 

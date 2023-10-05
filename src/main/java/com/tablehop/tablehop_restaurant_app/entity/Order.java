@@ -2,15 +2,15 @@ package com.tablehop.tablehop_restaurant_app.entity;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "order")
+@Table(name = "orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,13 +35,13 @@ public class Order {
     private String updated_by;
 
     @Column(name = "tableID")
-    private String tableID;
+    private Integer tableID;
 
     @Column(name = "deliveryID")
-    private String deliveryID;
+    private Integer deliveryID;
 
     @Column(name = "reservationID")
-    private String reservationID;
+    private Integer reservationID;
 
     public Integer getOrderID() {
         return this.orderID;
@@ -99,27 +99,27 @@ public class Order {
         this.updated_by = updated_by;
     }
 
-    public String getTableID() {
+    public Integer getTableID() {
         return this.tableID;
     }
 
-    public void setTableID(String tableID) {
+    public void setTableID(Integer tableID) {
         this.tableID = tableID;
     }
 
-    public String getDeliveryID() {
+    public Integer getDeliveryID() {
         return this.deliveryID;
     }
 
-    public void setDeliveryID(String deliveryID) {
+    public void setDeliveryID(Integer deliveryID) {
         this.deliveryID = deliveryID;
     }
 
-    public String getReservationID() {
+    public Integer getReservationID() {
         return this.reservationID;
     }
 
-    public void setReservationID(String reservationID) {
+    public void setReservationID(Integer reservationID) {
         this.reservationID = reservationID;
     }
 
