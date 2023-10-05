@@ -10,11 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "table")
+@Table(name = "tables")
 public class Tables {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String tableID;
+    private Integer tableID;
 
     @Column(name = "table_size")
     private String table_size;
@@ -40,11 +40,11 @@ public class Tables {
     @Column(name = "userID")
     private String userID;
 
-    public String getTableID() {
+    public Integer getTableID() {
         return this.tableID;
     }
 
-    public void setTableID(String tableID) {
+    public void setTableID(Integer tableID) {
         this.tableID = tableID;
     }
 
