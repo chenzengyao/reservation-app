@@ -10,11 +10,13 @@ import com.tablehop.tablehop_restaurant_app.entity.Item;
 import com.tablehop.tablehop_restaurant_app.entity.Order;
 import com.tablehop.tablehop_restaurant_app.entity.OrderItem;
 import com.tablehop.tablehop_restaurant_app.entity.Reservation;
+import com.tablehop.tablehop_restaurant_app.entity.Tables;
 import com.tablehop.tablehop_restaurant_app.repository.userRepository;
 import com.tablehop.tablehop_restaurant_app.repository.itemRepository;
 import com.tablehop.tablehop_restaurant_app.repository.orderItemRepository;
 import com.tablehop.tablehop_restaurant_app.repository.orderRepository;
 import com.tablehop.tablehop_restaurant_app.repository.reservationRepository;
+import com.tablehop.tablehop_restaurant_app.repository.tableRepository;
 
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +32,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -54,6 +57,9 @@ public class tableHopService {
 
     @Resource
     private orderItemRepository orderItemRepository;
+
+    @Resource
+    private tableRepository tableRepository;
 
     @Value("${image.upload.directory}")
     private String imageUploadDirectory;
@@ -143,6 +149,29 @@ public class tableHopService {
         Files.copy(image.getInputStream(), imagePath, StandardCopyOption.REPLACE_EXISTING);
 
         return imagePath.toString();
+    }
+
+    public Map<String, Object> adminGetReservations() {
+        log.info("admin get reservations ---> service");
+        Map<String, Object> result = new HashMap<>();
+        List<Reservation> reservationList = reservationRepository.findAll();
+        
+        reservationList.forEach((reservation) -> {
+            User user = userRepository.findById(reservation.getUserID()).orElse(null);
+            reservation.setUser(user);
+            Order order = orderRepository.findByReservationID(reservation.getReservationID());
+            reservation.setOrder(order);
+            List<OrderItem> orderItemList = orderItemRepository.findByOrderID(order.getOrderID());
+            order.setOrderItemList(orderItemList);
+            if (reservation.getTableID() != null) {
+                Tables table = tableRepository.findById(reservation.getTableID()).orElse(null);
+                reservation.setTable(table);
+            }
+        });
+
+        result.put("reservation", reservationList);
+        
+        return result;
     }
 
     // * remove type safety check 

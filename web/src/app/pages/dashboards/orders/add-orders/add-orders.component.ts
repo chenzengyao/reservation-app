@@ -6,6 +6,7 @@ import { Orders } from "src/app/core/models/orders.models";
 import { Reservation } from "src/app/core/models/reservation.models";
 import { MenusService } from "src/app/core/services/menus.service";
 import { ReservationService } from "src/app/core/services/reservation";
+import Swal from 'sweetalert2';
 
 @Component({
   selector: "app-add-orders",
@@ -84,7 +85,30 @@ export class AddOrdersComponent implements OnInit {
     this.reservationService.adminAddReservation(data).toPromise().then((res: any) => {
       console.log("res: ", res);
       // redirect to reservation list
-      this.router.navigate(['/admin/orders/listing']);
+      let timerInterval;
+      Swal.fire({
+        title: 'Success',
+        html: 'Reservation added successfully! ',
+        timer: 2000,
+        icon: 'success',
+
+        didOpen: () => {
+          timerInterval = setInterval(() => {
+            const content = Swal.getHtmlContainer()
+            if (content) {
+              const b = content.querySelector('b')
+              if (b) {
+                b.textContent = Swal.getTimerLeft() + ''
+              }
+            }
+          }, 100);
+        },
+        willClose: () => {
+          clearInterval(timerInterval);
+        }
+      }).then((result) => {
+        this.router.navigate(['/admin/orders/listing']);
+      });
     }).catch((err: any) => {
       console.error("err: ", err);
     });
