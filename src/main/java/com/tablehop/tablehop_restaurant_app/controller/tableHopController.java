@@ -95,6 +95,12 @@ public class tableHopController {
         return ResponseEntity.ok("Product created successfully.");
     }
 
+    @RequestMapping(value = "/admin/reservation/all", method = RequestMethod.POST)
+    public Map<String, Object> adminGetReservation() {
+        log.info("admin get reservation -----> controller");
+        return tableHopService.adminGetReservations();
+    }
+
     @RequestMapping(value = "/admin/reservation/addReservation", method = RequestMethod.POST)
     public ResponseEntity<Object> adminAddReservation(@RequestBody Map<String, Object> payload) {
         log.info("admin add reservation -----> controller");

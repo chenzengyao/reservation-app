@@ -8,9 +8,7 @@ export class ReservationService {
   constructor(private http: HttpClient) { }
 
   getAllReservation() {
-    return this.http.get<any[]>(`${apiLink()}/api/reservation`, {
-      observe: "response",
-    });
+    return this.http.post<any[]>(`${apiLink()}/admin/reservation/all`, { observe: "response" });
   }
 
   add(pax_no: number, reservation_dt: String, reserve_status: String, reserve_remark: String,

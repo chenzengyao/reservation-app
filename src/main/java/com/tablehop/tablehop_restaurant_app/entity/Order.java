@@ -1,6 +1,7 @@
 package com.tablehop.tablehop_restaurant_app.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "orders")
@@ -42,6 +44,9 @@ public class Order {
 
     @Column(name = "reservationID")
     private Integer reservationID;
+
+    @Transient
+    private List<OrderItem> orderItemList;
 
     public Integer getOrderID() {
         return this.orderID;
@@ -121,6 +126,14 @@ public class Order {
 
     public void setReservationID(Integer reservationID) {
         this.reservationID = reservationID;
+    }
+
+    public List<OrderItem> getOrderItemList() {
+        return this.orderItemList;
+    }
+
+    public void setOrderItemList(List<OrderItem> orderItemList) {
+        this.orderItemList = orderItemList;
     }
 
     @Override
