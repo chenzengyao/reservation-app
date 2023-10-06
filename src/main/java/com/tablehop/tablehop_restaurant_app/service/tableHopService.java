@@ -155,7 +155,7 @@ public class tableHopService {
         log.info("admin get reservations ---> service");
         Map<String, Object> result = new HashMap<>();
         List<Reservation> reservationList = reservationRepository.findAll();
-        
+
         reservationList.forEach((reservation) -> {
             User user = userRepository.findById(reservation.getUserID()).orElse(null);
             reservation.setUser(user);
@@ -170,11 +170,11 @@ public class tableHopService {
         });
 
         result.put("reservation", reservationList);
-        
+
         return result;
     }
 
-    // * remove type safety check 
+    // * remove type safety check
     @SuppressWarnings("unchecked")
     public Object adminSaveReservation(Map<String, Object> data) {
         log.info("admin save reservation ---> service");
@@ -195,8 +195,8 @@ public class tableHopService {
         log.info("reservation_dt {}", timestamp);
         Timestamp reservation_dt = Timestamp.valueOf(dateTime);
         reservationEntity.setReservation_dt(reservation_dt);
-        reservationEntity.setReserve_status((String) reservation.get("reservation_status"));
-        reservationEntity.setReserve_remark((String) reservation.get("reservation_remark"));
+        reservationEntity.setReserve_status((String) reservation.get("reserve_status"));
+        reservationEntity.setReserve_remark((String) reservation.get("reserve_remark"));
         reservationEntity.setReserve_created_dt(new Timestamp(new Date().getTime()));
         reservationEntity.setTableID((Integer) reservation.get("table_id"));
         // TODO : need to change
@@ -239,5 +239,20 @@ public class tableHopService {
 
     }
 
+    public Reservation adminGetOrdersById(Integer id) {
+        Reservation reservation = reservationRepository.findById(id).orElse(null);
+        User user = userRepository.findById(reservation.getUserID()).orElse(null);
+        reservation.setUser(user);
+        Order order = orderRepository.findByReservationID(reservation.getReservationID());
+        reservation.setOrder(order);
+        List<OrderItem> orderItemList = orderItemRepository.findByOrderID(order.getOrderID());
+        order.setOrderItemList(orderItemList);
+        if (reservation.getTableID() != null) {
+            Tables table = tableRepository.findById(reservation.getTableID()).orElse(null);
+            reservation.setTable(table);
+        }
+        log.info(reservation.toString());
+        return reservation;
+    }
 
 }

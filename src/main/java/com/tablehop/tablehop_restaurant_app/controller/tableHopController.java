@@ -109,4 +109,11 @@ public class tableHopController {
         log.info("Result ----> {} ",result);
         return ResponseEntity.ok(result);
     }
+
+    // get reservation by id
+    @RequestMapping(value = "/admin/reservation/getReservationByID", method = RequestMethod.GET)
+    public ResponseEntity<Object> adminGetReservationById(@RequestParam Integer reservationID) {
+        log.info("admin get reservation by id -----> controller");
+        return ResponseEntity.ok(tableHopService.adminGetOrdersById(reservationID));
+    }
 }

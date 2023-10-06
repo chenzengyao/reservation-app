@@ -21,4 +21,9 @@ export class ReservationService {
   adminAddReservation(data: any) {
     return this.http.post(`${apiLink()}/admin/reservation/addReservation`, data);
   }
+
+  adminGetReservationByID(reservationID: number) {
+    console.log("adminGetReservationByID id: ", reservationID);
+    return this.http.get(`${apiLink()}/admin/reservation/getReservationByID?reservationID=` + reservationID);
+  }
 }
