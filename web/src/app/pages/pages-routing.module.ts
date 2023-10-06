@@ -13,6 +13,7 @@ import { AddDeliveryComponent } from "./dashboards/delivery/add-delivery/add-del
 import { AddUsersComponent } from "./dashboards/users/add-users/add-users.component";
 import { TablesComponent } from "./dashboards/tables/tables.component";
 import { AddTablesComponent } from "./dashboards/tables/add-tables/add-tables.component";
+import { EditOrdersComponent } from "./dashboards/orders/edit-orders/edit-orders.component";
 
 const routes: Routes = [
   // { path: '', redirectTo: 'admin/dashboard' },
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: "menus/add", component: AddMenusComponent },
   { path: "orders/listing", component: OrdersComponent },
   { path: "orders/add", component: AddOrdersComponent },
+  { path: "orders/edit/:reservationID", component: EditOrdersComponent },
   { path: "delivery/listing", component: DeliveryComponent },
   { path: "delivery/add", component: AddDeliveryComponent },
   { path: "tables/listing", component: TablesComponent },
