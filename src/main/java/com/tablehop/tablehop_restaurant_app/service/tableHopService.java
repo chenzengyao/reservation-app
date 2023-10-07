@@ -140,6 +140,11 @@ public class tableHopService {
         return itemList;
     }
 
+    public List<Item> getAllMenuUser() {
+        List<Item> itemList = itemRepository.findAll();
+        return itemList;
+    }
+
     public String saveImageToStorage(MultipartFile image) throws IOException {
         String fileName = UUID.randomUUID().toString() + "_" + image.getOriginalFilename();
 
@@ -239,16 +244,35 @@ public class tableHopService {
 
     }
 
-    public void addReservation(int pax_no, Timestamp reservation_dt, String reserve_status, String reserve_remark,
-                               Timestamp reserve_created_dt, Integer userID, Integer tableID) {
+    public void addReservation(int pax_no, String reservation_dt, String reserve_status, String reserve_remark,
+                               String reserve_created_dt, Integer userID, Integer tableID) {
         // Init
+
         Reservation reserve = new Reservation();
+
+//        LocalDateTime dateTime = LocalDateTime.parse((String) reservation.get("reservation_dt"), formatter);
+//        Timestamp timestamp = Timestamp.valueOf(dateTime);
+//        Timestamp reservation_dt = Timestamp.valueOf(dateTime);
+
+        // convert reservation_dt  from string to timestamp
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        LocalDateTime dateTime_reservation_dt = LocalDateTime.parse( reservation_dt.toString(), formatter);
+        Timestamp t_reservation_dt = Timestamp.valueOf(dateTime_reservation_dt);
+        log.info("reservation_dt {}", dateTime_reservation_dt);
+        Timestamp reservation_dt2 = Timestamp.valueOf(dateTime_reservation_dt);
+
+        // convert reservation_created_dt from string to timestamp
+        LocalDateTime dateTime_reserve_created_dt = LocalDateTime.parse( reserve_created_dt.toString(), formatter);
+        Timestamp t_dateTime_reserve_created_dt = Timestamp.valueOf(dateTime_reserve_created_dt);
+        log.info("reserve_created_dt {}", dateTime_reservation_dt);
+        Timestamp dateTime_reserve_created_dt2 = Timestamp.valueOf(dateTime_reserve_created_dt);
+
         reserve.setPax_no(pax_no);
-        reserve.setReservation_dt(reservation_dt);
+        reserve.setReservation_dt(reservation_dt2);
         reserve.setReserve_remark(reserve_remark);
         reserve.setReserve_status(reserve_status);
         reserve.setUserID(userID);
-        reserve.setReserve_created_dt(reserve_created_dt);
+        reserve.setReserve_created_dt(dateTime_reserve_created_dt2);
         reserve.setTableID(tableID);
         reservationRepository.saveAndFlush(reserve);
     }

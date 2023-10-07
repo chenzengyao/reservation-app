@@ -12,6 +12,10 @@ export class MenusService {
     return this.http.get(apiLink() + '/admin/getAllMenu', {observe: 'response',});
   }
 
+  getAllMenuUser() {
+    return this.http.get('/user/getAllMenu', {observe: 'response',});
+  }
+
   add(item_category: String, item_name: String, item_description: String, item_price: String,
       item_remark: String, item_status: String, item_created_dt: String, created_by: String
   ) {
