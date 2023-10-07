@@ -21,10 +21,11 @@ import { AddOrdersComponent } from './orders/add-orders/add-orders.component';
 import { AddDeliveryComponent } from './delivery/add-delivery/add-delivery.component';
 import { TablesComponent } from './tables/tables.component';
 import { AddTablesComponent } from './tables/add-tables/add-tables.component';
-import {DropzoneModule} from "ngx-dropzone-wrapper";
+import { DropzoneModule } from "ngx-dropzone-wrapper";
+import { EditOrdersComponent } from './orders/edit-orders/edit-orders.component';
 
 @NgModule({
-  declarations: [DefaultComponent, UsersComponent, MenusComponent, OrdersComponent, DeliveryComponent, AddMenusComponent, AddUsersComponent, AddOrdersComponent, AddDeliveryComponent, TablesComponent, AddTablesComponent],
+  declarations: [DefaultComponent, UsersComponent, MenusComponent, OrdersComponent, DeliveryComponent, AddMenusComponent, AddUsersComponent, AddOrdersComponent, EditOrdersComponent, AddDeliveryComponent, TablesComponent, AddTablesComponent],
   imports: [
     CommonModule,
     FormsModule,

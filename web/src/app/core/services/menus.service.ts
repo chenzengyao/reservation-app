@@ -9,7 +9,7 @@ export class MenusService {
   constructor(private http: HttpClient) {}
 
   getAllMenu() {
-    return this.http.get('/admin/getAllMenu', {observe: 'response',});
+    return this.http.get(apiLink() + '/admin/getAllMenu', {observe: 'response',});
   }
 
   add(item_category: String, item_name: String, item_description: String, item_price: String,
