@@ -11,6 +11,10 @@ export class UserProfileService {
         return this.http.get<User[]>(`/api/login`);
     }
 
+    getUserProfile(email: String){
+        return this.http.get("/user/profile?email=" + email, { observe: 'response' });
+    }
+
     // register(username: String, email: String, password: String, dob: String) {
     //     return this.http.post(`/users/register`, username, email, password, dob);
     // }

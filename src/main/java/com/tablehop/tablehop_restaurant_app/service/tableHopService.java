@@ -269,4 +269,10 @@ public class tableHopService {
         return reservation;
     }
 
+    public User getUserProfile(String email) {
+        User userProfile = userRepository.getUserProfile(email);
+        log.info(userProfile.toString());
+        return userProfile;
+    }
+
 }

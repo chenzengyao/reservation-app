@@ -26,9 +26,7 @@ public interface userRepository extends JpaRepository<User, Integer> {
     @Query(value="SELECT * from user WHERE email = ?1 AND password = ?2", nativeQuery=true)
     public User checkCurrentPassword(String email, String current_password);
 
-//    @Modifying(clearAutomatically = true)
-//    @Transactional
-//    @Query(value="UPDATE user set password = ?2 WHERE email = ?1", nativeQuery=true)
-//    public void updateNewPassword(String email, String new_password);
+    @Query(value="SELECT * from user WHERE email = ?1", nativeQuery=true)
+    public User getUserProfile(String email);
 
 }
