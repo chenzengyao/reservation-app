@@ -69,6 +69,7 @@ export class LoginComponent implements OnInit {
 
         if(data == 1){
           this.dataService.setCurrentEmail(this.email);
+
           this.router.navigate(['/dashboard']);
         } else {
           alert('This account is invalid. Please register first.');

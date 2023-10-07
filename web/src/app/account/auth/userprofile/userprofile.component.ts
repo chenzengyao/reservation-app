@@ -22,19 +22,22 @@ export class UserprofileComponent implements OnInit {
 
   userprofileForm: FormGroup;
   submitted = false;
-  error = '';
+  error = false;
   successmsg = false;
   working = false;
   minDate:String;
   maxDate:String;
   // name :'dobdate';
   strongPassword = false;
+  userName;
+  email;
   dobdate;
   phone_no;
   address;
   show1: boolean = false;
   show2: boolean = false;
   userProfile: User;
+  update: boolean = false;
 
   transform(value: string) {
        var datePipe = new DatePipe("en-US");
@@ -45,38 +48,34 @@ export class UserprofileComponent implements OnInit {
   // set the current year
   year: number = new Date().getFullYear();
 
-  // tslint:disable-next-line: max-line-length
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private authenticationService: AuthenticationService,
-    private userService: UserProfileService, private dataService: dataService) {
+    private userService: UserProfileService, private dataService: dataService, private fb: FormBuilder) {
   }
 
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.dataService.setCurrentEmail("liz@gmail.com");
+    console.log("this.dataService.getCurrentEmail()",this.dataService.getCurrentEmail());
+
+    await this.userService.getUserProfile(this.dataService.getCurrentEmail()).subscribe(data => {
+      this.userProfile = data.body as User;
+
+      this.userprofileForm = this.fb.group({
+        userName: [this.userProfile.userName, [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
+        email: [this.userProfile.email],
+        phone_no: [this.userProfile.phone_no, [Validators.required, Validators.minLength(8), Validators.maxLength(8)]],
+        dob: [this.userProfile.dob],
+        address: [this.userProfile.address, [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
+      });
+
+      console.log(this.userProfile);
+    })
+
+
     const today = new Date();
     this.minDate = new Date(this.year - 100, 0, 1).toISOString().split('T')[0];
     this.maxDate = new Date(this.year - 12, 0, 1).toISOString().split('T')[0];
-    this.userprofileForm = this.formBuilder.group({
-      username: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      dob: ['', Validators.required],
-      phone_no: ['', Validators.required],
-      address: []
-    });
-
-    // this.authenticationService.getUserDetails(email).subscribe(data =>{
-    //
-    // })
-
-
-    this.dataService.setCurrentEmail("liz@gmail.com");
-    console.log("this.dataService.getCurrentEmail()",this.dataService.getCurrentEmail());
-    this.userService.getUserProfile(this.dataService.getCurrentEmail()).subscribe(data => {
-      console.log(data);
-      this.userProfile = data.body as User;
-    })
   }
-
-
 
   // convenience getter for easy access to form fields
   get f() { return this.userprofileForm.controls; }
@@ -86,20 +85,53 @@ export class UserprofileComponent implements OnInit {
    */
   onSubmit() {
     this.submitted = true;
-
-
-    // stop here if form is invalid
+    console.log(this.userprofileForm.get('userName').errors.required||this.userprofileForm.get('userName').errors.maxlength||this.userprofileForm.get('userName').errors.minlength);
     if (this.userprofileForm.invalid) {
       return;
     } else {
+      this.update = false;
+      this.userProfile.userName = this.userprofileForm.get('userName').value;
+      this.userProfile.email = this.userprofileForm.get('email').value;
+      this.userProfile.phone_no = this.userprofileForm.get('phone_no').value;
+      // this.userProfile.dob = this.userprofileForm.get('dob').value;
+      this.userProfile.address = this.userprofileForm.get('address').value;
+      console.log(this.userProfile);
 
 
+      //api -> userProfile
+      this.userService.editUserProfile(this.userProfile).subscribe(data => {
+          this.successmsg = true;
+
+          if (this.error) {
+            setTimeout(() => {
+              this.error = false;
+            }, 3000);
+          }
+          if (this.successmsg) {
+            setTimeout(() => {
+              this.successmsg = false;
+            }, 3000);
+          }
+        },
+        error => {
+          this.error = error ? error : '';
+        });
+
+      // this.working = true;
+      // setTimeout(() => {
+      //   // this.userprofileForm.reset();
+      //   this.working = false;
+      // }, 1000);
     }
+  }
+  submitForm() {
+    // Add your logic for handling the form submission or any other action here.
+    console.log('Image button clicked');
+  }
 
-    this.working = true;
-    setTimeout(() => {
-      // this.userprofileForm.reset();
-      this.working = false;
-    }, 1000);
+
+  edit(){
+    this.update = true;
+    console.log(this.update);
   }
 }

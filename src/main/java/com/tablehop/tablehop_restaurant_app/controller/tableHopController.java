@@ -134,4 +134,13 @@ public class tableHopController {
         log.info("Result ----> {} ",result);
     }
 
+    @RequestMapping(value = "/user/edituserprofile", method = RequestMethod.POST)
+    public void editUserProfile(@RequestBody User userProfile) {
+        log.info("edit user profile -----> controller");
+        log.info(userProfile.toString());
+        // log.info("controller data: {}", payload.values().stream().filter((x) -> x instanceof Reservation).findFirst().get());
+        tableHopService.editUserProfile(userProfile);
+
+    }
+
 }

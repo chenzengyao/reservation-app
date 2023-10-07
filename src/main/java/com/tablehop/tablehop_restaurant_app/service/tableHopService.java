@@ -275,4 +275,9 @@ public class tableHopService {
         return userProfile;
     }
 
+    public void editUserProfile(User userProfile) {
+        log.info(userProfile.toString());
+        userRepository.saveAndFlush(userProfile);
+    }
+
 }

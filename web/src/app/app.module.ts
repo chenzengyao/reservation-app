@@ -22,6 +22,7 @@ import { ErrorInterceptor } from './core/helpers/error.interceptor';
 import { JwtInterceptor } from './core/helpers/jwt.interceptor';
 import { FakeBackendInterceptor } from './core/helpers/fake-backend';
 import { DROPZONE_CONFIG, DropzoneConfigInterface, DropzoneModule } from 'ngx-dropzone-wrapper';
+import { ReactiveFormsModule } from '@angular/forms';
 
 if (environment.defaultauth === 'firebase') {
   initFirebaseBackend(environment.firebaseConfig);
@@ -65,7 +66,8 @@ const config: DropzoneConfigInterface = {
     NgbTooltipModule,
     ScrollToModule.forRoot(),
     NgbModule,
-    DropzoneModule
+    DropzoneModule,
+    ReactiveFormsModule,
   ],
   bootstrap: [AppComponent],
   providers: [
