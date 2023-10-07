@@ -4,6 +4,9 @@ import { HttpClient, HttpEventType } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import{ MenusService } from'../../../../core/services/menus.service';
 import { AuthenticationService } from'../../../../core/services/auth.service';
+import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
+
+
 
 @Component({
   selector: 'app-add-menus',
@@ -40,6 +43,19 @@ export class AddMenusComponent implements OnInit {
     event: any;
     url: any;
     current_user: String;
+    image: '';
+    file: '';
+
+    config: DropzoneConfigInterface = {
+      // Change this to your upload POST address:
+      maxFilesize: 50,
+      acceptedFiles: 'image/*',
+      method: 'POST',
+      uploadMultiple: false,
+      accept: (file) => {
+        this.onAccept(file);
+      }
+    };
 
     ngOnInit(): void {
       //this one currently invalid, hardcode it first
@@ -67,34 +83,25 @@ export class AddMenusComponent implements OnInit {
       this.addMenuForm.value.item_created_dt = current_datetime;
       console.log(this.addMenuForm.value.item_created_dt);
 
-      // image
-      console.log("image: "+this.addMenuForm.value.item_image);
-
       // stop here if form is invalid
       if (this.addMenuForm.invalid) {
         console.log("Failed to upload");
         return;
       } else {
-        //used to debug
-        const pathParts = this.addMenuForm.value.item_image.split('\\');
-        const processName = pathParts[pathParts.length - 1];
-        const fileName = processName.replace(/\s/g, '');
-        console.log("image2: "+fileName);
-        this.menusService.add(this.addMenuForm.value.item_category, this.addMenuForm.value.item_name,
-          this.addMenuForm.value.item_description, this.addMenuForm.value.item_price,
-          this.addMenuForm.value.item_remark, this.addMenuForm.value.item_status, fileName,
-          this.addMenuForm.value.item_created_dt,
-          this.current_user)
-          .subscribe(
-            data => {
-              this.successmsg = true;
-              if (this.successmsg) {
-                this.router.navigate(['/menus/listing']);
-              }
-            },
-            error => {
-              this.error = error ? error : '';
-            });
+        const formData = new FormData();
+        formData.append('item_category',this.addMenuForm.value.item_category);
+        formData.append('item_name',this.addMenuForm.value.item_name);
+        formData.append('item_description',this.addMenuForm.value.item_description);
+        formData.append('item_price',this.addMenuForm.value.item_price);
+        formData.append('item_remark',this.addMenuForm.value.item_remark);
+        formData.append('item_status',this.addMenuForm.value.item_status);
+        formData.append('item_created_dt',this.addMenuForm.value.item_created_dt);
+        formData.append('image', this.file, this.image);
+
+        this.menusService.addMenu(formData).subscribe(res => {
+
+        })
+
       }
 
       this.working = true;
@@ -104,30 +111,9 @@ export class AddMenusComponent implements OnInit {
       }, 1000);
     }
 
-    onFileChanged(event){
-      if(!event.target.files[0] || event.target.files[0].length == 0){
-        this.message = "You must select an image!";
-        return;
-      }
-
-      var mimeType = event.target.files[0].type;
-
-      if(mimeType.match(/image\/*/) == null){
-        this.message = "Only images are supported!";
-        return;
-      }
-      // img input is string typee
-      // console.log(this.createProductForm.value.img);
-      // console.log(event.target.files[0].name);
-      // console.log(event.target.files[0]);
-      this.event = event;
-
-      var reader = new FileReader();
-      reader.readAsDataURL(event.target.files[0]);
-
-      reader.onload = (_event) => {
-        this.message = "";
-        this.url = reader.result;
-      }
+    onAccept(file: any){
+      this.image = file.name;
+      this.file = file;
     }
+
 }

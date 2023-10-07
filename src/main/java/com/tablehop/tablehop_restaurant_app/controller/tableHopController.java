@@ -1,13 +1,19 @@
 package com.tablehop.tablehop_restaurant_app.controller;
 
+import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.*;
 
 import com.tablehop.tablehop_restaurant_app.entity.Item;
+import com.tablehop.tablehop_restaurant_app.entity.Reservation;
+
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.tablehop.tablehop_restaurant_app.service.tableHopService;
 import com.tablehop.tablehop_restaurant_app.entity.User;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 //@CrossOrigin(origins = "http://localhost:4200")
@@ -33,10 +39,9 @@ public class tableHopController {
     @RequestMapping(value = "/admin/menu/add", method = RequestMethod.POST)
     public void addMenu(@RequestParam String item_category, @RequestParam String item_name, @RequestParam String item_description,
                         @RequestParam String item_price, @RequestParam String item_remark,@RequestParam String item_status,
-                        @RequestParam String item_image, @RequestParam String item_created_dt, @RequestParam String created_by) {
+                        @RequestParam String item_created_dt, @RequestParam String created_by) {
         log.info("admin add menu -----> controller");
-        tableHopService.addMenu(item_category, item_name, item_description, item_price, item_remark, item_status, item_image,
-                item_created_dt, created_by);
+//        tableHopService.addMenu(item_category, item_name, item_description, item_price, item_remark, item_status, item_created_dt, created_by);
     }
 
     @RequestMapping(value = "/users/getDetails", method = RequestMethod.GET)
@@ -81,6 +86,66 @@ public class tableHopController {
     public List<Item> getAllMenu() {
         log.info("admin getAllMenu -----> controller");
         return tableHopService.getAllMenu();
-     }
+    }
+
+    @RequestMapping(value = "/admin/menu/addMenu", method = RequestMethod.POST)
+    public ResponseEntity<String> addMenu( @RequestParam("item_category") String itemCategory,
+                                           @RequestParam("item_name") String itemName,
+                                           @RequestParam("item_description") String itemDescription,
+                                           @RequestParam("item_price") String itemPrice,
+                                           @RequestParam("item_remark") String itemRemark,
+                                           @RequestParam("item_status") String itemStatus,
+                                           @RequestParam("item_created_dt") String itemCreatedDt,
+                                           @RequestParam("image") MultipartFile image) throws IOException {
+        String imagePath = tableHopService.saveImageToStorage(image);
+        tableHopService.addMenu(itemCategory, itemName, itemDescription, itemPrice, itemRemark, itemStatus, itemCreatedDt, "Admin", imagePath);
+        return ResponseEntity.ok("Product created successfully.");
+    }
+
+    @RequestMapping(value = "/admin/reservation/all", method = RequestMethod.POST)
+    public Map<String, Object> adminGetReservation() {
+        log.info("admin get reservation -----> controller");
+        return tableHopService.adminGetReservations();
+    }
+
+    @RequestMapping(value = "/admin/reservation/all", method = RequestMethod.POST)
+    public Map<String, Object> adminGetReservation() {
+        log.info("admin get reservation -----> controller");
+        return tableHopService.adminGetReservations();
+    }
+
+    @RequestMapping(value = "/user/reservation/addReservation", method = RequestMethod.POST)
+    public ResponseEntity<String> addReservation( @RequestParam("pax_no") int pax_no,
+                                           @RequestParam("reservation_dt") Timestamp reservation_dt,
+                                           @RequestParam("reserve_status") String reserve_status,
+                                           @RequestParam("reserve_remark") String reserve_remark,
+                                           @RequestParam("reserve_created_dt") Timestamp reserve_created_dt,
+                                           @RequestParam("userID") int userID,
+                                           @RequestParam("tableID") int tableID) throws IOException {
+        tableHopService.addReservation(pax_no, reservation_dt, reserve_status, reserve_remark, reserve_created_dt, userID, tableID);
+        return ResponseEntity.ok("Table reserved successfully.");
+    }
+
+    // get reservation by id
+    @RequestMapping(value = "/admin/reservation/getReservationByID", method = RequestMethod.GET)
+    public ResponseEntity<Object> adminGetReservationById(@RequestParam Integer reservationID) {
+        log.info("admin get reservation by id -----> controller");
+        return ResponseEntity.ok(tableHopService.adminGetOrdersById(reservationID));
+    }
+
+    // get reservation by id
+    @RequestMapping(value = "/admin/reservation/getReservationByID", method = RequestMethod.GET)
+    public ResponseEntity<Object> adminGetReservationById(@RequestParam Integer reservationID) {
+        log.info("admin get reservation by id -----> controller");
+        return ResponseEntity.ok(tableHopService.adminGetOrdersById(reservationID));
+    }
+
+    @RequestMapping(value = "/admin/reservation/addReservation", method = RequestMethod.POST)
+    public ResponseEntity<Object> adminAddReservation(@RequestBody Map<String, Object> payload) {
+        log.info("admin add reservation -----> controller");
+        // log.info("controller data: {}", payload.values().stream().filter((x) -> x instanceof Reservation).findFirst().get());
+        Object result = tableHopService.adminSaveReservation(payload);
+        log.info("Result ----> {} ",result);
+    }
 
 }

@@ -1,20 +1,22 @@
-import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
-import { Menu } from "src/app/core/models/menu.models";
-import { OrderItems } from "src/app/core/models/orderItems.models";
-import { Orders } from "src/app/core/models/orders.models";
-import { Reservation } from "src/app/core/models/reservation.models";
-import { MenusService } from "src/app/core/services/menus.service";
-import { ReservationService } from "src/app/core/services/reservation";
-import Swal from 'sweetalert2';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { dateStringToDateLocal } from 'src/app/core/helpers/helper';
+import { Menu } from 'src/app/core/models/menu.models';
+import { OrderItems } from 'src/app/core/models/orderItems.models';
+import { Orders } from 'src/app/core/models/orders.models';
+import { Reservation } from 'src/app/core/models/reservation.models';
+import { MenusService } from 'src/app/core/services/menus.service';
+import { ReservationService } from 'src/app/core/services/reservation';
+
 
 @Component({
-  selector: "app-add-orders",
-  templateUrl: "./add-orders.component.html",
-  styleUrls: ["./add-orders.component.scss"],
+  selector: 'app-edit-orders',
+  templateUrl: './edit-orders.component.html',
+  styleUrls: ['./edit-orders.component.scss']
 })
-export class AddOrdersComponent implements OnInit {
-  constructor(private menuService: MenusService, private reservationService: ReservationService, private router: Router) { }
+export class EditOrdersComponent implements OnInit {
+
+  constructor(private menuService: MenusService, private reservationService: ReservationService, private router: Router, private activeRoute: ActivatedRoute) { }
 
   breadCrumbItems: Array<{}>;
   searchItem: string = "";
@@ -25,9 +27,35 @@ export class AddOrdersComponent implements OnInit {
   orderItemsList: OrderItems[] = [];
   menuList: Menu[] = [];
   tableList: any[] = [];
+  reservationID: number = 0;
+  userName: string = "";
+
 
   ngOnInit(): void {
     this.breadCrumbItems = [{ label: "Reservation" }, { label: "Add Orders", active: true },];
+
+    this.activeRoute.params.subscribe(params => {
+      this.reservationID = params['reservationID'];
+      console.log("this reservation id: ", this.reservationID);
+      if (this.reservationID == null) {
+        this.router.navigate(["/admin/orders/listing"]);
+      }
+    });
+
+    this.reservationService.adminGetReservationByID(this.reservationID).toPromise().then((res: any) => {
+      console.log("res: ", res);
+      this.reservation = res;
+      this.reservation.reservation_dt = dateStringToDateLocal(res.reservation_dt);
+      this.userName = res.user.userName;
+      this.order = res.order;
+      this.orderItemsList = res.order.orderItemList;
+      this.orderItemsList.forEach(item => {
+        item['total'] = parseFloat(item.item_price) * item.order_quantity;
+        this.totalAmount += (parseFloat(item.item_price) * item.order_quantity);
+      });
+    }).catch((err: any) => {
+      console.error("err: ", err);
+    });
 
     this.menuService.getAllMenu().toPromise().then((res: any) => {
       console.log("this menu list: ", res.body);
@@ -82,36 +110,6 @@ export class AddOrdersComponent implements OnInit {
     data['order'] = this.order;
     data['orderItemsList'] = this.orderItemsList;
 
-    this.reservationService.adminAddReservation(data).toPromise().then((res: any) => {
-      console.log("res: ", res);
-      // redirect to reservation list
-      let timerInterval;
-      Swal.fire({
-        title: 'Success',
-        html: 'Reservation added successfully! ',
-        timer: 2000,
-        icon: 'success',
-
-        didOpen: () => {
-          timerInterval = setInterval(() => {
-            const content = Swal.getHtmlContainer()
-            if (content) {
-              const b = content.querySelector('b')
-              if (b) {
-                b.textContent = Swal.getTimerLeft() + ''
-              }
-            }
-          }, 100);
-        },
-        willClose: () => {
-          clearInterval(timerInterval);
-        }
-      }).then((result) => {
-        this.router.navigate(['/admin/orders/listing']);
-      });
-    }).catch((err: any) => {
-      console.error("err: ", err);
-    });
   }
 
   setTotalAmount(index) {
@@ -122,4 +120,5 @@ export class AddOrdersComponent implements OnInit {
       this.totalAmount += item['total'];
     });
   }
+
 }

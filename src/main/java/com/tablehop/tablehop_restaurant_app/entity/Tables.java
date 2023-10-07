@@ -2,19 +2,19 @@ package com.tablehop.tablehop_restaurant_app.entity;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "table")
+@Table(name = "tables")
 public class Tables {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String tableID;
+    private Integer tableID;
 
     @Column(name = "table_size")
     private String table_size;
@@ -40,11 +40,11 @@ public class Tables {
     @Column(name = "userID")
     private String userID;
 
-    public String getTableID() {
+    public Integer getTableID() {
         return this.tableID;
     }
 
-    public void setTableID(String tableID) {
+    public void setTableID(Integer tableID) {
         this.tableID = tableID;
     }
 

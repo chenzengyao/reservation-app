@@ -1,26 +1,27 @@
 package com.tablehop.tablehop_restaurant_app.entity;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "reservation")
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String reservationID;
+    private Integer reservationID;
 
     @Column(name = "pax_no")
     private int pax_no;
 
     @Column(name = "reservation_dt")
-    private Date reservation_dt;
+    private Timestamp reservation_dt;
 
     @Column(name = "reserve_status")
     private String reserve_status;
@@ -29,19 +30,28 @@ public class Reservation {
     private String reserve_remark;
 
     @Column(name = "reserve_created_dt")
-    private Date reserve_created_dt;
+    private Timestamp reserve_created_dt;
 
     @Column(name = "tableID")
-    private String tableID;
+    private Integer tableID;
 
     @Column(name = "userID")
-    private String userID;
+    private Integer userID;
 
-    public String getReservationID() {
+    @Transient
+    private Order order;
+
+    @Transient
+    private User user;
+
+    @Transient
+    private Tables table;
+
+    public Integer getReservationID() {
         return this.reservationID;
     }
 
-    public void setReservationID(String reservationID) {
+    public void setReservationID(Integer reservationID) {
         this.reservationID = reservationID;
     }
 
@@ -53,11 +63,11 @@ public class Reservation {
         this.pax_no = pax_no;
     }
 
-    public Date getReservation_dt() {
+    public Timestamp getReservation_dt() {
         return this.reservation_dt;
     }
 
-    public void setReservation_dt(Date reservation_dt) {
+    public void setReservation_dt(Timestamp reservation_dt) {
         this.reservation_dt = reservation_dt;
     }
 
@@ -77,28 +87,52 @@ public class Reservation {
         this.reserve_remark = reserve_remark;
     }
 
-    public Date getReserve_created_dt() {
+    public Timestamp getReserve_created_dt() {
         return this.reserve_created_dt;
     }
 
-    public void setReserve_created_dt(Date reserve_created_dt) {
+    public void setReserve_created_dt(Timestamp reserve_created_dt) {
         this.reserve_created_dt = reserve_created_dt;
     }
 
-    public String getTableID() {
+    public Integer getTableID() {
         return this.tableID;
     }
 
-    public void setTableID(String tableID) {
+    public void setTableID(Integer tableID) {
         this.tableID = tableID;
     }
 
-    public String getUserID() {
+    public Integer getUserID() {
         return this.userID;
     }
 
-    public void setUserID(String userID) {
+    public void setUserID(Integer userID) {
         this.userID = userID;
+    }
+
+    public Order getOrder() {
+        return this.order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public User getUser() {
+        return this.user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Tables getTable() {
+        return this.table;
+    }
+
+    public void setTable(Tables table) {
+        this.table = table;
     }
 
     @Override

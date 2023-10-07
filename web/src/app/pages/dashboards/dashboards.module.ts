@@ -21,6 +21,7 @@ import { AddOrdersComponent } from './orders/add-orders/add-orders.component';
 import { AddDeliveryComponent } from './delivery/add-delivery/add-delivery.component';
 import { TablesComponent } from './tables/tables.component';
 import { AddTablesComponent } from './tables/add-tables/add-tables.component';
+import {DropzoneModule} from "ngx-dropzone-wrapper";
 
 @NgModule({
   declarations: [DefaultComponent, UsersComponent, MenusComponent, OrdersComponent, DeliveryComponent, AddMenusComponent, AddUsersComponent, AddOrdersComponent, AddDeliveryComponent, TablesComponent, AddTablesComponent],
@@ -35,7 +36,8 @@ import { AddTablesComponent } from './tables/add-tables/add-tables.component';
     NgbNavModule,
     WidgetModule,
     NgApexchartsModule,
-    SimplebarAngularModule
+    SimplebarAngularModule,
+    DropzoneModule
   ]
 })
 export class DashboardsModule { }

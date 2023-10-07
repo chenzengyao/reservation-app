@@ -3,14 +3,17 @@
     <form name="addMenuForm"  (ngSubmit)="onSubmit()" [formGroup]="addMenuForm"  class="needs-validation" novalidate>
         <div class="form-sub-section">
             <div class="image-section">
-                <label for="image">Select an image:</label>
-                <div [innerHTML]="message" *ngIf="message" style="color: red;"></div>
-                <div><img class="img-preview" [src]="url" *ngIf="url"></div>
+              <label for="product-image" class="mt-2"> Product Images</label>
+              <dropzone class="dropzone" [config]="config"></dropzone>
 
-                <br>
-                <p>
-                <input type="file" accept="image/*" formControlName="item_image" (change)="onFileChanged($event)" name="image" id="image" required >
-                </p>
+<!--                <label for="image">Select an image:</label>-->
+<!--                <div [innerHTML]="message" *ngIf="message" style="color: red;"></div>-->
+<!--                <div><img class="img-preview" [src]="url" *ngIf="url"></div>-->
+
+<!--                <br>-->
+<!--                <p>-->
+<!--                <input type="file" accept="image/*" formControlName="item_image" (change)="onFileChanged($event)" name="image" id="image" required >-->
+<!--                </p>-->
 
                 <!-- <input type="submit" name = "upload" value="Upload" (click)="onUpload()">   -->
                 <!-- <div *ngIf=message>{{message}}</div> -->
