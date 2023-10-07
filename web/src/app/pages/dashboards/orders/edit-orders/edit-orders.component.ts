@@ -7,7 +7,7 @@ import { Orders } from 'src/app/core/models/orders.models';
 import { Reservation } from 'src/app/core/models/reservation.models';
 import { MenusService } from 'src/app/core/services/menus.service';
 import { ReservationService } from 'src/app/core/services/reservation';
-import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-edit-orders',
