@@ -127,11 +127,12 @@ public class tableHopController {
     }
 
     @RequestMapping(value = "/admin/reservation/addReservation", method = RequestMethod.POST)
-    public void adminAddReservation(@RequestBody Map<String, Object> payload) {
+    public ResponseEntity<Object> adminAddReservation(@RequestBody Map<String, Object> payload) {
         log.info("admin add reservation -----> controller");
         // log.info("controller data: {}", payload.values().stream().filter((x) -> x instanceof Reservation).findFirst().get());
         Object result = tableHopService.adminSaveReservation(payload);
         log.info("Result ----> {} ",result);
+        return ResponseEntity.ok(result);
     }
 
 }
