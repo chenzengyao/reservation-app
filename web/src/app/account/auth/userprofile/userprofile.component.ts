@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl,FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-// import { MatDialog } from '@angular/material';
 import { AuthenticationService } from '../../../core/services/auth.service';
 import { environment } from '../../../../environments/environment';
 import { first } from 'rxjs/operators';
 import { UserProfileService } from '../../../core/services/user.service';
 import { Pipe, PipeTransform } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import {Menu} from "../../../core/models/menu.models";
+import {User} from "../../../core/models/auth.models";
+import { dataService } from "../../../dataService";
 
 
 @Component({
@@ -32,7 +34,7 @@ export class UserprofileComponent implements OnInit {
   address;
   show1: boolean = false;
   show2: boolean = false;
-
+  userProfile: User;
 
   transform(value: string) {
        var datePipe = new DatePipe("en-US");
@@ -45,7 +47,7 @@ export class UserprofileComponent implements OnInit {
 
   // tslint:disable-next-line: max-line-length
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private authenticationService: AuthenticationService,
-    private userService: UserProfileService) {
+    private userService: UserProfileService, private dataService: dataService) {
   }
 
 
@@ -54,17 +56,27 @@ export class UserprofileComponent implements OnInit {
     this.minDate = new Date(this.year - 100, 0, 1).toISOString().split('T')[0];
     this.maxDate = new Date(this.year - 12, 0, 1).toISOString().split('T')[0];
     this.userprofileForm = this.formBuilder.group({
-      username: ['Ching Yee', Validators.required],
-      email: ['lizyee3174@gmail.com', [Validators.required, Validators.email]],
+      username: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       dob: ['', Validators.required],
-      phone_no: ['012345678', Validators.required],
+      phone_no: ['', Validators.required],
       address: []
     });
+
+    // this.authenticationService.getUserDetails(email).subscribe(data =>{
+    //
+    // })
+
+
+    this.dataService.setCurrentEmail("liz@gmail.com");
+    console.log("this.dataService.getCurrentEmail()",this.dataService.getCurrentEmail());
+    this.userService.getUserProfile(this.dataService.getCurrentEmail()).subscribe(data => {
+      console.log(data);
+      this.userProfile = data.body as User;
+    })
   }
 
-  onPasswordStrengthChanged(event: boolean) {
-    this.strongPassword = event;
-  }
+
 
   // convenience getter for easy access to form fields
   get f() { return this.userprofileForm.controls; }
@@ -80,35 +92,13 @@ export class UserprofileComponent implements OnInit {
     if (this.userprofileForm.invalid) {
       return;
     } else {
-      // if (environment.defaultauth === 'firebase') {
-      //   this.authenticationService.register(this.f.email.value, this.f.password.value).then((res: any) => {
-      //     this.successmsg = true;
-      //     if (this.successmsg) {
-      //       this.router.navigate(['/dashboard']);
-      //     }
-      //   })
-      //     .catch(error => {
-      //       this.error = error ? error : '';
-      //     });
-      // } else {
-      //   this.userService.register(this.userprofileForm.value)
-      //     .pipe(first())
-      //     .subscribe(
-      //       data => {
-      //         this.successmsg = true;
-      //         if (this.successmsg) {
-      //           this.router.navigate(['/account/login']);
-      //         }
-      //       },
-      //       error => {
-      //         this.error = error ? error : '';
-      //       });
-      // }
+
+
     }
 
     this.working = true;
     setTimeout(() => {
-      this.userprofileForm.reset();
+      // this.userprofileForm.reset();
       this.working = false;
     }, 1000);
   }

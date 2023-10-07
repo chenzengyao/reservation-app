@@ -99,4 +99,10 @@ public class tableHopService {
         return itemList;
     }
 
+    public User getUserProfile(String email) {
+        User userProfile = userRepository.getUserProfile(email);
+        log.info(userProfile.toString());
+        return userProfile;
+    }
+
 }

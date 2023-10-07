@@ -1,10 +1,14 @@
 export class User {
-    id: number;
-    username: string;
+    userId: number;
+    userName?: string;
     password: string;
-    dob: string;
-    firstName?: string;
-    lastName?: string;
+    dob?: string;
+    phone_no?: string;
+    // firstName?: string;
+    // lastName?: string;
+    address: string;
     token?: string;
     email: string;
+    user_type?: string;
+    user_access_type?: string;
 }
