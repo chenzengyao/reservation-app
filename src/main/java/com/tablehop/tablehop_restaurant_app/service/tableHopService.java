@@ -239,6 +239,20 @@ public class tableHopService {
 
     }
 
+    public void addReservation(int pax_no, Timestamp reservation_dt, String reserve_status, String reserve_remark,
+                               Timestamp reserve_created_dt, Integer userID, Integer tableID) {
+        // Init
+        Reservation reserve = new Reservation();
+        reserve.setPax_no(pax_no);
+        reserve.setReservation_dt(reservation_dt);
+        reserve.setReserve_remark(reserve_remark);
+        reserve.setReserve_status(reserve_status);
+        reserve.setUserID(userID);
+        reserve.setReserve_created_dt(reserve_created_dt);
+        reserve.setTableID(tableID);
+        reservationRepository.saveAndFlush(reserve);
+    }
+
     public Reservation adminGetOrdersById(Integer id) {
         Reservation reservation = reservationRepository.findById(id).orElse(null);
         User user = userRepository.findById(reservation.getUserID()).orElse(null);
