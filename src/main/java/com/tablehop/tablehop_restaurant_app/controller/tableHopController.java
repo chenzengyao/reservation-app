@@ -27,7 +27,6 @@ public class tableHopController {
     public void register(@RequestParam String username, @RequestParam String email, @RequestParam String phone_no, @RequestParam String password, @RequestParam String dob) {
         log.info("users register -----> controller");
         tableHopService.register(username, email, phone_no, password, dob);
-
     }
 
     @RequestMapping(value = "/users/checkExistEmail", method = RequestMethod.GET)
@@ -102,12 +101,6 @@ public class tableHopController {
         return tableHopService.adminGetReservations();
     }
 
-    @RequestMapping(value = "/admin/reservation/all", method = RequestMethod.POST)
-    public Map<String, Object> adminGetReservation() {
-        log.info("admin get reservation -----> controller");
-        return tableHopService.adminGetReservations();
-    }
-
     @RequestMapping(value = "/user/reservation/addReservation", method = RequestMethod.POST)
     public ResponseEntity<String> addReservation( @RequestParam("pax_no") int pax_no,
                                            @RequestParam("reservation_dt") Timestamp reservation_dt,
@@ -127,15 +120,8 @@ public class tableHopController {
         return ResponseEntity.ok(tableHopService.adminGetOrdersById(reservationID));
     }
 
-    // get reservation by id
-    @RequestMapping(value = "/admin/reservation/getReservationByID", method = RequestMethod.GET)
-    public ResponseEntity<Object> adminGetReservationById(@RequestParam Integer reservationID) {
-        log.info("admin get reservation by id -----> controller");
-        return ResponseEntity.ok(tableHopService.adminGetOrdersById(reservationID));
-    }
-
     @RequestMapping(value = "/admin/reservation/addReservation", method = RequestMethod.POST)
-    public ResponseEntity<Object> adminAddReservation(@RequestBody Map<String, Object> payload) {
+    public void adminAddReservation(@RequestBody Map<String, Object> payload) {
         log.info("admin add reservation -----> controller");
         // log.info("controller data: {}", payload.values().stream().filter((x) -> x instanceof Reservation).findFirst().get());
         Object result = tableHopService.adminSaveReservation(payload);
