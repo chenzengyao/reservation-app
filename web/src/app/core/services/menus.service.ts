@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { apiLink } from "../helpers/helper";
 import { getFirebaseBackend } from '../../authUtils';
@@ -21,7 +21,9 @@ export class MenusService {
   }
 
   addMenu(formData: FormData) {
-    return this.http.post('/admin/menu/addMenu', formData);
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+    return this.http.post('/admin/menu/addMenu', formData, { headers: headers });
   }
 
 

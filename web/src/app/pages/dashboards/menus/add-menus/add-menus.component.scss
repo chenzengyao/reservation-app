@@ -173,3 +173,15 @@ input[type=number]{
         padding-bottom: 30px;
     }
 }
+
+.custom-dropzone {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: cover; /* Ensures the image covers the entire container */
+  background-repeat: no-repeat; /* Prevents image repetition */
+  background-position: center center; /* Center the image horizontally and vertically */
+  min-height: 200px; /* Adjust the desired height of the dropzone */
+  border: 2px dashed #ccc; /* Add a border to the dropzone for better visualization */
+}
+

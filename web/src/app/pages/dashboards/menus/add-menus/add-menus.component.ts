@@ -25,7 +25,7 @@ export class AddMenusComponent implements OnInit {
     item_price: String;
     item_remark: String;
     item_status: String;
-    item_image: String;
+    item_image: File;
     item_created_dt: String;
     item_updated_dt: String;
     created_by: String;
@@ -52,6 +52,7 @@ export class AddMenusComponent implements OnInit {
       acceptedFiles: 'image/*',
       method: 'POST',
       uploadMultiple: false,
+      maxFiles: 1,
       accept: (file) => {
         this.onAccept(file);
       }
@@ -70,7 +71,6 @@ export class AddMenusComponent implements OnInit {
         item_remark: [''],
         item_status: [''],
         item_image: [''],
-        item_created_dt: [''],
       });
     }
 
@@ -78,10 +78,6 @@ export class AddMenusComponent implements OnInit {
 
     onSubmit() {
       this.submitted = true;
-      const current = new Date();
-      var current_datetime = current.getTime();
-      this.addMenuForm.value.item_created_dt = current_datetime;
-      console.log(this.addMenuForm.value.item_created_dt);
 
       // stop here if form is invalid
       if (this.addMenuForm.invalid) {
@@ -95,12 +91,10 @@ export class AddMenusComponent implements OnInit {
         formData.append('item_price',this.addMenuForm.value.item_price);
         formData.append('item_remark',this.addMenuForm.value.item_remark);
         formData.append('item_status',this.addMenuForm.value.item_status);
-        formData.append('item_created_dt',this.addMenuForm.value.item_created_dt);
-        formData.append('image', this.file, this.image);
+        formData.append('image', this.item_image);
+        console.log(this.item_image);
 
-        this.menusService.addMenu(formData).subscribe(res => {
-
-        })
+        this.menusService.addMenu(formData).subscribe(res => {})
 
       }
 
@@ -111,9 +105,14 @@ export class AddMenusComponent implements OnInit {
       }, 1000);
     }
 
-    onAccept(file: any){
-      this.image = file.name;
-      this.file = file;
-    }
+
+  onFileUploadSuccess(event: any) {
+    this.item_image = event[0];
+    console.log(this.item_image);
+  }
+
+  onAccept(file: any) {
+    this.item_image = file;
+  }
 
 }
