@@ -24,7 +24,8 @@
       <div class="row menu-container" data-aos="fade-up" data-aos-delay="200" >
 
         <div *ngFor="let data of menu ; let i = index">
-          <div *ngIf= "data.item_category==selectedCategory || selectedCategory=='All' " >
+          <div *ngIf= "data.item_category==selectedCategory || selectedCategory=='All'"
+               [style.color]="data.item_status === 'Sold Out' ? 'grey' : 'black'">
           <div class="col-lg-6 menu-item filter-specialty" >
             <img src="assets/images/menu/lobster-bisque.jpg" class="menu-img" alt="">
 
@@ -35,88 +36,38 @@
             {{data.item_description}}
             </div>
           </div>
+
+                    <tr id="add-section">
+                      <td >
+                        <input type="number" [(ngModel)]="quantity" placeholder="Quantity"
+                               class="form-control" min="0" (change)="setTotalAmount(i)">
+                      </td>
+
+                      <td>
+                        <input type="text" [(ngModel)]="remark" placeholder="Remark"
+                               class="form-control" >
+                      </td>
+
+                      <td>
+                        <button class="btn btn-primary btn-sm" (click)="addToOrder(data, quantity, remark)">Add</button>
+                      </td>
+<!--                      <td>-->
+<!--                        <button class="btn btn-sm" (click)="removeOrderItem(i, items)">-->
+<!--                          <i class="text-danger mdi mdi-delete font-size-18"></i>-->
+<!--                        </button>-->
+<!--                      </td>-->
+                    </tr>
+<!--                    </tbody>-->
+<!--                  </table>-->
+<!--                  <div class="d-flex justify-content-between gap-3">-->
+<!--                    <button class="btn btn-primary btn-sm" (click)="addOrderItem()">Add</button>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+
           </div>
         </div>
-
-<!--        <div class="col-lg-6 menu-item filter-specialty">-->
-<!--          <img src="assets/images/menu/bread-barrel.jpg" class="menu-img" alt="">-->
-<!--          <div class="menu-content">-->
-<!--            <a>Bread Barrel</a><span>$6.95</span>-->
-<!--          </div>-->
-<!--          <div class="menu-ingredients">-->
-<!--            Lorem, deren, trataro, filede, nerada-->
-<!--          </div>-->
-<!--        </div>-->
-
-<!--        <div class="col-lg-6 menu-item filter-starters">-->
-<!--          <img src="assets/images/menu/cake.jpg" class="menu-img" alt="">-->
-<!--          <div class="menu-content">-->
-<!--            <a>Crab Cake</a><span>$7.95</span>-->
-<!--          </div>-->
-<!--          <div class="menu-ingredients">-->
-<!--            A delicate crab cake served on a toasted roll with lettuce and tartar sauce-->
-<!--          </div>-->
-<!--        </div>-->
-
-<!--        <div class="col-lg-6 menu-item filter-salads">-->
-<!--          <img src="assets/images/menu/caesar.jpg" class="menu-img" alt="">-->
-<!--          <div class="menu-content">-->
-<!--            <a>Caesar Selections</a><span>$8.95</span>-->
-<!--          </div>-->
-<!--          <div class="menu-ingredients">-->
-<!--            Lorem, deren, trataro, filede, nerada-->
-<!--          </div>-->
-<!--        </div>-->
-
-<!--        <div class="col-lg-6 menu-item filter-specialty">-->
-<!--          <img src="assets/images/menu/tuscan-grilled.jpg" class="menu-img" alt="">-->
-<!--          <div class="menu-content">-->
-<!--            <a>Tuscan Grilled</a><span>$9.95</span>-->
-<!--          </div>-->
-<!--          <div class="menu-ingredients">-->
-<!--            Grilled chicken with provolone, artichoke hearts, and roasted red pesto-->
-<!--          </div>-->
-<!--        </div>-->
-
-<!--        <div class="col-lg-6 menu-item filter-starters">-->
-<!--          <img src="assets/images/menu/mozzarella.jpg" class="menu-img" alt="">-->
-<!--          <div class="menu-content">-->
-<!--            <a>Mozzarella Stick</a><span>$4.95</span>-->
-<!--          </div>-->
-<!--          <div class="menu-ingredients">-->
-<!--            Lorem, deren, trataro, filede, nerada-->
-<!--          </div>-->
-<!--        </div>-->
-
-<!--        <div class="col-lg-6 menu-item filter-salads">-->
-<!--          <img src="assets/images/menu/greek-salad.jpg" class="menu-img" alt="">-->
-<!--          <div class="menu-content">-->
-<!--            <a>Greek Salad</a><span>$9.95</span>-->
-<!--          </div>-->
-<!--          <div class="menu-ingredients">-->
-<!--            Fresh spinach, crisp romaine, tomatoes, and Greek olives-->
-<!--          </div>-->
-<!--        </div>-->
-
-<!--        <div class="col-lg-6 menu-item filter-salads">-->
-<!--          <img src="assets/images/menu/spinach-salad.jpg" class="menu-img" alt="">-->
-<!--          <div class="menu-content">-->
-<!--            <a>Spinach Salad</a><span>$9.95</span>-->
-<!--          </div>-->
-<!--          <div class="menu-ingredients">-->
-<!--            Fresh spinach with mushrooms, hard boiled egg, and warm bacon vinaigrette-->
-<!--          </div>-->
-<!--        </div>-->
-
-<!--        <div class="col-lg-6 menu-item filter-specialty">-->
-<!--          <img src="assets/images/menu/lobster-roll.jpg" class="menu-img" alt="">-->
-<!--          <div class="menu-content">-->
-<!--            <a>Lobster Roll</a><span>$12.95</span>-->
-<!--          </div>-->
-<!--          <div class="menu-ingredients">-->
-<!--            Plump lobster meat, mayo and crisp lettuce on a toasted bulky roll-->
-<!--          </div>-->
-<!--        </div>-->
 
       </div>
 
