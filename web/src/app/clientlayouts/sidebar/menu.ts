@@ -21,20 +21,14 @@ export const MENU: MenuItem[] = [
     label: "Manage Profile",
     icon: "bx-user",
     link: "/user/profile",
-    // subItems: [
-    //   {
-    //     id: 4,
-    //     label:  "Profile",
-    //     link: "/user/profile",
-    //     parentId: 3,
-    //   },
-    //   {
-    //     id: 5,
-    //     label:  "Email",
-    //     link: "/user/Email",
-    //     parentId: 3,
-    //   },
-    // ],
+    subItems: [
+      {
+        id: 4,
+        label:  "Change Password",
+        link: "/user/profile",
+        parentId: 3,
+      },
+    ],
   },
   {
     id: 6,
