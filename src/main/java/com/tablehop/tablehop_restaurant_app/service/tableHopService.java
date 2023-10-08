@@ -367,4 +367,70 @@ public class tableHopService {
         return result;
     }
 
+    public Object userAddOrder(Map<String, Object> data) {
+
+        Map<String, Object> order = (Map<String, Object>) data.get("order");
+        List<Map<String, Object>> orderItemsList = (List<Map<String, Object>>) data.get("orderItemsList");
+
+        log.info("order details {}", order);
+        log.info("orderItemlist details {}", orderItemsList);
+
+//        Reservation reservationEntity = new Reservation();
+//        reservationEntity.setPax_no((Integer) reservation.get("pax_no"));
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+//        LocalDateTime dateTime = LocalDateTime.parse((String) reservation.get("reservation_dt"), formatter);
+//        Timestamp timestamp = Timestamp.valueOf(dateTime);
+//        log.info("reservation_dt {}", timestamp);
+//        Timestamp reservation_dt = Timestamp.valueOf(dateTime);
+//        reservationEntity.setReservation_dt(reservation_dt);
+//        reservationEntity.setReserve_status((String) reservation.get("reserve_status"));
+//        reservationEntity.setReserve_remark((String) reservation.get("reserve_remark"));
+//        reservationEntity.setReserve_created_dt(new Timestamp(new Date().getTime()));
+//        reservationEntity.setTableID((Integer) reservation.get("table_id"));
+//        // TODO : need to change
+//        reservationEntity.setUserID(1);
+//        reservationEntity = reservationRepository.saveAndFlush(reservationEntity);
+//        log.info("save reservation done {}", reservationEntity);
+
+        // Table set ID
+        Tables tableEntity = new Tables();
+        tableEntity.setTableID(1);
+
+//        User findUser = userRepository.findById(reservationEntity.getUserID()).orElse(null);
+        Order orderEntity = new Order();
+        orderEntity.setOrder_status("Pending");
+        orderEntity.setReservationID(null);
+        orderEntity.setDeliverer_address("Hardcode address: Singapore");
+        orderEntity.setOrder_created_dt(new Date());
+        orderEntity.setOrder_updated_dt(new Date());
+        orderEntity.setOrder_type("");
+        orderEntity.setTableID(1);
+        orderEntity.setUpdated_by("Hardcode user: User A");
+        orderEntity.setDeliveryID(null);
+        orderEntity.setReservationID(null);
+
+        Order savedOrderEntity = orderRepository.saveAndFlush(orderEntity);
+
+        List<OrderItem> orderItemEntity = new ArrayList<>();
+        if (orderItemsList.size() > 0) {
+            orderItemsList.forEach(item -> {
+                OrderItem orderItem = new OrderItem();
+                orderItem.setOrderID(savedOrderEntity.getOrderID());
+                orderItem.setItemID((Integer) item.get("item_id"));
+                orderItem.setOrder_quantity((Integer) item.get("order_quantity"));
+                orderItem.setItem_category((String) item.get("item_category"));
+                orderItem.setItem_name((String) item.get("item_name"));
+                orderItem.setItem_price((String) item.get("item_price"));
+                orderItem.setOrder_remark((String) item.get("order_remark"));
+                orderItemEntity.add(orderItem);
+            });
+            orderItemRepository.saveAllAndFlush(orderItemEntity);
+        }
+
+        Object result = new Object();
+        result = orderEntity;
+        return result;
+
+    }
+
 }

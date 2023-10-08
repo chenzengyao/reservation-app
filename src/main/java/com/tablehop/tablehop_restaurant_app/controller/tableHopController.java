@@ -158,4 +158,13 @@ public class tableHopController {
         return ResponseEntity.ok(result);
     }
 
+    @RequestMapping(value = "/user/addOrder", method = RequestMethod.POST)
+    public ResponseEntity<Object> addOrder(@RequestBody Map<String, Object> payload) {
+        log.info("admin add reservation -----> controller");
+        // log.info("controller data: {}", payload.values().stream().filter((x) -> x instanceof Reservation).findFirst().get());
+        Object result = tableHopService.userAddOrder(payload);
+        log.info("Result ----> {} ",result);
+        return ResponseEntity.ok(result);
+    }
+
 }
