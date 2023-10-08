@@ -1,5 +1,5 @@
 export class Reservation {
-    id: number;
+    reservationID: number;
     pax_no: number;
     reservation_dt: string;
     reserve_status: string;

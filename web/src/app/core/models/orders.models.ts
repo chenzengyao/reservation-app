@@ -1,5 +1,5 @@
 export class Orders {
-    id: number;
+    orderID: number;
     order_type: string;
     order_status: string;
     delivery_address: string;
