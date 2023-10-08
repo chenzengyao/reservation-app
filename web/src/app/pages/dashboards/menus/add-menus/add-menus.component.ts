@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import{ MenusService } from'../../../../core/services/menus.service';
 import { AuthenticationService } from'../../../../core/services/auth.service';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
-
+import {formatDate } from '@angular/common';
 
 
 @Component({
@@ -16,7 +16,9 @@ import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 export class AddMenusComponent implements OnInit {
 
   constructor(private menusService: MenusService, private formBuilder: FormBuilder, private authenticationService: AuthenticationService, private httpClient: HttpClient,
-    private route: ActivatedRoute, private router: Router) { }
+    private route: ActivatedRoute, private router: Router) {
+
+  }
 
     addMenuForm: FormGroup;
     item_category: String;
@@ -46,6 +48,9 @@ export class AddMenusComponent implements OnInit {
     image: '';
     file: '';
 
+    today= new Date();
+    jstoday = '';
+
     config: DropzoneConfigInterface = {
       // Change this to your upload POST address:
       maxFilesize: 50,
@@ -72,15 +77,18 @@ export class AddMenusComponent implements OnInit {
         item_image: [''],
         item_created_dt: [''],
       });
+
     }
 
     get f() { return this.addMenuForm.controls; }
 
     onSubmit() {
+      // Get now timestamp
+      this.jstoday = formatDate(this.today, 'dd-MM-yyyy hh:mm:ss a', 'en-US', '+08:00');
+      console.log(this.jstoday);
+
       this.submitted = true;
-      const current = new Date();
-      var current_datetime = current.getTime();
-      this.addMenuForm.value.item_created_dt = current_datetime;
+      this.addMenuForm.value.item_created_dt = this.jstoday;
       console.log(this.addMenuForm.value.item_created_dt);
 
       // stop here if form is invalid
