@@ -1,1 +1,53 @@
-<p>order history works!</p>
+<div class="d-flex align-items-center justify-content-center">
+  <div class="row">
+    <div>
+      <div class="card" style="width: 25rem;">
+        <img class="card-img-top" src="assets/images/menu/lobster-bisque.jpg" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">24 Sept 2023</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a hclass="btn btn-primary float-end">Order Again</a>
+        </div>
+        <!-- TODO Need to collapse properly -->
+        <h5 class="card-header">
+          <a data-bs-toggle="collapse" data-bs-target="#collapse-example" aria-expanded="false" aria-controls="collapse-example" id="heading-example" class="d-block text-center">
+            View Details  
+            <i class="fa fa-chevron-down pull-right"></i>
+          </a>
+        </h5>
+        <div id="collapse-example" class="collapse show" aria-labelledby="heading-example" aria-expanded="true">
+          <div class="card-body">
+              Lobster Bisque <span class="float-end">$20.00</span><br>
+              2x Sides <span class="float-end">$ 0.00</span><br>
+              1x Coke <span class="float-end">$ 3.00</span><br>
+              <br>
+              Total <span class="float-end card-title">$23.00</span>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="width: 25rem;">
+        <img class="card-img-top" src="assets/images/menu/lobster-roll.jpg" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">25 Sept 2023</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a class="btn btn-primary float-end">Order Again</a>
+        </div>
+        <h5 class="card-header">
+          <a data-toggle="collapse" data-target="#view-details" aria-expanded="true" id="heading-example" class="d-block text-center">
+            View Details  
+            <i class="fa fa-chevron-down pull-right"></i>
+          </a>
+        </h5>
+        <div id="view-details" class="collapse show">
+          <div class="card-body">
+            Lobster Roll <span class="float-end">$20.00</span><br>
+            2x Sides <span class="float-end">$ 0.00</span><br>
+            1x Coke <span class="float-end">$ 3.00</span><br>
+            <br>
+            Total <span class="float-end card-title">$23.00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
