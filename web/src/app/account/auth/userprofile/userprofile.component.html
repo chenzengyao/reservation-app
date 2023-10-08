@@ -26,7 +26,8 @@
                 </div>
               </a>
             </div>
-            <form [formGroup]="userprofileForm" (ngSubmit)="onSubmit()">
+            <form class="needs-validation" name="userprofileForm" [formGroup]="userprofileForm" (ngSubmit)="onSubmit()"
+                    novalidate>
             <div class="p-2">
                 <ngb-alert type="success" *ngIf="successmsg" [dismissible]="false">Updated successfully.
                 </ngb-alert>
@@ -49,11 +50,12 @@
                 <div class="mb-3">
 <!--                  <label for="username" class="form-label">Username</label>-->
 
-                  <input type="text"  class="form-control" [formControl]="userprofileForm.get('userName')"
+                  <input type="text"  class="form-control" [formControl]="userprofileForm.get('userName')" maxlength="80"
                          id="userName" [readOnly]="update == false" placeholder="Username" [ngClass]="{ 'is-invalid': submitted && userprofileForm.get('userName').errors }"
                   />
                   <div *ngIf="submitted && userprofileForm.get('userName').errors" class="invalid-feedback">
-                    <div *ngIf="userprofileForm.get('userName').errors.required||userprofileForm.get('userName').errors.maxlength||userprofileForm.get('userName').errors.minlength">Username is required</div>
+                    <div *ngIf="userprofileForm.get('userName').errors.required">Username is required</div>
+                    <div *ngIf="userprofileForm.get('userName').errors.minlength">Username should be more than 3 characters</div>
                   </div>
                 </div>
 
@@ -72,7 +74,7 @@
                 <div class="mb-3">
                   <!--                  <label for="username" class="form-label">Username</label>-->
 
-                  <input type="text" formControlName="phone_no" class="form-control" [formControl]="userprofileForm.get('phone_no')"
+                  <input type="text" formControlName="phone_no" class="form-control" [formControl]="userprofileForm.get('phone_no')" [readOnly]="update == false"
                          [ngClass]="{ 'is-invalid': submitted && userprofileForm.get('phone_no').errors }" id="phone_no" placeholder="Phone Number" maxlength="8" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" />
 
                   <div *ngIf="submitted && userprofileForm.get('phone_no').errors" class="invalid-feedback">
@@ -84,7 +86,7 @@
                 <div class="mb-3">
 <!--                  <label for="dob" class="form-label">Date of Birth</label>-->
 
-                  <input type="text" formControlName="dob" class="form-control" onfocus="(this.type='date')" [formControl]="userprofileForm.get('dob')"
+                  <input type="text" formControlName="dob" class="form-control" onfocus="(this.type='date')" [formControl]="userprofileForm.get('dob')" [readOnly]="update == false"
                          [ngClass]="{ 'is-invalid': submitted && userprofileForm.get('dob').errors }" id="dob" name ="dobdate"
                          placeholder="Date of Birth" [min]="minDate" [max]="maxDate" />
 

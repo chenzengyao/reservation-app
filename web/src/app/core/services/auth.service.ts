@@ -59,6 +59,14 @@ export class AuthenticationService {
     }
 
     /**
+     * Get UserType
+     * @param email email
+     */
+    getUserAccessType(email: String) {
+      return this.http.get(`/users/useraccesstype?email=` + email);
+    }
+
+    /**
      * Find exists email with password
      * @param email email
      * @param password password

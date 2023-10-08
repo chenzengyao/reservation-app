@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl,FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { first } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../../../core/services/auth.service';
 import { environment } from '../../../../environments/environment';
-import { first } from 'rxjs/operators';
 import { UserProfileService } from '../../../core/services/user.service';
 import { Pipe, PipeTransform } from '@angular/core';
 import { DatePipe } from '@angular/common';
@@ -11,14 +11,13 @@ import {Menu} from "../../../core/models/menu.models";
 import {User} from "../../../core/models/auth.models";
 import { dataService } from "../../../dataService";
 
-
 @Component({
-  selector: 'app-userprofile',
-  templateUrl: './userprofile.component.html',
-  styleUrls: ['./userprofile.component.scss']
-
+  selector: 'app-users',
+  templateUrl: './changePassword.component.html',
+  styleUrls: ['./changePassword.component.scss', 'changePassword.component.css']
 })
-export class UserprofileComponent implements OnInit {
+
+export class ChangePasswordComponent implements OnInit {
 
   userprofileForm: FormGroup;
   submitted = false;
@@ -27,8 +26,6 @@ export class UserprofileComponent implements OnInit {
   working = false;
   minDate:String;
   maxDate:String;
-  // name :'dobdate';
-  strongPassword = false;
   userName;
   email;
   dobdate;
@@ -40,16 +37,16 @@ export class UserprofileComponent implements OnInit {
   update: boolean = false;
 
   transform(value: string) {
-       var datePipe = new DatePipe("en-US");
-        value = datePipe.transform(value, 'dd/MM/yyyy');
-        return value;
-    }
+    var datePipe = new DatePipe("en-US");
+    value = datePipe.transform(value, 'dd/MM/yyyy');
+    return value;
+  }
 
   // set the current year
   year: number = new Date().getFullYear();
 
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private authenticationService: AuthenticationService,
-    private userService: UserProfileService, private dataService: dataService, private fb: FormBuilder) {
+              private userService: UserProfileService, private dataService: dataService, private fb: FormBuilder) {
   }
 
 

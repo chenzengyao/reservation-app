@@ -23,21 +23,20 @@ export class SignupComponent implements OnInit {
   error = '';
   successmsg = false;
   working = false;
-  minDate:String;
-  maxDate:String;
+  minDate:string;
+  maxDate:string;
   name :'dobdate';
-  strongPassword = false;
   confirm_password: string;
   show1: boolean = false;
   show2: boolean = false;
   password;
 
   //Parameter to pass to Controller
-  username: String;
-  email: String;
-  submittedPassword: String;
-  phone_no: String;
-  dob: String;
+  username: string;
+  email: string;
+  submittedPassword: string;
+  phone_no: string;
+  dob: string;
 
 
   transform(value: string) {
@@ -62,7 +61,7 @@ export class SignupComponent implements OnInit {
     this.minDate = new Date(this.year - 100, 0, 1).toISOString().split('T')[0];
     this.maxDate = new Date(this.year - 12, 0, 1).toISOString().split('T')[0];
     this.signupForm = this.formBuilder.group({
-      username: ['', Validators.required,Validators.maxLength(30),Validators.minLength(3)],
+      username: ['', Validators.required,Validators.minLength(3)],
       email: ['', [Validators.required, Validators.email]],
       phone_no: ['', [Validators.required, Validators.minLength(8),Validators.maxLength(8),Validators.pattern(
         /[0-9]/)]],
@@ -74,10 +73,6 @@ export class SignupComponent implements OnInit {
     });
   }
 
-  onPasswordStrengthChanged(event: boolean) {
-    this.strongPassword = event;
-  }
-
   // convenience getter for easy access to form fields
   get f() { return this.signupForm.controls; }
 
@@ -87,7 +82,7 @@ export class SignupComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
 
-    console.log(this.username, this.email, this.phone_no, this.submittedPassword, this.dob);
+
 
 
     // stop here if form is invalid
@@ -100,18 +95,21 @@ export class SignupComponent implements OnInit {
           alert('This email account already exist.');
         }
         else {
+          this.username = this.f.username.value;
+          console.log(this.username, this.email, this.phone_no, this.submittedPassword, this.dob);
           this.authenticationService.register(this.username, this.email, this.phone_no, this.submittedPassword, this.dob)
             .subscribe(
               data => {
                 this.successmsg = true;
                 if (this.successmsg) {
                   this.router.navigate(['/account/login']);
-                  alert('Register Successfully.');
                 }
+                alert('Register Successfully.');
               },
               error => {
                 this.error = error ? error : '';
               });
+
         }
       });
     }

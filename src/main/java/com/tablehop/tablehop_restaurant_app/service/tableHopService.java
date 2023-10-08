@@ -71,8 +71,8 @@ public class tableHopService {
         user.setEmail(email);
         user.setPhone_no(phone_no);
         user.setPassword(password);
-        // user.setDob(dob);
-        user.setUser_type("user");
+        user.setDob(dob);
+        user.setUser_type("member");
         user.setUser_access_type("1");
         userRepository.saveAndFlush(user);
     }
@@ -297,6 +297,12 @@ public class tableHopService {
         User userProfile = userRepository.getUserProfile(email);
         log.info(userProfile.toString());
         return userProfile;
+    }
+
+    public int getUserAccessType(String email) {
+        User user = userRepository.getUserProfile(email);
+        int userAccessType = Integer.parseInt(user.getUser_access_type());
+        return userAccessType;
     }
 
     public void editUserProfile(User userProfile) {

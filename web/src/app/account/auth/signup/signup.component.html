@@ -39,12 +39,13 @@
                 <div class="mb-3">
 <!--                  <label for="username" class="form-label">Username</label>-->
 
-                  <input type="text" formControlName="username" class="form-control" [(ngModel)]="username"
+                  <input type="text" formControlName="username" class="form-control" maxlength = '80'
                     [ngClass]="{ 'is-invalid': submitted && f.username.errors }" id="username"
                     placeholder="Username" />
 
                   <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-                    <div *ngIf="f.username.errors.required||f.username.errors.maxlength||f.username.errors.minlength">Username is required</div>
+                    <div *ngIf="f.username.errors.required">Username is required</div>
+                    <div *ngIf="f.username.errors.minlength">Username should be more than 3 characters</div>
                   </div>
                 </div>
 
@@ -63,7 +64,7 @@
                 <div class="mb-3">
                   <!--                  <label for="number" class="form-label">Phone Number</label>-->
                   <input type="text" formControlName="phone_no" class="form-control" [(ngModel)]="phone_no"
-                         [ngClass]="{ 'is-invalid': submitted && f.phone_no.errors }" id="phone_no" placeholder="Phone Number" />
+                         [ngClass]="{ 'is-invalid': submitted && f.phone_no.errors }" id="phone_no" placeholder="Phone Number" maxlength = "8" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"/>
 
                   <div *ngIf="submitted && f.phone_no.errors" class="invalid-feedback">
                     <div *ngIf="f.phone_no.errors.required">Phone Number is required</div>

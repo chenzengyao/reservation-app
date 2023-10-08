@@ -65,12 +65,21 @@ export class LoginComponent implements OnInit {
       return;
     } else {
       this.authenticationService.checkExistUser(this.email, this.submittedPassword).subscribe(data=>{
-        console.log("checkExistUser", data);
+        // console.log("checkExistUser", data);
 
         if(data == 1){
-          this.dataService.setCurrentEmail(this.email);
+          // this.dataService.setCurrentEmail(this.email);
 
-          this.router.navigate(['/dashboard']);
+          this.authenticationService.getUserAccessType(this.email).subscribe(data=>{
+            console.log("getUserAccessType",data);
+            if(data == 1){
+              this.router.navigate(['/user/dashboard']);
+            }
+            else{
+              this.router.navigate(['/admin/dashboard']);
+            }
+          })
+
         } else {
           alert('This account is invalid. Please register first.');
           // this.router.navigate(['/account/signup']);

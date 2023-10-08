@@ -73,6 +73,12 @@ public class tableHopController {
         return tableHopService.getUserProfile(email);
     }
 
+    @RequestMapping(value = "/users/useraccesstype", method = RequestMethod.GET)
+    public int getUserAccessType(@RequestParam String email) {
+        log.info("user getUserType -----> controller");
+        return tableHopService.getUserAccessType(email);
+    }
+
     @RequestMapping(value = "/user/reservation/add", method = RequestMethod.POST)
     public void addReservation(@RequestParam Number pax_no, @RequestParam String reservation_dt, @RequestParam String reserve_status,
                         @RequestParam String reserve_remark, @RequestParam String reserve_created_dt,@RequestParam String userID,
