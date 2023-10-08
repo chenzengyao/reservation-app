@@ -1,4 +1,5 @@
-<!-- ======= Menu Section ======= -->
+
+<!--&lt;!&ndash; ======= Menu Section ======= &ndash;&gt;-->
 <section id="menu" class="menu section-bg px-5">
     <div class="container" data-aos="fade-up">
 
@@ -7,109 +8,71 @@
         <p>Check Our Tasty Menu</p>
       </div>
 
-      <!-- <div class="row" data-aos="fade-up" data-aos-delay="100">
+      <div class="row" data-aos="fade-up" data-aos-delay="100">
         <div class="col-lg-12 d-flex justify-content-center">
           <ul id="menu-flters">
-            <li data-filter="*" class="filter-active">All</li>
-            <li data-filter=".filter-starters">Starters</li>
-            <li data-filter=".filter-salads">Salads</li>
-            <li data-filter=".filter-specialty">Specialty</li>
+            <li data-filter="*" class="filter-active" (click)="selectedCategory = 'All'">All</li>
+            <li data-filter=".filter-starters" (click)="selectedCategory = 'Starter'">Starter</li>
+            <li data-filter=".filter-salads" (click)="selectedCategory = 'Main Course'">Main Course</li>
+            <li data-filter=".filter-specialty" (click)="selectedCategory = 'Dessert'">Dessert</li>
+            <li data-filter=".filter-specialty" (click)="selectedCategory = 'Beverages'">Beverages</li>
+            <li data-filter=".filter-specialty" (click)="selectedCategory = 'Other'">Other</li>
           </ul>
         </div>
-      </div> -->
+      </div>
 
-      <div class="row menu-container" data-aos="fade-up" data-aos-delay="200">
+      <div class="row menu-container" data-aos="fade-up" data-aos-delay="200" >
 
-        <div class="col-lg-6 menu-item filter-starters">
-          <img src="assets/images/menu/lobster-bisque.jpg" class="menu-img" alt="">
-          <div class="menu-content">
-            <a>Lobster Bisque</a><span>$5.95</span>
+        <div *ngFor="let data of menu ; let i = index">
+          <div *ngIf= "data.item_category==selectedCategory || selectedCategory=='All'"
+               [style.color]="data.item_status === 'Sold Out' ? 'grey' : 'black'">
+          <div class="col-lg-6 menu-item filter-specialty" >
+            <img src="assets/images/menu/lobster-bisque.jpg" class="menu-img" alt="">
+
+            <div class="menu-content">
+            <a>{{data.item_name}}</a><span>$ {{data.item_price}}</span>
+            </div>
+            <div class="menu-ingredients">
+            {{data.item_description}}
+            </div>
           </div>
-          <div class="menu-ingredients">
-            Lorem, deren, trataro, filede, nerada
+                    <tr id="add-section">
+                      <td >
+                        <input type="number" [(ngModel)]="quantity[i]" placeholder="Quantity"
+                               class="form-control" min="0" (change)="setTotalAmount(i)">
+                      </td>
+
+                      <td>
+                        <input type="text" [(ngModel)]="remark[i]" placeholder="Remark"
+                               class="form-control" >
+                      </td>
+
+                      <td>
+                        <button class="btn btn-primary btn-sm" (click)="addToOrder(data, quantity[i], remark[i])">Add</button>
+                      </td>
+                      <td>
+
+                        <button type="button" value="Reset" class="btn btn-primary btn-sm"
+                                (click)="removeOrderItem(data,i)">Remove</button>
+                      </td>
+                    </tr>
+<!--                    </tbody>-->
+<!--                  </table>-->
+<!--                  <div class="d-flex justify-content-between gap-3">-->
+<!--                    <button class="btn btn-primary btn-sm" (click)="addOrderItem()">Add</button>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+
           </div>
         </div>
 
-        <div class="col-lg-6 menu-item filter-specialty">
-          <img src="assets/images/menu/bread-barrel.jpg" class="menu-img" alt="">
-          <div class="menu-content">
-            <a>Bread Barrel</a><span>$6.95</span>
-          </div>
-          <div class="menu-ingredients">
-            Lorem, deren, trataro, filede, nerada
-          </div>
-        </div>
+      </div>
 
-        <div class="col-lg-6 menu-item filter-starters">
-          <img src="assets/images/menu/cake.jpg" class="menu-img" alt="">
-          <div class="menu-content">
-            <a>Crab Cake</a><span>$7.95</span>
-          </div>
-          <div class="menu-ingredients">
-            A delicate crab cake served on a toasted roll with lettuce and tartar sauce
-          </div>
-        </div>
-
-        <div class="col-lg-6 menu-item filter-salads">
-          <img src="assets/images/menu/caesar.jpg" class="menu-img" alt="">
-          <div class="menu-content">
-            <a>Caesar Selections</a><span>$8.95</span>
-          </div>
-          <div class="menu-ingredients">
-            Lorem, deren, trataro, filede, nerada
-          </div>
-        </div>
-
-        <div class="col-lg-6 menu-item filter-specialty">
-          <img src="assets/images/menu/tuscan-grilled.jpg" class="menu-img" alt="">
-          <div class="menu-content">
-            <a>Tuscan Grilled</a><span>$9.95</span>
-          </div>
-          <div class="menu-ingredients">
-            Grilled chicken with provolone, artichoke hearts, and roasted red pesto
-          </div>
-        </div>
-
-        <div class="col-lg-6 menu-item filter-starters">
-          <img src="assets/images/menu/mozzarella.jpg" class="menu-img" alt="">
-          <div class="menu-content">
-            <a>Mozzarella Stick</a><span>$4.95</span>
-          </div>
-          <div class="menu-ingredients">
-            Lorem, deren, trataro, filede, nerada
-          </div>
-        </div>
-
-        <div class="col-lg-6 menu-item filter-salads">
-          <img src="assets/images/menu/greek-salad.jpg" class="menu-img" alt="">
-          <div class="menu-content">
-            <a>Greek Salad</a><span>$9.95</span>
-          </div>
-          <div class="menu-ingredients">
-            Fresh spinach, crisp romaine, tomatoes, and Greek olives
-          </div>
-        </div>
-
-        <div class="col-lg-6 menu-item filter-salads">
-          <img src="assets/images/menu/spinach-salad.jpg" class="menu-img" alt="">
-          <div class="menu-content">
-            <a>Spinach Salad</a><span>$9.95</span>
-          </div>
-          <div class="menu-ingredients">
-            Fresh spinach with mushrooms, hard boiled egg, and warm bacon vinaigrette
-          </div>
-        </div>
-
-        <div class="col-lg-6 menu-item filter-specialty">
-          <img src="assets/images/menu/lobster-roll.jpg" class="menu-img" alt="">
-          <div class="menu-content">
-            <a>Lobster Roll</a><span>$12.95</span>
-          </div>
-          <div class="menu-ingredients">
-            Plump lobster meat, mayo and crisp lettuce on a toasted bulky roll
-          </div>
-        </div>
-
+      <div class="d-flex w-100 gap-3">
+        <button class="btn btn-primary btn-sm" (click)="submitOrder()">Submit</button>
+<!--        <a class="btn btn-debug btn-sm" href="/user/orderhistory">Cancel</a>-->
       </div>
 
     </div>

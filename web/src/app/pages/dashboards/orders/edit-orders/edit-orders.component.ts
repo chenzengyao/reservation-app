@@ -7,7 +7,7 @@ import { Orders } from 'src/app/core/models/orders.models';
 import { Reservation } from 'src/app/core/models/reservation.models';
 import { MenusService } from 'src/app/core/services/menus.service';
 import { ReservationService } from 'src/app/core/services/reservation';
-
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-edit-orders',
@@ -43,6 +43,9 @@ export class EditOrdersComponent implements OnInit {
     });
 
     this.reservationService.adminGetReservationByID(this.reservationID).toPromise().then((res: any) => {
+      if (res == null) {
+        this.router.navigate(["/admin/orders/listing"]);
+      }
       console.log("res: ", res);
       this.reservation = res;
       this.reservation.reservation_dt = dateStringToDateLocal(res.reservation_dt);
@@ -55,6 +58,7 @@ export class EditOrdersComponent implements OnInit {
       });
     }).catch((err: any) => {
       console.error("err: ", err);
+      // this.router.navigate(["/admin/orders/listing"]);
     });
 
     this.menuService.getAllMenu().toPromise().then((res: any) => {
@@ -109,6 +113,22 @@ export class EditOrdersComponent implements OnInit {
     data['reservation'] = this.reservation;
     data['order'] = this.order;
     data['orderItemsList'] = this.orderItemsList;
+
+    this.reservationService.adminUpdateReservation(data).toPromise().then((res: any) => {
+      console.log("res: ", res);
+      Swal.fire({
+        title: 'Success!',
+        text: 'Order update successfully!',
+        icon: 'success',
+        confirmButtonText: 'Ok'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.router.navigate(["/admin/orders/listing"]);
+        }
+      });
+    }).catch((err: any) => {
+      console.log("err: ", err);
+    });
 
   }
 

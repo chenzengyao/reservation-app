@@ -85,6 +85,7 @@ export class AuthenticationService {
       return this.http.get(`/users/checkCurrentPassword?email=` + email + '&current_password=' + current_password);
     }
 
+
     /**
      * Update the current password to new password
      * @param email email
@@ -93,8 +94,6 @@ export class AuthenticationService {
     UpdateNewPassword(email: String, new_password: String) {
       return this.http.post(`/users/UpdateNewPassword?email=` + email + '&new_password=' + new_password,{ observe: 'response' });
     }
-
-
     /**
      * Reset password
      * @param email email

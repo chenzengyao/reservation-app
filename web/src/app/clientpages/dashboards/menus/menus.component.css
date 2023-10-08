@@ -1,6 +1,12 @@
 /*--------------------------------------------------------------
 # Menu Section
 --------------------------------------------------------------*/
+/*.add-section{*/
+/*  margin-top: 5px;*/
+/*}*/
+td{
+  padding: 5px 9px 5px 9px;
+}
 .menu #menu-flters {
     padding: 0;
     margin: 0 auto 0 auto;
@@ -8,7 +14,7 @@
     text-align: center;
     border-radius: 50px;
   }
-  
+
   .menu #menu-flters li {
     cursor: pointer;
     display: inline-block;
@@ -21,35 +27,36 @@
     transition: all ease-in-out 0.3s;
     border-radius: 50px;
   }
-  
+
   .menu #menu-flters li:hover,
   .menu #menu-flters li.filter-active {
     color: #ff914d;
   }
-  
+
   .menu #menu-flters li:last-child {
     margin-right: 0;
   }
-  
+
   .menu .menu-item {
     margin-top: 50px;
+    width: 100%;
   }
-  
+
   .menu .menu-img {
     width: 70px;
     border-radius: 50%;
     float: left;
     border: 5px solid rgba(255, 255, 255, 0.2);
   }
-  
+
   .menu .menu-content {
-    margin-left: 85px;
+    margin: auto;
     overflow: hidden;
     display: flex;
     justify-content: space-between;
     position: relative;
   }
-  
+
   .menu .menu-content::after {
     content: "......................................................................" "...................................................................." "....................................................................";
     position: absolute;
@@ -60,7 +67,7 @@
     color: #bab3a6;
     font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
   }
-  
+
   .menu .menu-content a {
     padding-right: 10px;
     background: #343a40;
@@ -70,11 +77,11 @@
     color: white;
     transition: 0.3s;
   }
-  
+
   .menu .menu-content a:hover {
     color: #ff914d;
   }
-  
+
   .menu .menu-content span {
     background: #343a40;
     position: relative;
@@ -83,7 +90,7 @@
     font-weight: 600;
     color: #cda45e;
   }
-  
+
   .menu .menu-ingredients {
     margin-left: 85px;
     font-style: italic;
@@ -99,15 +106,15 @@ section {
     padding: 60px 0;
     overflow: hidden;
   }
-  
+
   .section-bg {
     background-color: #343a40;
   }
-  
+
   .section-title {
     padding-bottom: 40px;
   }
-  
+
   .section-title h2 {
     font-size: 14px;
     font-weight: 500;
@@ -119,7 +126,7 @@ section {
     color: #aaaaaa;
     /* font-family: "Poppins", sans-serif; */
   }
-  
+
   .section-title h2::after {
     content: "";
     width: 120px;
@@ -128,7 +135,7 @@ section {
     background: rgba(255, 255, 255, 0.2);
     margin: 4px 10px;
   }
-  
+
   .section-title p {
     margin: 0;
     margin: 0;

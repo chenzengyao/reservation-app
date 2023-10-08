@@ -15,6 +15,7 @@ import { TablesComponent } from "./dashboards/tables/tables.component";
 import { AddTablesComponent } from "./dashboards/tables/add-tables/add-tables.component";
 import { EditOrdersComponent } from "./dashboards/orders/edit-orders/edit-orders.component";
 
+
 const routes: Routes = [
   // { path: '', redirectTo: 'admin/dashboard' },
   { path: "", component: ClientComponent },

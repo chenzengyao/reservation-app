@@ -94,6 +94,12 @@ public class tableHopController {
         return tableHopService.getAllMenu();
     }
 
+    @RequestMapping(value = "/user/getAllMenu", method = RequestMethod.GET)
+    public List<Item> getAllMenuUser() {
+        log.info("user getAllMenu -----> controller");
+        return tableHopService.getAllMenuUser();
+    }
+
     @RequestMapping(value = "/admin/menu/addMenu", method = RequestMethod.POST)
     public ResponseEntity<String> addMenu( @RequestParam("item_category") String itemCategory,
                                            @RequestParam("item_name") String itemName,
@@ -132,10 +138,10 @@ public class tableHopController {
 
     @RequestMapping(value = "/user/reservation/addReservation", method = RequestMethod.POST)
     public ResponseEntity<String> addReservation( @RequestParam("pax_no") int pax_no,
-                                           @RequestParam("reservation_dt") Timestamp reservation_dt,
+                                           @RequestParam("reservation_dt") String reservation_dt,
                                            @RequestParam("reserve_status") String reserve_status,
                                            @RequestParam("reserve_remark") String reserve_remark,
-                                           @RequestParam("reserve_created_dt") Timestamp reserve_created_dt,
+                                           @RequestParam("reserve_created_dt") String reserve_created_dt,
                                            @RequestParam("userID") int userID,
                                            @RequestParam("tableID") int tableID) throws IOException {
         tableHopService.addReservation(pax_no, reservation_dt, reserve_status, reserve_remark, reserve_created_dt, userID, tableID);
@@ -150,11 +156,38 @@ public class tableHopController {
     }
 
     @RequestMapping(value = "/admin/reservation/addReservation", method = RequestMethod.POST)
-    public void adminAddReservation(@RequestBody Map<String, Object> payload) {
+    public ResponseEntity<Object> adminAddReservation(@RequestBody Map<String, Object> payload) {
         log.info("admin add reservation -----> controller");
         // log.info("controller data: {}", payload.values().stream().filter((x) -> x instanceof Reservation).findFirst().get());
         Object result = tableHopService.adminSaveReservation(payload);
         log.info("Result ----> {} ",result);
+        return ResponseEntity.ok(result);
+    }
+
+    @RequestMapping(value = "/user/edituserprofile", method = RequestMethod.POST)
+    public void editUserProfile(@RequestBody User userProfile) {
+        log.info("edit user profile -----> controller");
+        log.info(userProfile.toString());
+        // log.info("controller data: {}", payload.values().stream().filter((x) -> x instanceof Reservation).findFirst().get());
+        tableHopService.editUserProfile(userProfile);
+
+    }
+
+    @RequestMapping(value = "/admin/reservation/updateReservation", method = RequestMethod.POST)
+    public ResponseEntity<Object> adminUpdateReservation(@RequestBody Map<String, Object> payload) {
+        log.info("admin update reservation -----> controller");
+        Object result = tableHopService.adminUpdateReservation(payload);
+        log.info("Result ----> {} ",result);
+        return ResponseEntity.ok(result);
+    }
+
+    @RequestMapping(value = "/user/addOrder", method = RequestMethod.POST)
+    public ResponseEntity<Object> addOrder(@RequestBody Map<String, Object> payload) {
+        log.info("admin add reservation -----> controller");
+        // log.info("controller data: {}", payload.values().stream().filter((x) -> x instanceof Reservation).findFirst().get());
+        Object result = tableHopService.userAddOrder(payload);
+        log.info("Result ----> {} ",result);
+        return ResponseEntity.ok(result);
     }
 
 }

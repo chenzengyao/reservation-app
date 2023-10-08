@@ -13,9 +13,11 @@ export function dateStringToDateLocal(dateString: string) {
 
   const date = fulldate[0].split('/');
 
+  console.log("date: ", date);
+
   const year = date[2];
-  const month = date[1];
-  const day = date[0];
+  const month = date[0];
+  const day = date[1];
   const hour = fulldate[1];
   const minute = fulldate[2];
   const second = fulldate[3];

@@ -15,6 +15,11 @@ export class UserProfileService {
         return this.http.get("/user/profile?email=" + email, { observe: 'response' });
     }
 
+    editUserProfile(userProfile: User){
+       return this.http.post("/user/edituserprofile", userProfile, { observe: 'response' })
+    }
+
+
     // register(username: String, email: String, password: String, dob: String) {
     //     return this.http.post(`/users/register`, username, email, password, dob);
     // }
