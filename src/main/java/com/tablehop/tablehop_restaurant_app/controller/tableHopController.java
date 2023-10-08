@@ -150,4 +150,12 @@ public class tableHopController {
 
     }
 
+    @RequestMapping(value = "/admin/reservation/updateReservation", method = RequestMethod.POST)
+    public ResponseEntity<Object> adminUpdateReservation(@RequestBody Map<String, Object> payload) {
+        log.info("admin update reservation -----> controller");
+        Object result = tableHopService.adminUpdateReservation(payload);
+        log.info("Result ----> {} ",result);
+        return ResponseEntity.ok(result);
+    }
+
 }

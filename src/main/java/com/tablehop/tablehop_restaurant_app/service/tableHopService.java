@@ -304,4 +304,67 @@ public class tableHopService {
         userRepository.saveAndFlush(userProfile);
     }
 
+    // * remove type safety check
+    @SuppressWarnings("unchecked")
+    public Object adminUpdateReservation(Map<String, Object> data) {
+
+        Map<String, Object> reservation = (Map<String, Object>) data.get("reservation");
+        Map<String, Object> order = (Map<String, Object>) data.get("order");
+        List<Map<String, Object>> orderItemsList = (List<Map<String, Object>>) data.get("orderItemsList");
+
+        Reservation reservationEntity = reservationRepository.findById((Integer) reservation.get("reservationID")).orElse(null);
+
+        if (Objects.isNull(reservationEntity)) {
+            return null;
+        } else {
+            reservationEntity.setPax_no((Integer) reservation.get("pax_no"));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
+            LocalDateTime dateTime = LocalDateTime.parse((String) reservation.get("reservation_dt"), formatter);
+            Timestamp timestamp = Timestamp.valueOf(dateTime);
+            log.info("reservation_dt {}", timestamp);
+            Timestamp reservation_dt = Timestamp.valueOf(dateTime);
+            reservationEntity.setReservation_dt(reservation_dt);
+            reservationEntity.setReserve_status((String) reservation.get("reserve_status"));
+            reservationEntity.setReserve_remark((String) reservation.get("reserve_remark"));
+            reservationEntity.setTableID((Integer) reservation.get("table_id"));
+
+            reservationEntity = reservationRepository.saveAndFlush(reservationEntity);
+
+            Order orderEntity = orderRepository.findById((Integer) order.get("orderID")).orElse(null);
+            orderEntity.setOrder_updated_dt(new Date());
+            orderEntity.setTableID(reservationEntity.getTableID());
+            Order savedOrder = orderRepository.saveAndFlush(orderEntity);
+
+            List<OrderItem> orderItemEntity = new ArrayList<>();
+            if (orderItemsList.size() > 0) {
+                orderItemsList.forEach(item -> {
+                    if (!Objects.isNull(item.get("order_itemID"))) {
+                        OrderItem orderItem = orderItemRepository.findById((Integer) item.get("order_itemID")).orElse(null);
+                        orderItem.setOrder_quantity((Integer) item.get("order_quantity"));                        
+                        orderItem.setItem_price((String) item.get("item_price"));
+                        orderItem.setOrder_remark((String) item.get("order_remark"));
+                        orderItemEntity.add(orderItem);
+                    } else {
+                        OrderItem orderItem = new OrderItem();
+                        orderItem.setOrderID(savedOrder.getOrderID());
+                        orderItem.setItemID((Integer) item.get("item_id"));
+                        orderItem.setOrder_quantity((Integer) item.get("order_quantity"));
+                        orderItem.setItem_category((String) item.get("item_category"));
+                        orderItem.setItem_name((String) item.get("item_name"));
+                        orderItem.setItem_price((String) item.get("item_price"));
+                        orderItem.setOrder_remark((String) item.get("order_remark"));
+                        orderItemEntity.add(orderItem);
+                    }
+                });
+                orderItemRepository.saveAllAndFlush(orderItemEntity);
+            }
+
+        }
+
+        Object result = new Object();
+        result = reservationEntity;
+
+        return result;
+    }
+
 }
