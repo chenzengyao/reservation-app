@@ -1,7 +1,10 @@
 package com.tablehop.tablehop_restaurant_app.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import com.tablehop.tablehop_restaurant_app.entity.Item;
@@ -9,6 +12,7 @@ import com.tablehop.tablehop_restaurant_app.entity.Reservation;
 
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.tablehop.tablehop_restaurant_app.service.tableHopService;
@@ -22,6 +26,9 @@ public class tableHopController {
 
     @Autowired
     public tableHopService tableHopService;
+
+    @Value("${image.upload.directory}")
+    private String uploadDirectory;
 
     @RequestMapping(value = "/users/register", method = RequestMethod.POST)
     public void register(@RequestParam String username, @RequestParam String email, @RequestParam String phone_no, @RequestParam String password, @RequestParam String dob) {
@@ -106,10 +113,26 @@ public class tableHopController {
                                            @RequestParam("item_price") String itemPrice,
                                            @RequestParam("item_remark") String itemRemark,
                                            @RequestParam("item_status") String itemStatus,
-                                           @RequestParam("item_created_dt") String itemCreatedDt,
                                            @RequestParam("image") MultipartFile image) throws IOException {
-        String imagePath = tableHopService.saveImageToStorage(image);
-        tableHopService.addMenu(itemCategory, itemName, itemDescription, itemPrice, itemRemark, itemStatus, itemCreatedDt, "Admin", imagePath);
+        String originalFilename = image.getOriginalFilename();
+        String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+
+        String uniqueFileName = UUID.randomUUID().toString() + fileExtension;
+
+        String projectRoot = System.getProperty("user.dir"); // Get the project root directory
+        String fullUploadDirectory = projectRoot + File.separator + uploadDirectory;
+
+        File directory = new File(fullUploadDirectory);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+        // Save the file to the specified directory
+        String filePath = fullUploadDirectory + File.separator + uniqueFileName;
+        image.transferTo(new File(filePath));
+        Date itemCreatedDt = new Date();
+        Timestamp currentTimestamp = new Timestamp(itemCreatedDt.getTime());
+
+        tableHopService.addMenu(itemCategory, itemName, itemDescription, itemPrice, itemRemark, itemStatus, itemCreatedDt, "Admin", filePath);
         return ResponseEntity.ok("Product created successfully.");
     }
 
@@ -160,6 +183,15 @@ public class tableHopController {
     public ResponseEntity<Object> adminUpdateReservation(@RequestBody Map<String, Object> payload) {
         log.info("admin update reservation -----> controller");
         Object result = tableHopService.adminUpdateReservation(payload);
+        log.info("Result ----> {} ",result);
+        return ResponseEntity.ok(result);
+    }
+
+    @RequestMapping(value = "/user/addOrder", method = RequestMethod.POST)
+    public ResponseEntity<Object> addOrder(@RequestBody Map<String, Object> payload) {
+        log.info("admin add reservation -----> controller");
+        // log.info("controller data: {}", payload.values().stream().filter((x) -> x instanceof Reservation).findFirst().get());
+        Object result = tableHopService.userAddOrder(payload);
         log.info("Result ----> {} ",result);
         return ResponseEntity.ok(result);
     }

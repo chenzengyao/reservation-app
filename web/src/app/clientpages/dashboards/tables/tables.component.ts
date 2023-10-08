@@ -3,9 +3,8 @@ import {FormGroup, FormControl, Validators, FormBuilder} from '@angular/forms';
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReservationService } from'../../../core/services/reservation';
-import {MenusService} from "../../../core/services/menus.service";
 import {AuthenticationService} from "../../../core/services/auth.service";
-import { Timestamp } from 'rxjs/internal-compatibility';
+import {formatDate} from "@angular/common";
 
 @Component({
   selector: 'app-tables',
@@ -32,6 +31,9 @@ export class TablesComponent implements OnInit {
   working = false;
   status: String;
   table: String;
+
+  today= new Date();
+  jstoday = '';
 
   ngOnInit(): void {
 
@@ -68,15 +70,12 @@ export class TablesComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-    const current = new Date();
-    const current_ = new Date();
-    var reserve_created_dt = current.getTime();
-    var reservation_dt = current.getTime();
-    // this.addReservationForm.value.reserve_created_dt= reserve_created_dt;
+    this.jstoday = formatDate(this.today, 'dd-MM-yyyy hh:mm:ss a', 'en-US', '+08:00');
+    console.log(this.jstoday);
+    this.addReservationForm.value.reserve_created_dt= this.jstoday;
     this.addReservationForm.value.reserve_status = this.status;
     this.addReservationForm.value.userID = this.userID;
     this.addReservationForm.value.tableID = this.table;
-    // this.addReservationForm.value.reservation_dt =  reservation_dt;
     console.log(this.addReservationForm.value.pax_no);
     console.log(this.addReservationForm.value.reserve_remark);
     console.log(this.addReservationForm.value.reserve_status);

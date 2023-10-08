@@ -36,26 +36,25 @@
             {{data.item_description}}
             </div>
           </div>
-
                     <tr id="add-section">
                       <td >
-                        <input type="number" [(ngModel)]="quantity" placeholder="Quantity"
+                        <input type="number" [(ngModel)]="quantity[i]" placeholder="Quantity"
                                class="form-control" min="0" (change)="setTotalAmount(i)">
                       </td>
 
                       <td>
-                        <input type="text" [(ngModel)]="remark" placeholder="Remark"
+                        <input type="text" [(ngModel)]="remark[i]" placeholder="Remark"
                                class="form-control" >
                       </td>
 
                       <td>
-                        <button class="btn btn-primary btn-sm" (click)="addToOrder(data, quantity, remark)">Add</button>
+                        <button class="btn btn-primary btn-sm" (click)="addToOrder(data, quantity[i], remark[i])">Add</button>
                       </td>
-<!--                      <td>-->
-<!--                        <button class="btn btn-sm" (click)="removeOrderItem(i, items)">-->
-<!--                          <i class="text-danger mdi mdi-delete font-size-18"></i>-->
-<!--                        </button>-->
-<!--                      </td>-->
+                      <td>
+
+                        <button type="button" value="Reset" class="btn btn-primary btn-sm"
+                                (click)="removeOrderItem(data,i)">Remove</button>
+                      </td>
                     </tr>
 <!--                    </tbody>-->
 <!--                  </table>-->
@@ -69,6 +68,11 @@
           </div>
         </div>
 
+      </div>
+
+      <div class="d-flex w-100 gap-3">
+        <button class="btn btn-primary btn-sm" (click)="submitOrder()">Submit</button>
+<!--        <a class="btn btn-debug btn-sm" href="/user/orderhistory">Cancel</a>-->
       </div>
 
     </div>

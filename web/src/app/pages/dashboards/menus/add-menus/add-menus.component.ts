@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import{ MenusService } from'../../../../core/services/menus.service';
 import { AuthenticationService } from'../../../../core/services/auth.service';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
-
+import {formatDate } from '@angular/common';
 
 
 @Component({
@@ -16,7 +16,9 @@ import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 export class AddMenusComponent implements OnInit {
 
   constructor(private menusService: MenusService, private formBuilder: FormBuilder, private authenticationService: AuthenticationService, private httpClient: HttpClient,
-    private route: ActivatedRoute, private router: Router) { }
+    private route: ActivatedRoute, private router: Router) {
+
+  }
 
     addMenuForm: FormGroup;
     item_category: String;
@@ -25,7 +27,7 @@ export class AddMenusComponent implements OnInit {
     item_price: String;
     item_remark: String;
     item_status: String;
-    item_image: String;
+    item_image: File;
     item_created_dt: String;
     item_updated_dt: String;
     created_by: String;
@@ -46,12 +48,16 @@ export class AddMenusComponent implements OnInit {
     image: '';
     file: '';
 
+    today= new Date();
+    jstoday = '';
+
     config: DropzoneConfigInterface = {
       // Change this to your upload POST address:
       maxFilesize: 50,
       acceptedFiles: 'image/*',
       method: 'POST',
       uploadMultiple: false,
+      maxFiles: 1,
       accept: (file) => {
         this.onAccept(file);
       }
@@ -70,18 +76,18 @@ export class AddMenusComponent implements OnInit {
         item_remark: [''],
         item_status: [''],
         item_image: [''],
-        item_created_dt: [''],
       });
+
     }
 
     get f() { return this.addMenuForm.controls; }
 
     onSubmit() {
+      // Get now timestamp
+      this.jstoday = formatDate(this.today, 'dd-MM-yyyy hh:mm:ss a', 'en-US', '+08:00');
+      console.log(this.jstoday);
+
       this.submitted = true;
-      const current = new Date();
-      var current_datetime = current.getTime();
-      this.addMenuForm.value.item_created_dt = current_datetime;
-      console.log(this.addMenuForm.value.item_created_dt);
 
       // stop here if form is invalid
       if (this.addMenuForm.invalid) {
@@ -95,12 +101,10 @@ export class AddMenusComponent implements OnInit {
         formData.append('item_price',this.addMenuForm.value.item_price);
         formData.append('item_remark',this.addMenuForm.value.item_remark);
         formData.append('item_status',this.addMenuForm.value.item_status);
-        formData.append('item_created_dt',this.addMenuForm.value.item_created_dt);
-        formData.append('image', this.file, this.image);
+        formData.append('image', this.item_image);
+        console.log(this.item_image);
 
-        this.menusService.addMenu(formData).subscribe(res => {
-
-        })
+        this.menusService.addMenu(formData).subscribe(res => {})
 
       }
 
@@ -111,9 +115,14 @@ export class AddMenusComponent implements OnInit {
       }, 1000);
     }
 
-    onAccept(file: any){
-      this.image = file.name;
-      this.file = file;
-    }
+
+  onFileUploadSuccess(event: any) {
+    this.item_image = event[0];
+    console.log(this.item_image);
+  }
+
+  onAccept(file: any) {
+    this.item_image = file;
+  }
 
 }

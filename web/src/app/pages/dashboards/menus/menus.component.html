@@ -48,7 +48,7 @@
                                     <td>
                                         <!-- Button trigger modal -->
                                         <button type="button" class="btn btn-primary btn-sm btn-rounded"
-                                            (click)="openModal(content)">View
+                                            (click)="openModal(content, data)">View
                                             Details</button>
                                     </td>
                                 </tr>
@@ -57,87 +57,107 @@
 
                         <!-- pop up modal -->
                         <ng-template #content role="document" let-modal>
+                          <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title mt-0">Order Details</h5>
+                                <h5 class="modal-title mt-0">Menu Details</h5>
                                 <button type="button" class="btn-close" aria-hidden="true"
                                     (click)="modal.dismiss('Cross click')"></button>
                             </div>
                             <div class="modal-body">
+                              <div *ngIf="edit == false">
                                 <p class="mb-2">
-                                    Product id:
-                                    <span class="text-primary">#SK2540</span>
+                                    Product Name:
+                                    <span class="text-primary">{{viewMenu.item_name}}</span>
                                 </p>
                                 <p class="mb-4">
-                                    Billing Name:
-                                    <span class="text-primary">Neal Matthews</span>
+                                    Created Date:
+                                    <span class="text-primary">{{viewMenu.item_created_dt | date:'yyyy/MM/dd'}}</span>
                                 </p>
-                                <div class="table-responsive">
-                                    <table class="table table-centered table-nowrap">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Product</th>
-                                                <th scope="col">Product Name</th>
-                                                <th scope="col">Price</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <th scope="row">
-                                                    <div>
-                                                        <img src="assets/images/product/img-7.png" alt
-                                                            class="avatar-sm" />
-                                                    </div>
-                                                </th>
-                                                <td>
-                                                    <div>
-                                                        <h5 class="text-truncate font-size-14">Wireless Headphone
-                                                            (Black)</h5>
-                                                        <p class="text-muted mb-0">$ 225 x 1</p>
-                                                    </div>
-                                                </td>
-                                                <td>$ 255</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">
-                                                    <div>
-                                                        <img src="assets/images/product/img-4.png" alt
-                                                            class="avatar-sm" />
-                                                    </div>
-                                                </th>
-                                                <td>
-                                                    <div>
-                                                        <h5 class="text-truncate font-size-14">Phone patterned cases
-                                                        </h5>
-                                                        <p class="text-muted mb-0">$ 145 x 1</p>
-                                                    </div>
-                                                </td>
-                                                <td>$ 145</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2">
-                                                    <h6 class="m-0 text-end">Sub Total:</h6>
-                                                </td>
-                                                <td>$ 400</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2">
-                                                    <h6 class="m-0 text-end">Shipping:</h6>
-                                                </td>
-                                                <td>Free</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2">
-                                                    <h6 class="m-0 text-end">Total:</h6>
-                                                </td>
-                                                <td>$ 400</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                              </div>
+
+                              <form name="editMenuForm"  (ngSubmit)="onSubmit()" [formGroup]="editMenuForm"  class="needs-validation" novalidate>
+                                <div class="form-sub-section">
+                                  <div class="image-section">
+                                    <label for="product-image" class="mt-2"> Product Images</label>
+                                    <img [src]="imagePath" alt="image" class="custom-dropzone" *ngIf="!selectedImage">
+                                    <img [src]="selectedImage" alt="Selected Image" class="custom-dropzone" *ngIf="selectedImage">
+
+                                    <input type="file" (change)="onFileUploadSuccess($event)" [hidden]="canUploadImage == false" class="upload-image">
+                                    <input type="button" value="Change Image" (click)="enableChangeImage()" class="change-image" [hidden]="(edit == false && canUploadImage == false) || (edit == true && canUploadImage == true)">
+<!--                                    <dropzone [config]="config" (onSuccess)="onFileUploadSuccess($event)" class="custom-dropzone">-->
+<!--                                      <div class="dz-message">-->
+<!--                                        <p>Drop files here or click to upload.</p>-->
+<!--                                      </div>-->
+<!--                                    </dropzone>-->
+                                  </div>
+
+
+                                  <div class="info-section">
+                                    <label>Item Name<span>*</span></label><br>
+                                    <textarea  id="item_name" formControlName="item_name" [ngClass]="{ 'is-invalid': submitted && f.item_name.errors }" required [readOnly]="edit == false"></textarea>
+                                    <div *ngIf="submitted && f.item_name.errors" class="invalid-feedback">
+                                      <div *ngIf="f.item_name.errors.required">Item name is required</div>
+                                    </div>
+
+                                    <label>Item Description<span>*</span></label>
+                                    <textarea id="item_description" formControlName="item_description" [ngClass]="{ 'is-invalid': submitted && f.item_description.errors }" required [readOnly]="edit == false"></textarea>
+                                    <div *ngIf="submitted && f.item_description.errors" class="invalid-feedback">
+                                      <div *ngIf="f.item_description.errors.required">Item description is required</div>
+                                    </div>
+
+                                    <label>Item Remark<span>*</span></label>
+                                    <textarea  id="item_remark" formControlName="item_remark" [ngClass]="{ 'is-invalid': submitted && f.item_remark.errors }" required [readOnly]="edit == false"></textarea>
+                                    <div *ngIf="submitted && f.item_remark.errors" class="invalid-feedback">
+                                      <div *ngIf="f.item_remark.errors.required">Item remark is required</div>
+                                    </div>
+
+                                    <label>Price<span>*</span></label>
+                                    <input class="price-input" currencyMask  formControlName="item_price" id="item_price" type="number" min="0.00"  placeholder="0.00" pattern="^\d*(\.\d{0,2})?$"
+                                           [ngClass]="{ 'is-invalid': submitted && f.item_price.errors }" required [readOnly]="edit == false">
+                                    <div *ngIf="submitted && f.item_price.errors" class="invalid-feedback">
+                                      <div *ngIf="f.item_price.errors.required">Item price is required</div>
+                                    </div>
+
+                                    <div class="form-sub-section">
+                                      <div>
+                                        <label>Category<span>*</span></label>
+                                        <input class="select-input" formControlName="item_category" readonly [hidden]="edit == true" >
+                                        <select id="item_category" formControlName="item_category"
+                                                [ngClass]="{ 'is-invalid': submitted && f.item_price.errors }" required [hidden]="edit == false">
+                                          <option value="Starter">Starter</option>
+                                          <option value="Main Course">Main Course</option>
+                                          <option value="Dessert">Dessert</option>
+                                          <option value="Beverages">Beverages</option>
+                                          <option value="Other">Other</option>
+                                        </select>
+                                        <div *ngIf="submitted && f.item_category.errors" class="invalid-feedback">
+                                          <div *ngIf="f.item_category.errors.required">Item category is required</div>
+                                        </div>
+                                      </div>
+                                      <div>
+                                        <label>Status<span>*</span></label>
+                                        <input class="select-input" formControlName="item_status" readonly [hidden]="edit == true" >
+                                          <select id ="item_status" formControlName="item_status" [hidden]="edit == false"
+                                                  [ngClass]="{ 'is-invalid': submitted && f.item_status.errors }" required>
+                                            <option value="Available">Available</option>
+                                            <option value="Sold Out">Sold Out</option>
+                                          </select>
+                                        <div *ngIf="submitted && f.item_status.errors" class="invalid-feedback">
+                                          <div *ngIf="f.item_status.errors.required">Item status is required</div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
                                 </div>
+
+                                <input type="submit" value="Save" [hidden]="edit == false">
+                              </form>
                             </div>
-                            <div class="modal-footer">
+                            <div class="modal-footer" [hidden]="edit == true">
+                                <button class="btn btn-secondary" (click)="enableEdit()">Edit</button>
                                 <button class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
                             </div>
+                          </div>
                         </ng-template>
                     </div>
                     <!-- end table -->
