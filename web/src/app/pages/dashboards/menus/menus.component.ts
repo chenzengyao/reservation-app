@@ -23,7 +23,7 @@ export class MenusComponent implements OnInit {
   viewMenu: any = [];
   editMenuForm: FormGroup;
   submitted: boolean = false;
-  item_image: any;
+  item_image: any = null;
   working: boolean = false;
   imagePath: any;
   selectedFile: File | null = null;
@@ -54,8 +54,8 @@ export class MenusComponent implements OnInit {
       item_status: [this.viewMenu.item_status],
       item_image: [],
     });
-    this.imagePath = "/assets/images/6f9d2228-80a6-4b69-9956-e62b4d5373e0.jfif";
-    this.imagePath = this.getSafeImagePath(this.imagePath);
+    this.imagePath = "/assets/images/" + this.viewMenu.item_image;
+    // this.imagePath = this.getSafeImagePath(this.imagePath);
     console.log(this.imagePath);
     this.modalService.open(content, { centered: true });
   }
@@ -82,13 +82,16 @@ export class MenusComponent implements OnInit {
       formData.append('item_price',this.editMenuForm.value.item_price);
       formData.append('item_remark',this.editMenuForm.value.item_remark);
       formData.append('item_status',this.editMenuForm.value.item_status);
-      if(this.item_image == null){
-        formData.append('item_status',this.viewMenu.item_image);
+      console.log("append", this.selectedFile);
+      console.log("append 2", this.viewMenu.item_image);
+      if(this.selectedFile == null){
+        formData.append('image',this.viewMenu.item_image);
+        formData.append('imageFile', '');
       } else{
-        formData.append('image', this.item_image);
+        formData.append('image',null);
+        formData.append('imageFile', this.selectedFile);
       }
-      formData.append('image', this.item_image);
-      console.log(this.item_image);
+      console.log(this.selectedFile);
 
 
       this.menusService.modifyMenu(formData).subscribe(res => {})
@@ -97,7 +100,6 @@ export class MenusComponent implements OnInit {
 
     this.working = true;
     setTimeout(() => {
-      this.editMenuForm.reset();
       this.working = false;
       this.submitted = false;
     }, 1000);
@@ -105,8 +107,8 @@ export class MenusComponent implements OnInit {
 
   onFileUploadSuccess(event: any) {
     this.item_image = event[0];
-    console.log(this.item_image);
     this.selectedFile = event.target.files[0];
+    console.log(this.selectedFile);
 
     const reader = new FileReader();
     reader.onload = (e: any) => {
