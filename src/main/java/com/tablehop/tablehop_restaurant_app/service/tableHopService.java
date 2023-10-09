@@ -437,4 +437,38 @@ public class tableHopService {
 
     }
 
+    public List<Tables> adminGetTables() {
+        List<Tables> tableList = tableRepository.findAll();
+        return tableList;
+    }
+
+    public Object adminAddTable(Tables table) {
+        log.info("table details {}", table);
+        Tables tableEntity = new Tables();
+
+        tableEntity.setTable_size(table.getTable_size());
+        tableEntity.setTable_status(table.getTable_status());
+        tableEntity.setTable_created_dt(new Date());
+        tableEntity.setCreated_by("Hardcode user: Admin A");
+        tableEntity.setUserID(1);
+
+        log.info("tableEntity details {}", tableEntity);
+
+        return tableRepository.saveAndFlush(tableEntity);
+    }
+
+    public void adminUpdateTablePosition(Tables tables) {
+        log.info("table details {}", tables);
+        Tables tableEntity = tableRepository.findById(tables.getTableID()).orElse(null);
+
+        tableEntity.setTable_x(tables.getTable_x());
+        tableEntity.setTable_y(tables.getTable_y());
+        tableEntity.setTable_modified_by("Hardcode user: Admin A");
+        tableEntity.setTable_updated_dt(new Date());
+
+        log.info("tableEntity details {}", tableEntity);
+
+        tableRepository.saveAndFlush(tableEntity);
+    }
+
 }

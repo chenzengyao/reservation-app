@@ -1,108 +1,62 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Tables } from 'src/app/core/models/tables.models';
+import { TablesService } from 'src/app/core/services/tables.service';
+declare var $: any; // Declare jQuery
 
 @Component({
   selector: 'app-tables',
   templateUrl: './tables.component.html',
-  styleUrls: ['./tables.component.scss']
+  styleUrls: ['./tables.component.scss'],
 })
 export class TablesComponent implements OnInit {
 
-  constructor(private modalService: NgbModal) { }
+  constructor(private modalService: NgbModal, private el: ElementRef, public tablesService: TablesService) { }
 
-  transactions: any[]
+  tablesList: Tables[] = [];
   breadCrumbItems: Array<{}>;
+  tableEntity: Tables = new Tables();
 
   ngOnInit(): void {
     this.breadCrumbItems = [{ label: 'Reservation' }, { label: 'Tables', active: true }];
 
-    this.transactions = [
-      {
-        id: "#SK2540",
-        name: "Neal Matthews",
-        date: "07 Oct, 2019",
-        total: "$400",
-        status: "Paid",
-        payment: ["fab fa-cc-mastercard", "Mastercard"],
-        index: 1,
-      },
-      {
-        id: "#SK2541",
-        name: "Jamal Burnett",
-        date: "07 Oct, 2019",
-        total: "$380",
-        status: "Chargeback",
-        payment: ["fab fa-cc-visa", "Visa"],
-        index: 2,
-      },
-      {
-        id: "#SK2542",
-        name: "Juan Mitchell",
-        date: "06 Oct, 2019",
-        total: "$384",
-        status: "Paid",
-        payment: ["fab fa-cc-paypal", "Paypal"],
-        index: 3,
-      },
-      {
-        id: "#SK2543",
-        name: "Barry Dick",
-        date: "05 Oct, 2019",
-        total: "$412",
-        status: "Paid",
-        payment: ["fab fa-cc-mastercard", "Mastercard"],
-        index: 4,
-      },
-      {
-        id: "#SK2544",
-        name: "Ronald Taylor",
-        date: "04 Oct, 2019",
-        total: "$404",
-        status: "Refund",
-        payment: ["fab fa-cc-visa", "Visa"],
-        index: 5,
-      },
-      {
-        id: "#SK2545",
-        name: "Jacob Hunter",
-        date: "04 Oct, 2019",
-        total: "$392",
-        status: "Paid",
-        payment: ["fab fa-cc-paypal", "Paypal"],
-        index: 6,
-      },
-      {
-        id: "#SK2546",
-        name: "William Cruz",
-        date: "03 Oct, 2019",
-        total: "$374",
-        status: "Paid",
-        payment: ["fas fa-money-bill-alt", "COD"],
-        index: 7,
-      },
-      {
-        id: "#SK2547",
-        name: "Dustin Moser",
-        date: "02 Oct, 2019",
-        total: "$350",
-        status: "Paid",
-        payment: ["fab fa-cc-mastercard", "Mastercard"],
-        index: 8,
-      },
-      {
-        id: "#SK2548",
-        name: "Clark Benson",
-        date: "01 Oct, 2019",
-        total: "$345",
-        status: "Refund",
-        payment: ["fab fa-cc-visa", "Visa"],
-        index: 9,
-      },
-    ];
+    this.tablesService.adminGetTables().subscribe((res: any) => {
+      console.log(res);
+      this.tablesList = res;
+    });
+  }
+
+  ngAfterViewInit() {
+    const cthis = this;
+    setTimeout(() => {
+      console.warn("after ", $(this.el.nativeElement).find('.tables').length);
+      $(this.el.nativeElement).find('.tables').draggable({
+        stop: function (event, ui) {
+          var left = Math.abs(ui.position.left);
+          var top = Math.abs(ui.position.top);
+          cthis.tableEntity = cthis.tablesList.filter((table: any) => {
+            return table.tableID == this.id.split('_')[1];
+          })[0];
+          if (cthis.tableEntity != null) {
+            cthis.tableEntity.table_x = left;
+            cthis.tableEntity.table_y = top;
+          }
+          console.log(cthis.tableEntity);
+          cthis.saveTablePosition();
+        },
+        containment: '#containment',
+      });
+    }, 1000);
   }
 
   openModal(content: any) {
     this.modalService.open(content, { centered: true });
+  }
+
+  saveTablePosition() {
+    this.tablesService.adminUpdateTablesPosition(this.tableEntity).subscribe((res: any) => {
+      console.log(res);
+    });
   }
 
 }

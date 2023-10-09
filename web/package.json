@@ -46,6 +46,8 @@
     "chartist": "^0.11.4",
     "echarts": "^5.1.2",
     "firebase": "^8.6.8",
+    "jquery": "^3.7.1",
+    "jquery-ui-dist": "^1.13.2",
     "metismenujs": "^1.2.1",
     "ng-apexcharts": "^1.5.12",
     "ng-chartist": "^4.1.0",
