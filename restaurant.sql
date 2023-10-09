@@ -82,6 +82,7 @@ CREATE TABLE `orders` (
   `tableID` INT DEFAULT NULL,
   `deliveryID` INT DEFAULT NULL,
   `reservationID` INT DEFAULT NULL,
+  `userID` int DEFAULT NULL,
   PRIMARY KEY (`orderID`),
   UNIQUE KEY `Unique_orderID` (`orderID`),
   KEY `tableID` (`tableID`),

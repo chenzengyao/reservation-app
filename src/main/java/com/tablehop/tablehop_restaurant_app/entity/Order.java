@@ -45,6 +45,9 @@ public class Order {
     @Column(name = "reservationID")
     private Integer reservationID;
 
+    @Column(name = "userID")
+    private Integer userID;
+
     @Transient
     private List<OrderItem> orderItemList;
 
@@ -136,6 +139,14 @@ public class Order {
         this.orderItemList = orderItemList;
     }
 
+    public Integer getUserID() {
+        return this.userID;
+    }
+
+    public void setUserID(Integer userID) {
+        this.userID = userID;
+    }
+
     @Override
     public String toString() {
         return "{" +
@@ -149,6 +160,7 @@ public class Order {
                 ", tableID='" + getTableID() + "'" +
                 ", deliveryID='" + getDeliveryID() + "'" +
                 ", reservationID='" + getReservationID() + "'" +
+                ", userID='" + getUserID() + "'" +
                 "}";
     }
 
