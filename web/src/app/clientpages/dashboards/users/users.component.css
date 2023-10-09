@@ -105,6 +105,21 @@
     border: 2px solid #ff914d;
   }
 
+.book-a-table .btn btn-primary {
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  display: inline-block;
+  padding: 12px 30px;
+  border-radius: 50px;
+  transition: 0.3s;
+  line-height: 1;
+  background: white;
+  color: black;
+  border: 2px solid #ff914d;
+}
+
   .book-a-table .php-email-form button[type=submit]:hover {
     background: #ff914d;
     color: #fff;

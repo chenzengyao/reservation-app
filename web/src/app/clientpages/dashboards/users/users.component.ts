@@ -90,7 +90,7 @@ export class UsersComponent implements OnInit {
       this.userProfile.userName = this.userprofileForm.get('userName').value;
       this.userProfile.email = this.userprofileForm.get('email').value;
       this.userProfile.phone_no = this.userprofileForm.get('phone_no').value;
-      // this.userProfile.dob = this.userprofileForm.get('dob').value;
+      this.userProfile.dob = this.userprofileForm.get('dob').value;
       this.userProfile.address = this.userprofileForm.get('address').value;
       console.log(this.userProfile);
 

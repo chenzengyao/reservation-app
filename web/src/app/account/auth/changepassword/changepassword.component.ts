@@ -51,8 +51,9 @@ export class ChangepasswordComponent implements OnInit {
   ) {}
 
 
-  ngOnInit() {
-    this.email = this.dataService.getCurrentEmail();
+  async ngOnInit() {
+    await this.dataService.setCurrentEmail("liz@gmail.com");
+    console.log("this.dataService.getCurrentEmail()",this.dataService.getCurrentEmail());
 
     this.changepasswordForm = this.formBuilder.group({
       current_password: ['', [Validators.required, Validators.minLength(8),Validators.pattern(
