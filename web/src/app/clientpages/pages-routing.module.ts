@@ -7,7 +7,6 @@ import { UsersComponent } from "./dashboards/users/users.component";
 import { ChangePasswordComponent } from "./dashboards/changePassword/changePassword.component";
 import { MenusComponent } from "./dashboards/menus/menus.component";
 import { OrdersComponent } from "./dashboards/orders/orders.component";
-// import { TablesComponent } from "./dashboards/tables/tables.component";
 import { DeliveryComponent } from "./dashboards/delivery/delivery.component";
 import { SettingsComponent } from "./dashboards/settings/settings.component";
 import { TablesComponent } from "../clientpages/dashboards/tables/tables.component";

@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-delivery',
   templateUrl: './delivery.component.html',
-  styleUrls: ['./delivery.component.scss']
+  styleUrls: ['./delivery.component.scss', './delivery.component.css']
 })
 export class DeliveryComponent implements OnInit {
 
