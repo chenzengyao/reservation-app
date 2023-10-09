@@ -30,5 +30,10 @@ export class MenusService {
     return this.http.post('/admin/menu/addMenu', formData, { headers: headers });
   }
 
+  modifyMenu(formData: FormData) {
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+    return this.http.post('/admin/menu/modifyMenu', formData, { headers: headers });
+  }
 
 }

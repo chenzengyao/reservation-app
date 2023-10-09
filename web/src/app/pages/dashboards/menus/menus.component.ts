@@ -75,16 +75,23 @@ export class MenusComponent implements OnInit {
       return;
     } else {
       const formData = new FormData();
+      formData.append('item_id', this.viewMenu.itemID);
       formData.append('item_category',this.editMenuForm.value.item_category);
       formData.append('item_name',this.editMenuForm.value.item_name);
       formData.append('item_description',this.editMenuForm.value.item_description);
       formData.append('item_price',this.editMenuForm.value.item_price);
       formData.append('item_remark',this.editMenuForm.value.item_remark);
       formData.append('item_status',this.editMenuForm.value.item_status);
+      if(this.item_image == null){
+        formData.append('item_status',this.viewMenu.item_image);
+      } else{
+        formData.append('image', this.item_image);
+      }
       formData.append('image', this.item_image);
       console.log(this.item_image);
 
-      // this.menusService.addMenu(formData).subscribe(res => {})
+
+      this.menusService.modifyMenu(formData).subscribe(res => {})
 
     }
 

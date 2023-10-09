@@ -137,6 +137,37 @@ public class tableHopController {
         return ResponseEntity.ok("Product created successfully.");
     }
 
+    @RequestMapping(value = "/admin/menu/modifyMenu", method = RequestMethod.POST)
+    public ResponseEntity<String> modifyMenu(@RequestParam("item_id") String itemID,
+                                           @RequestParam("item_category") String itemCategory,
+                                           @RequestParam("item_name") String itemName,
+                                           @RequestParam("item_description") String itemDescription,
+                                           @RequestParam("item_price") String itemPrice,
+                                           @RequestParam("item_remark") String itemRemark,
+                                           @RequestParam("item_status") String itemStatus,
+                                           @RequestParam("image") MultipartFile image) throws IOException {
+        String originalFilename = image.getOriginalFilename();
+        String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+
+        String uniqueFileName = UUID.randomUUID().toString() + fileExtension;
+
+        String projectRoot = System.getProperty("user.dir"); // Get the project root directory
+        String fullUploadDirectory = projectRoot + File.separator + uploadDirectory;
+
+        File directory = new File(fullUploadDirectory);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+        // Save the file to the specified directory
+        String filePath = fullUploadDirectory + File.separator + uniqueFileName;
+        image.transferTo(new File(filePath));
+        Date itemCreatedDt = new Date();
+        Timestamp currentTimestamp = new Timestamp(itemCreatedDt.getTime());
+
+        tableHopService.modifyMenu(itemID, itemCategory, itemName, itemDescription, itemPrice, itemRemark, itemStatus, itemCreatedDt, "Admin", filePath);
+        return ResponseEntity.ok("Product created successfully.");
+    }
+
     @RequestMapping(value = "/admin/reservation/all", method = RequestMethod.POST)
     public Map<String, Object> adminGetReservation() {
         log.info("admin get reservation -----> controller");

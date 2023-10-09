@@ -108,6 +108,23 @@ public class tableHopService {
         itemRepository.saveAndFlush(menu);
     }
 
+    public void modifyMenu(String itemID, String item_category, String item_name, String item_description,
+                        String item_price, String item_remark, String item_status,
+                        Date item_created_dt, String created_by, String image) {
+        // Init
+        Item menu = itemRepository.getItemByID(itemID);
+        menu.setItem_category(item_category);
+        menu.setItem_name(item_name);
+        menu.setItem_price(item_price);
+        menu.setItem_description(item_description);
+        menu.setItem_remark(item_remark);
+        menu.setItem_status(item_status);
+        menu.setItem_updated_dt(item_created_dt);
+        menu.setUpdated_by(created_by);
+        menu.setItem_image(image);
+        itemRepository.saveAndFlush(menu);
+    }
+
     public int checkExistUser(String email, String password) {
         User loginUser = userRepository.checkExistUser(email, password);
         if (Objects.isNull(loginUser)) {

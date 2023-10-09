@@ -41,7 +41,7 @@ public class Item {
     private Date item_created_dt;
 
     @Column(name = "item_updated_dt")
-    private String item_updated_dt;
+    private Date item_updated_dt;
 
     @Column(name = "created_by")
     private String created_by;
@@ -117,11 +117,11 @@ public class Item {
         this.item_created_dt = item_created_dt;
     }
 
-    public String getItem_updated_dt() {
+    public Date getItem_updated_dt() {
         return this.item_updated_dt;
     }
 
-    public void setItem_updated_dt(String item_updated_dt) {
+    public void setItem_updated_dt(Date item_updated_dt) {
         this.item_updated_dt = item_updated_dt;
     }
 

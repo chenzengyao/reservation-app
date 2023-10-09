@@ -104,7 +104,9 @@ export class AddMenusComponent implements OnInit {
         formData.append('image', this.item_image);
         console.log(this.item_image);
 
-        this.menusService.addMenu(formData).subscribe(res => {})
+        this.menusService.addMenu(formData).subscribe(res => {
+          this.router.navigate(['/admin/menus/listing']);
+        })
 
       }
 

@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface itemRepository extends JpaRepository<Item, Integer> {
 
+    @Query(value="SELECT * from item WHERE itemID = ?1", nativeQuery=true)
+    public Item getItemByID(String itemID);
 }
