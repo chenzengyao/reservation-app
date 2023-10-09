@@ -38,7 +38,13 @@ public class Tables {
     private String arranged_by;
 
     @Column(name = "userID")
-    private String userID;
+    private Integer userID;
+
+    @Column(name = "table_x")
+    private Integer table_x;
+
+    @Column(name = "table_y")
+    private Integer table_y;
 
     public Integer getTableID() {
         return this.tableID;
@@ -104,12 +110,28 @@ public class Tables {
         this.arranged_by = arranged_by;
     }
 
-    public String getUserID() {
+    public Integer getUserID() {
         return this.userID;
     }
 
-    public void setUserID(String userID) {
+    public void setUserID(Integer userID) {
         this.userID = userID;
+    }
+
+    public Integer getTable_x() {
+        return this.table_x;
+    }
+
+    public void setTable_x(Integer table_x) {
+        this.table_x = table_x;
+    }
+
+    public Integer getTable_y() {
+        return this.table_y;
+    }
+
+    public void setTable_y(Integer table_y) {
+        this.table_y = table_y;
     }
 
     @Override
@@ -124,6 +146,8 @@ public class Tables {
                 ", created_by='" + getCreated_by() + "'" +
                 ", arranged_by='" + getArranged_by() + "'" +
                 ", userID='" + getUserID() + "'" +
+                ", table_x='" + getTable_x() + "'" +
+                ", table_y='" + getTable_y() + "'" +
                 "}";
     }
 

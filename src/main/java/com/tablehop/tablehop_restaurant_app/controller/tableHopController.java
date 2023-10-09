@@ -9,6 +9,7 @@ import java.util.*;
 
 import com.tablehop.tablehop_restaurant_app.entity.Item;
 import com.tablehop.tablehop_restaurant_app.entity.Reservation;
+import com.tablehop.tablehop_restaurant_app.entity.Tables;
 
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -193,6 +194,31 @@ public class tableHopController {
         // log.info("controller data: {}", payload.values().stream().filter((x) -> x instanceof Reservation).findFirst().get());
         Object result = tableHopService.userAddOrder(payload);
         log.info("Result ----> {} ",result);
+        return ResponseEntity.ok(result);
+    }
+
+    // admin get tables
+    @RequestMapping(value = "/admin/table/all", method = RequestMethod.GET)
+    public ResponseEntity<Object> adminGetTables() {
+        log.info("admin get tables -----> controller");
+        return ResponseEntity.ok(tableHopService.adminGetTables());
+    }
+
+    // admin create table
+    @RequestMapping(value = "/admin/table/addTable", method = RequestMethod.POST)
+    public ResponseEntity<Object> adminAddTable(@RequestBody Tables payload) {
+        log.info("admin add table -----> controller");
+        Object result = tableHopService.adminAddTable(payload);
+        log.info("Result ----> {} ",result);
+        return ResponseEntity.ok(result);
+    }
+
+    // admin update table position
+    @RequestMapping(value = "/admin/table/updateTablePosition", method = RequestMethod.POST)
+    public ResponseEntity<String[]> adminUpdateTablePosition(@RequestBody Tables payload) {
+        log.info("admin update table position -----> controller");
+        tableHopService.adminUpdateTablePosition(payload);
+        String[] result = { "result" };
         return ResponseEntity.ok(result);
     }
 
