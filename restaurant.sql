@@ -19,7 +19,7 @@ CREATE TABLE `user` (
   UNIQUE KEY `Unique_userID` (`userID`)
 ) ENGINE=INNODB DEFAULT CHARSET=UTF8;
 
-CREATE TABLE `table` (
+CREATE TABLE `tables` (
   `tableID` INT NOT NULL AUTO_INCREMENT,
   `table_size` VARCHAR(255) NOT NULL,
   `table_status` VARCHAR(255) NOT NULL,
@@ -29,6 +29,8 @@ CREATE TABLE `table` (
   `created_by` VARCHAR(255) NOT NULL,
   `arranged_by` VARCHAR(255) DEFAULT NULL,
   `userID` INT NOT NULL,
+  `table_x` varchar(255) DEFAULT NULL,
+  `table_y` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`tableID`),
   UNIQUE KEY `Unique_tableID` (`tableID`),
   KEY `userID` (`userID`),
@@ -49,7 +51,7 @@ CREATE TABLE `reservation` (
   KEY `userID` (`userID`),
   KEY `tableID` (`tableID`),
   CONSTRAINT `user_FK2` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`),
-  CONSTRAINT `table_FK1` FOREIGN KEY (`tableID`) REFERENCES `table` (`tableID`)
+  CONSTRAINT `tables_FK1` FOREIGN KEY (`tableID`) REFERENCES `tables` (`tableID`)
 ) ENGINE=INNODB DEFAULT CHARSET=UTF8;
 
 CREATE TABLE `item` (
@@ -69,7 +71,7 @@ CREATE TABLE `item` (
   UNIQUE KEY `Unique_itemID` (`itemID`)
 ) ENGINE=INNODB DEFAULT CHARSET=UTF8;
 
-CREATE TABLE `order` (
+CREATE TABLE `orders` (
   `orderID` INT NOT NULL AUTO_INCREMENT,
   `order_type` VARCHAR(255) NOT NULL,
   `order_status` VARCHAR(255) NOT NULL,
@@ -77,12 +79,13 @@ CREATE TABLE `order` (
   `order_created_dt` DATETIME NOT NULL,
   `order_updated_dt` DATETIME DEFAULT NULL,
   `updated_by` VARCHAR(255) DEFAULT NULL,
-  `tableID` INT NOT NULL,
-  `deliveryID` INT NOT NULL,
+  `tableID` INT DEFAULT NULL,
+  `deliveryID` INT DEFAULT NULL,
+  `reservationID` INT DEFAULT NULL,
   PRIMARY KEY (`orderID`),
   UNIQUE KEY `Unique_orderID` (`orderID`),
   KEY `tableID` (`tableID`),
-  CONSTRAINT `table_FK2` FOREIGN KEY (`tableID`) REFERENCES `table` (`tableID`)
+  CONSTRAINT `tables_FK2` FOREIGN KEY (`tableID`) REFERENCES `tables` (`tableID`)
 ) ENGINE=INNODB DEFAULT CHARSET=UTF8;
 
 CREATE TABLE `order_item` (
@@ -142,9 +145,9 @@ CREATE TABLE `deliveryman` (
 ) ENGINE=INNODB DEFAULT CHARSET=UTF8;
 
 
-ALTER TABLE `order` ADD CONSTRAINT `delivery_FK1` FOREIGN KEY (`deliveryID`) REFERENCES `delivery` (`deliveryID`);
-ALTER TABLE `order_item` ADD CONSTRAINT `order_FK1` FOREIGN KEY (`orderID`) REFERENCES `order` (`orderID`);
-ALTER TABLE `payment` ADD CONSTRAINT `order_FK2` FOREIGN KEY (`orderID`) REFERENCES `order` (`orderID`);
-ALTER TABLE `delivery` ADD CONSTRAINT `order_FK3` FOREIGN KEY (`orderID`) REFERENCES `order` (`orderID`);
+ALTER TABLE `orders` ADD CONSTRAINT `delivery_FK1` FOREIGN KEY (`deliveryID`) REFERENCES `delivery` (`deliveryID`);
+ALTER TABLE `order_item` ADD CONSTRAINT `orders_FK1` FOREIGN KEY (`orderID`) REFERENCES `orders` (`orderID`);
+ALTER TABLE `payment` ADD CONSTRAINT `orders_FK2` FOREIGN KEY (`orderID`) REFERENCES `orders` (`orderID`);
+ALTER TABLE `delivery` ADD CONSTRAINT `orders_FK3` FOREIGN KEY (`orderID`) REFERENCES `orders` (`orderID`);
 ALTER TABLE `delivery` ADD CONSTRAINT `deliverymanID_FK1` FOREIGN KEY (`deliverymanID`) REFERENCES `deliveryman` (`deliverymanID`);
 ALTER TABLE `deliveryman` ADD CONSTRAINT `delivery_FK2` FOREIGN KEY (`deliveryID`) REFERENCES `delivery` (`deliveryID`);
