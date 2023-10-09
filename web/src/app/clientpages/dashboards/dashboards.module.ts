@@ -16,10 +16,11 @@ import { OrdersComponent } from './orders/orders.component';
 import { DeliveryComponent } from './delivery/delivery.component';
 import { SettingsComponent } from './settings/settings.component';
 import {ChangePasswordComponent} from "./changePassword/changePassword.component";
+import { PaymentComponent } from './payment/payment.component';
 
 
 @NgModule({
-  declarations: [DefaultComponent, UsersComponent, MenusComponent, TablesComponent, OrdersComponent, DeliveryComponent, SettingsComponent, ChangePasswordComponent],
+  declarations: [DefaultComponent, UsersComponent, MenusComponent, TablesComponent, OrdersComponent, DeliveryComponent, SettingsComponent, ChangePasswordComponent, PaymentComponent],
     imports: [
         CommonModule,
         FormsModule,
