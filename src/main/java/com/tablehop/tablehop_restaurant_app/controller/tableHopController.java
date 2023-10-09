@@ -133,7 +133,7 @@ public class tableHopController {
         Date itemCreatedDt = new Date();
         Timestamp currentTimestamp = new Timestamp(itemCreatedDt.getTime());
 
-        tableHopService.addMenu(itemCategory, itemName, itemDescription, itemPrice, itemRemark, itemStatus, itemCreatedDt, "Admin", filePath);
+        tableHopService.addMenu(itemCategory, itemName, itemDescription, itemPrice, itemRemark, itemStatus, itemCreatedDt, "Admin", uniqueFileName);
         return ResponseEntity.ok("Product created successfully.");
     }
 
@@ -145,26 +145,34 @@ public class tableHopController {
                                            @RequestParam("item_price") String itemPrice,
                                            @RequestParam("item_remark") String itemRemark,
                                            @RequestParam("item_status") String itemStatus,
-                                           @RequestParam("image") MultipartFile image) throws IOException {
-        String originalFilename = image.getOriginalFilename();
-        String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
-
-        String uniqueFileName = UUID.randomUUID().toString() + fileExtension;
-
-        String projectRoot = System.getProperty("user.dir"); // Get the project root directory
-        String fullUploadDirectory = projectRoot + File.separator + uploadDirectory;
-
-        File directory = new File(fullUploadDirectory);
-        if (!directory.exists()) {
-            directory.mkdirs();
-        }
-        // Save the file to the specified directory
-        String filePath = fullUploadDirectory + File.separator + uniqueFileName;
-        image.transferTo(new File(filePath));
+                                           @RequestParam(name = "image", required = false) String image,
+                                           @RequestParam(name = "imageFile", required = false) MultipartFile imageFile) throws IOException {
         Date itemCreatedDt = new Date();
         Timestamp currentTimestamp = new Timestamp(itemCreatedDt.getTime());
 
-        tableHopService.modifyMenu(itemID, itemCategory, itemName, itemDescription, itemPrice, itemRemark, itemStatus, itemCreatedDt, "Admin", filePath);
+        if(image.equals("null")){
+            String originalFilename = imageFile.getOriginalFilename();
+            String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+
+            String uniqueFileName = UUID.randomUUID().toString() + fileExtension;
+            log.info("file name " + uniqueFileName);
+
+            String projectRoot = System.getProperty("user.dir"); // Get the project root directory
+            String fullUploadDirectory = projectRoot + File.separator + uploadDirectory;
+
+            File directory = new File(fullUploadDirectory);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+            // Save the file to the specified directory
+            String filePath = fullUploadDirectory + File.separator + uniqueFileName;
+            imageFile.transferTo(new File(filePath));
+
+            tableHopService.modifyMenu(itemID, itemCategory, itemName, itemDescription, itemPrice, itemRemark, itemStatus, itemCreatedDt, "Admin", uniqueFileName);
+        } else {
+            tableHopService.modifyMenu(itemID, itemCategory, itemName, itemDescription, itemPrice, itemRemark, itemStatus, itemCreatedDt, "Admin", image);
+        }
+
         return ResponseEntity.ok("Product created successfully.");
     }
 
