@@ -7,9 +7,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OrdersComponent implements OnInit {
 
+  
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  ViewDetails :boolean = true
+  visible:boolean = false
+
+  onClick(){
+    this.ViewDetails = !this.ViewDetails
+    this.visible = !this.visible
   }
 
 }
