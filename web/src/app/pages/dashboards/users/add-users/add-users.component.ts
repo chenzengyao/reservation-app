@@ -52,7 +52,7 @@ export class AddUsersComponent implements OnInit {
     if (this.addUserForm.invalid) {
       return;
     } else {
-      this.authenticationService.checkExistEmail(this.f.username.value).subscribe(data => {
+      this.authenticationService.checkExistEmail(this.f.email.value).subscribe(data => {
         if (data == 1) {
           alert('This email account already exist.');
         }else{
