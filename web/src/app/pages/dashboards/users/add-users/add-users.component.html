@@ -8,18 +8,21 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-6">
+                          <ngb-alert type="success" *ngIf="successmsg" [dismissible]="false">The default password will be sent to your email.
+                        </ngb-alert>
                             <div class="mb-3">
-                              <ngb-alert type="success" *ngIf="successmsg" [dismissible]="false">The default password will be sent to your email.
-                              </ngb-alert>
-                                <label for="" class="form-label">Name</label>
-                                <input type="text" name="" id="" class="form-control" formControlName="username" maxlength="80" placeholder="Please enter username...">
-                                  <div *ngIf="submitted && addUserForm.get('username').errors" class="invalid-feedback">
-                                  <div *ngIf="addUserForm.get('username').errors.required">Username is required</div>
-                                  <div *ngIf="addUserForm.get('username').errors.minlength">Username should be more than 3 characters</div>
+
+                                <label>Name</label>
+                                <input type="text" class="form-control" formControlName="username" maxlength="80"
+                                       [ngClass]="{ 'is-invalid': submitted && f.username.errors }" id="username"
+                                       placeholder="Username">
+                                  <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                                  <div *ngIf="f.username.errors.required">Username is required</div>
+                                  <div *ngIf="f.username.errors.minlength">Username should be more than 3 characters</div>
                                   </div>
                             </div>
                             <div class="mb-3">
-                                <label for="" class="form-label">Birth of Date</label>
+                                <label>Birth of Date</label>
                                 <input type="text" formControlName="dob" class="form-control" onfocus="(this.type='date')"
                                        [ngClass]="{ 'is-invalid': submitted && f.dob.errors }" id="dob" name ="dobdate"
                                        placeholder="Date of Birth" [min]="minDate" [max]="maxDate" />
@@ -28,8 +31,10 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                              <label for="" class="form-label">Role</label>
-                              <select name="role" class="form-select" formControlName="role" id="role">
+                              <label>Role</label>
+                              <select name="role" class="form-select" formControlName="role" id="role"
+                                      [ngClass]="{ 'is-invalid': submitted && f.role.errors }"
+                                      placeholder="Username">
                                 <option selected="selected" disabled hidden>Please select role...</option>
                                 <option value="Member">Member</option>
                                 <option value="Admin">Admin</option>
@@ -42,7 +47,7 @@
                         </div>
                         <div class="col-6">
                             <div class="mb-3">
-                                <label for="" class="form-label">Email</label>
+                                <label>Email</label>
                               <input type="email" formControlName="email" class="form-control"
                                      [ngClass]="{ 'is-invalid': submitted && f.email.errors }" id="email" placeholder="Please enter email..." />
 
@@ -52,7 +57,7 @@
                               </div>
                             </div>
                             <div class="mb-3">
-                                <label for="" class="form-label">Phone</label>
+                                <label for="phone_no" class="form-label">Phone</label>
                                 <input type="text" formControlName="phone_no" class="form-control"
                                        [ngClass]="{ 'is-invalid': submitted && f.phone_no.errors }" id="phone_no" placeholder="Please enter phone number..." maxlength = "8" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"/>
 

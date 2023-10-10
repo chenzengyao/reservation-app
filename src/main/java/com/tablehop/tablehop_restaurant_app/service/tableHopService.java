@@ -85,12 +85,12 @@ public class tableHopService {
         user.setPhone_no(phone_no);
         user.setPassword(password);
         user.setDob(dob);
-        user.setUser_type("member");
+        user.setUser_type("Member");
         user.setUser_access_type("1");
         userRepository.saveAndFlush(user);
     }
 
-    public void adminRegister(String username, String email, String phone_no, String dob, String role) {
+    public void adminRegister(String username, String email, String phone_no, String dob, String role, String user_access_type) {
         String temporaryPassword = generatePassword(8);
         // Init
         User user = new User();
@@ -100,7 +100,7 @@ public class tableHopService {
         user.setPhone_no(phone_no);
         user.setDob(dob);
         user.setUser_type(role);
-        user.setUser_access_type("1");
+        user.setUser_access_type(user_access_type);
         userRepository.saveAndFlush(user);
 
         String subject = "Welcome to TableHop";

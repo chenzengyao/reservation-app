@@ -95,7 +95,7 @@
 
                 <div class="mt-4 d-grid">
                   <!--                  <button class="btn btn-primary" type="submit" [disabled]="userprofileForm.invalid || !strongPassword || working">Register</button>-->
-                  <button class="btn btn-primary" *ngIf="update == false" id="edit" (click)="edit()">Edit</button>
+                  <button class="btn btn-primary" type="submit" *ngIf="update == false" id="edit" (click)="edit()">Edit</button>
                   <button class="btn btn-primary" type="submit" *ngIf="update == true" id="update">Update</button>
                 </div>
               </div>

@@ -19,6 +19,7 @@ export class AddUsersComponent implements OnInit {
   minDate: string;
   maxDate: string;
   year: number = new Date().getFullYear();
+  user_access_type: any;
 
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private authenticationService: AuthenticationService,
               private userService: UserProfileService) { }
@@ -30,7 +31,7 @@ export class AddUsersComponent implements OnInit {
     this.minDate = new Date(this.year - 100, 0, 1).toISOString().split('T')[0];
     this.maxDate = new Date(this.year - 12, 0, 1).toISOString().split('T')[0];
     this.addUserForm = this.formBuilder.group({
-      username: ['', Validators.required,Validators.minLength(3)],
+      username: ['', [Validators.required,Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       phone_no: ['', [Validators.required, Validators.minLength(8),Validators.maxLength(8),Validators.pattern(
         /[0-9]/)]],
@@ -53,22 +54,32 @@ export class AddUsersComponent implements OnInit {
       return;
     } else {
       this.authenticationService.checkExistEmail(this.f.email.value).subscribe(data => {
+        console.log(data);
         if (data == 1) {
           alert('This email account already exist.');
-        }else{
+        }else {
+
           const username = this.f.username.value;
           const email = this.f.email.value;
           const phone_no = this.f.phone_no.value;
           const dob = this.f.dob.value;
           const role = this.f.role.value;
           console.log(username, email, phone_no, dob, role);
-          this.authenticationService.adminRegister(username, email, phone_no, dob, role).subscribe(data => {
-            this.successmsg = true;
-            if (this.successmsg) {
-              this.router.navigate(['/admin/users/listing']);
-            }
-            alert('Register Successfully.');
-          });
+          if (this.f.role.value == 'Admin') {
+            this.user_access_type = 3;}
+          else if (this.f.role.value == 'Delivery Man') {
+            this.user_access_type= 2;}
+          else if (this.f.role.value == 'Member') {
+            this.user_access_type = 1;}
+
+            this.authenticationService.adminRegister(username, email, phone_no, dob, role, this.user_access_type).subscribe(data => {
+              this.successmsg = true;
+              if (this.successmsg) {
+                this.router.navigate(['/admin/users/listing']);
+              }
+              alert('Register Successfully.');
+            });
+
         }
       });
     }

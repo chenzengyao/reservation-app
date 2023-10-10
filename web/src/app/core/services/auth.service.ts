@@ -44,8 +44,8 @@ export class AuthenticationService {
       /**
        * Admin Performs the register
        */
-      adminRegister(username: String, email: String, phone_no: String, dob: String, role: String) {
-        return this.http.post(`/admin/users/add/register?username=` + username + '&email=' + email + '&phone_no=' + phone_no + '&dob=' + dob + '&role=' + role ,{ observe: 'response' });
+      adminRegister(username: String, email: String, phone_no: String, dob: String, role: String, user_access_type: String) {
+        return this.http.post(`/admin/users/add/register?username=` + username + '&email=' + email + '&phone_no=' + phone_no + '&dob=' + dob + '&role=' + role + '&user_access_type=' + user_access_type ,{ observe: 'response' });
       }
 
 

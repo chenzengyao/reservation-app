@@ -61,7 +61,7 @@ export class SignupComponent implements OnInit {
     this.minDate = new Date(this.year - 100, 0, 1).toISOString().split('T')[0];
     this.maxDate = new Date(this.year - 12, 0, 1).toISOString().split('T')[0];
     this.signupForm = this.formBuilder.group({
-      username: ['', Validators.required,Validators.minLength(3)],
+      username: ['', [Validators.required,Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       phone_no: ['', [Validators.required, Validators.minLength(8),Validators.maxLength(8),Validators.pattern(
         /[0-9]/)]],

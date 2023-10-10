@@ -38,9 +38,9 @@ public class tableHopController {
     }
 
     @RequestMapping(value = "/admin/users/add/register", method = RequestMethod.POST)
-    public void adminRegister(@RequestParam String username, @RequestParam String email, @RequestParam String phone_no, @RequestParam String dob, @RequestParam String role) {
+    public void adminRegister(@RequestParam String username, @RequestParam String email, @RequestParam String phone_no, @RequestParam String dob, @RequestParam String role, @RequestParam String user_access_type) {
         log.info("admin register -----> controller");
-        tableHopService.adminRegister(username, email, phone_no, dob, role);
+        tableHopService.adminRegister(username, email, phone_no, dob, role, user_access_type);
     }
 
     @RequestMapping(value = "/users/checkExistEmail", method = RequestMethod.GET)
