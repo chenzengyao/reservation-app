@@ -81,6 +81,12 @@ public class tableHopController {
         tableHopService.updateNewPassword(email, new_password);
     }
 
+    @RequestMapping(value = "/users/resetPassword", method = RequestMethod.POST)
+    public void updateNewPassword(@RequestParam String email) {
+        log.info("users resetPassword -----> controller");
+        tableHopService.resetPassword(email);
+    }
+
     @RequestMapping(value = "/user/profile", method = RequestMethod.GET)
     public User getUserProfile(@RequestParam String email) {
         log.info("user getUserProfile -----> controller");
@@ -267,4 +273,15 @@ public class tableHopController {
         return ResponseEntity.ok(result);
     }
 
+    @RequestMapping(value = "/admin/getAllUser", method = RequestMethod.GET)
+    public List<User> getAllUser() {
+        log.info("admin get all user -----> controller");
+        return tableHopService.getAllUser();
+    }
+
+    @RequestMapping(value = "/admin/deleteUser", method = RequestMethod.POST)
+    public void deleteUser(@RequestParam String userID) {
+        log.info("admin delete user -----> controller");
+        tableHopService.deleteUser(userID);
+    }
 }
