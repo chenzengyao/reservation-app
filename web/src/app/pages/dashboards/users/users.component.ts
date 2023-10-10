@@ -37,6 +37,7 @@ export class UsersComponent implements OnInit {
     this.userProfileService.getAllUser().subscribe(data => {
       this.users = data.body as User[];
       console.log(this.users);
+      location.reload();
     })
   }
 
