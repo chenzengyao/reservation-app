@@ -1,5 +1,7 @@
 <div class="container-fluid">
     <app-page-title title="New User" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+    <form class="needs-validation" name="addUserForm" [formGroup]="addUserForm" (ngSubmit)="onSubmit()"
+          novalidate>
     <div class="row">
         <div class="col-8">
             <div class="card">
@@ -7,43 +9,57 @@
                     <div class="row">
                         <div class="col-6">
                             <div class="mb-3">
+                              <ngb-alert type="success" *ngIf="successmsg" [dismissible]="false">The default password will be sent to your email.
+                              </ngb-alert>
                                 <label for="" class="form-label">Name</label>
-                                <input type="text" name="" id="" class="form-control" placeholder="Please enter name...">
+                                <input type="text" name="" id="" class="form-control" formControlName="username" maxlength="80" placeholder="Please enter username...">
+                                  <div *ngIf="submitted && addUserForm.get('username').errors" class="invalid-feedback">
+                                  <div *ngIf="addUserForm.get('username').errors.required">Username is required</div>
+                                  <div *ngIf="addUserForm.get('username').errors.minlength">Username should be more than 3 characters</div>
+                                  </div>
                             </div>
                             <div class="mb-3">
                                 <label for="" class="form-label">Birth of Date</label>
-                                <input type="date" name="" id="" class="form-control" placeholder="Birth of date...">
+                                <input type="text" formControlName="dob" class="form-control" onfocus="(this.type='date')"
+                                       [ngClass]="{ 'is-invalid': submitted && f.dob.errors }" id="dob" name ="dobdate"
+                                       placeholder="Date of Birth" [min]="minDate" [max]="maxDate" />
+                                <div *ngIf="submitted && f.dob.errors" class="invalid-feedback">
+                                  <div *ngIf="f.dob.errors.required">Date of Birth is required</div>
+                                </div>
                             </div>
                             <div class="mb-3">
-                                <label for="" class="form-label">Gender</label>
-                                <div class="d-flex gap-4">
-                                    <div class="form-check">
-                                        <input type="radio" class="form-check-input" id="male" name="gender">
-                                        <label for="male" class="form-check-label">Male</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="radio" class="form-check-input" id="female" name="gender">
-                                        <label for="female" class="form-check-label">Female</label>
-                                    </div>
-                                </div>
+                              <label for="" class="form-label">Role</label>
+                              <select name="role" class="form-select" formControlName="role" id="role">
+                                <option selected="selected" disabled hidden>Please select role...</option>
+                                <option value="Member">Member</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Delivery Man">Delivery Man</option>
+                              </select>
+                              <div *ngIf="submitted && f.role.errors" class="invalid-feedback">
+                                <div *ngIf="f.role.errors.required">Role is required</div>
+                              </div>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="mb-3">
                                 <label for="" class="form-label">Email</label>
-                                <input type="email" name="" id="" class="form-control" placeholder="Please enter email...">
+                              <input type="email" formControlName="email" class="form-control"
+                                     [ngClass]="{ 'is-invalid': submitted && f.email.errors }" id="email" placeholder="Please enter email..." />
+
+                              <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                                <div *ngIf="f.email.errors.required">Email is required</div>
+                                <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+                              </div>
                             </div>
                             <div class="mb-3">
                                 <label for="" class="form-label">Phone</label>
-                                <input type="tel" name="" id="" class="form-control" placeholder="Please enter phone number...">
-                            </div>
-                            <div class="mb-3">
-                                <label for="" class="form-label">Role</label>
-                                <select name="" class="form-select" id="">
-                                    <option value="">Pending</option>
-                                    <option value="">Confirmed</option>
-                                    <option value="">Cancelled</option>
-                                </select>
+                                <input type="text" formControlName="phone_no" class="form-control"
+                                       [ngClass]="{ 'is-invalid': submitted && f.phone_no.errors }" id="phone_no" placeholder="Please enter phone number..." maxlength = "8" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"/>
+
+                                <div *ngIf="submitted && f.phone_no.errors" class="invalid-feedback">
+                                  <div *ngIf="f.phone_no.errors.required">Phone Number is required</div>
+                                  <div *ngIf="f.phone_no.errors.pattern||f.phone_no.errors.minlength||f.phone_no.errors.maxlength">Phone number should be 8 numbers</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -56,7 +72,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="d-flex w-100 gap-3">
-                                <button class="btn btn-primary btn-sm" (click)="submitUser()">Submit</button>
+                                <button class="btn btn-primary btn-sm" type="submit">Submit</button>
                                 <a class="btn btn-debug btn-sm" href="/admin/users/listing">Cancel</a>
                             </div>
                         </div>
@@ -65,4 +81,5 @@
             </div>
         </div>
     </div>
+    </form>
 </div>

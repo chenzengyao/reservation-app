@@ -3,7 +3,10 @@ package com.tablehop.tablehop_restaurant_app.service;
 import com.tablehop.tablehop_restaurant_app.controller.tableHopController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import com.tablehop.tablehop_restaurant_app.entity.User;
 import com.tablehop.tablehop_restaurant_app.entity.Item;
@@ -26,6 +29,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -61,8 +65,17 @@ public class tableHopService {
     @Resource
     private tableRepository tableRepository;
 
+    @Autowired
+    private JavaMailSender javaMailSender;
+
     @Value("${image.upload.directory}")
     private String imageUploadDirectory;
+
+    private static final String UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static final String LOWER = "abcdefghijklmnopqrstuvwxyz";
+    private static final String DIGITS = "0123456789";
+    private static final String SPECIAL_CHARACTERS = "@$!%*#?&^_-";
+    private static final SecureRandom random = new SecureRandom();
 
     public void register(String username, String email, String phone_no, String password, String dob) {
         // Init
@@ -75,6 +88,42 @@ public class tableHopService {
         user.setUser_type("member");
         user.setUser_access_type("1");
         userRepository.saveAndFlush(user);
+    }
+
+    public void adminRegister(String username, String email, String phone_no, String dob, String role) {
+        String temporaryPassword = generatePassword(8);
+        // Init
+        User user = new User();
+        user.setUserName(username);
+        user.setEmail(email);
+        user.setPassword(temporaryPassword);
+        user.setPhone_no(phone_no);
+        user.setDob(dob);
+        user.setUser_type(role);
+        user.setUser_access_type("1");
+        userRepository.saveAndFlush(user);
+
+        String subject = "Welcome to TableHop";
+        String body = "Subject: Welcome to TableHop - Your Account Information\n\n"
+                + "Dear " + username + ",\n\n"
+                + "We are thrilled to welcome you to TableHop, your go-to restaurant app for discovering amazing dining experiences! Thank you for choosing us to enhance your culinary journey.\n\n"
+                + "To get started, here are your login credentials:\n\n"
+                + "Username: " + email + "\n"
+                + "Temporary Password: " + temporaryPassword + "\n\n"
+                + "For security reasons, we've provided you with a temporary password. We strongly recommend that you change your password after your first login. To do so, please follow these simple steps:\n\n"
+                + "1. Login to the TableHop app on your device.\n"
+                + "2. Click on the \"Login\" button.\n"
+                + "3. Enter your email address and the temporary password provided above.\n"
+                + "4. Once logged in, go to your profile settings.\n"
+                + "5. Select \"Change Password\" and follow the prompts to set your own secure password.\n\n"
+                + "Your account security is essential to us, and we encourage you to choose a strong password that is unique to TableHop. It should include a combination of uppercase and lowercase letters, numbers, and special characters.\n\n"
+                + "TableHop offers an array of features to make your dining experience unforgettable, such as browsing restaurants, making reservations, and discovering exclusive deals. Explore and savor the finest cuisine your city has to offer.\n\n"
+                + "If you have any questions, concerns, or need assistance with anything related to TableHop, please do not hesitate to contact our customer support team at tablehopSG@gmail.com.\n\n"
+                + "Thank you for choosing TableHop. We look forward to serving you a delightful dining experience!\n\n"
+                + "Best Regards,\n\n"
+                + "TableHop Customer Support Team\n";
+
+        sendEmail(email, subject, body);
     }
 
     public int checkExistEmail(String email) {
@@ -486,6 +535,32 @@ public class tableHopService {
         log.info("tableEntity details {}", tableEntity);
 
         tableRepository.saveAndFlush(tableEntity);
+    }
+
+    public void sendEmail(String to, String subject, String body) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(body);
+        javaMailSender.send(message);
+    }
+
+    public static String generatePassword(int length) {
+        StringBuilder password = new StringBuilder();
+
+        // Ensure that the password has at least one uppercase letter, one lowercase letter, one digit, and one special character
+        password.append(UPPER.charAt(random.nextInt(UPPER.length())));
+        password.append(LOWER.charAt(random.nextInt(LOWER.length())));
+        password.append(DIGITS.charAt(random.nextInt(DIGITS.length())));
+        password.append(SPECIAL_CHARACTERS.charAt(random.nextInt(SPECIAL_CHARACTERS.length())));
+
+        // Generate the remaining characters randomly
+        String allCharacters = UPPER + LOWER + DIGITS + SPECIAL_CHARACTERS;
+        for (int i = 4; i < length; i++) {
+            password.append(allCharacters.charAt(random.nextInt(allCharacters.length())));
+        }
+
+        return password.toString();
     }
 
 }

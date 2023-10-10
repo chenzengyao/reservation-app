@@ -41,6 +41,13 @@ export class AuthenticationService {
         return this.http.post(`/users/register?username=` + username + '&email=' + email + '&phone_no=' + phone_no + '&password=' + password + '&dob=' + dob,{ observe: 'response' });
       }
 
+      /**
+       * Admin Performs the register
+       */
+      adminRegister(username: String, email: String, phone_no: String, dob: String, role: String) {
+        return this.http.post(`/admin/users/add/register?username=` + username + '&email=' + email + '&phone_no=' + phone_no + '&dob=' + dob + '&role=' + role ,{ observe: 'response' });
+      }
+
 
     /**
      * Find exists email
@@ -120,5 +127,6 @@ export class AuthenticationService {
         // logout the user
         getFirebaseBackend().logout();
     }
+
 }
 
