@@ -19,8 +19,13 @@ export class UserProfileService {
        return this.http.post("/user/edituserprofile", userProfile, { observe: 'response' })
     }
 
+    getAllUser() {
+      return this.http.get("/admin/getAllUser", { observe: 'response' });
+    }
 
-    // register(username: String, email: String, password: String, dob: String) {
-    //     return this.http.post(`/users/register`, username, email, password, dob);
-    // }
+    deleteUser(userID: number) {
+      console.log(userID);
+      return this.http.post("/admin/deleteUser?userID=" + userID, { observe: 'response' });
+    }
+
 }

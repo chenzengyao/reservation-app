@@ -267,4 +267,15 @@ public class tableHopController {
         return ResponseEntity.ok(result);
     }
 
+    @RequestMapping(value = "/admin/getAllUser", method = RequestMethod.GET)
+    public List<User> getAllUser() {
+        log.info("admin get all user -----> controller");
+        return tableHopService.getAllUser();
+    }
+
+    @RequestMapping(value = "/admin/deleteUser", method = RequestMethod.POST)
+    public void deleteUser(@RequestParam String userID) {
+        log.info("admin delete user -----> controller");
+        tableHopService.deleteUser(userID);
+    }
 }

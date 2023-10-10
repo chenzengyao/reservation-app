@@ -563,4 +563,12 @@ public class tableHopService {
         return password.toString();
     }
 
+    public List<User> getAllUser() {
+        return userRepository.getAllUser();
+    }
+
+    public void deleteUser(String userID) {
+        userRepository.deleteById(Integer.valueOf(userID));
+    }
+
 }
