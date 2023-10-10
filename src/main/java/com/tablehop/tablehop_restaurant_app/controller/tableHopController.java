@@ -81,6 +81,12 @@ public class tableHopController {
         tableHopService.updateNewPassword(email, new_password);
     }
 
+    @RequestMapping(value = "/users/resetPassword", method = RequestMethod.POST)
+    public void updateNewPassword(@RequestParam String email) {
+        log.info("users resetPassword -----> controller");
+        tableHopService.resetPassword(email);
+    }
+
     @RequestMapping(value = "/user/profile", method = RequestMethod.GET)
     public User getUserProfile(@RequestParam String email) {
         log.info("user getUserProfile -----> controller");

@@ -114,10 +114,7 @@ export class AuthenticationService {
      * @param email email
      */
     resetPassword(email: string) {
-        return getFirebaseBackend().forgetPassword(email).then((response: any) => {
-            const message = response.data;
-            return message;
-        });
+        return this.http.post(`/users/resetPassword?email=` + email ,{ observe: 'response' });
     }
 
     /**

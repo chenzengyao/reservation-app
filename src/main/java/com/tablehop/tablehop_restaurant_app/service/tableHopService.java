@@ -103,9 +103,8 @@ public class tableHopService {
         user.setUser_access_type("1");
         userRepository.saveAndFlush(user);
 
-        String subject = "Welcome to TableHop";
-        String body = "Subject: Welcome to TableHop - Your Account Information\n\n"
-                + "Dear " + username + ",\n\n"
+        String subject = "Welcome to TableHop - Your Account Information\n\n";
+        String body = "Dear " + username + ",\n\n"
                 + "We are thrilled to welcome you to TableHop, your go-to restaurant app for discovering amazing dining experiences! Thank you for choosing us to enhance your culinary journey.\n\n"
                 + "To get started, here are your login credentials:\n\n"
                 + "Username: " + email + "\n"
@@ -197,6 +196,36 @@ public class tableHopService {
         User set_new_password = userRepository.checkExistEmail(email);
         set_new_password.setPassword(new_password);
         userRepository.saveAndFlush(set_new_password);
+    }
+
+    public void resetPassword(String email) {
+        User user = userRepository.checkExistEmail(email);
+        if(Objects.isNull(user)){
+            return;
+        }
+        String temporaryPassword = generatePassword(8);
+        user.setPassword(temporaryPassword);
+
+        String subject = "TableHop Restaurant App - Password Reset";
+        String body = "Dear " + user.getUserName() + ",\n\n"
+                + "We hope this message finds you well. It appears that you have requested to reset your password for your TableHop Restaurant App account. Your security is important to us, and we are here to assist you in this process.\n\n"
+                + "To complete the password reset, please use the following temporary password:\n\n"
+                + "Temporary Password: " + temporaryPassword + "\n\n"
+                + "**Please note:** This temporary password is valid for a limited time and is for a single use only. We recommend that you reset your password as soon as possible to maintain the security of your account.\n\n"
+                + "To reset your password, please follow these steps:\n\n"
+                + "1. Open the TableHop Restaurant App on your device.\n"
+                + "2. Enter your email address and the temporary password provided above.\n"
+                + "3. Click on the \"Login\" button.\n"
+                + "4. Once logged in, go to your profile settings.\n"
+                + "5. Select \"Change Password\" and follow the prompts to set your own secure password.\n\n"
+                + "Your account security is essential to us, and we encourage you to choose a strong password that is unique to TableHop. It should include a combination of uppercase and lowercase letters, numbers, and special characters.\n\n"
+                + "Once you have successfully reset your password, you will be able to access your TableHop Restaurant App account with your new credentials.\n\n"
+                + "If you did not request this password reset or have any concerns about the security of your account, please contact our support team immediately at tablehopSG@gmail.com.\n\n"
+                + "Thank you for choosing TableHop for your restaurant dining experience. We apologize for any inconvenience this password reset may have caused and appreciate your cooperation in maintaining the security of your account.\n\n"
+                + "Best Regards,\n\n"
+                + "TableHop Customer Support Team\n";
+        sendEmail(email, subject, body);
+        userRepository.saveAndFlush(user);
     }
 
     public List<Item> getAllMenu() {
