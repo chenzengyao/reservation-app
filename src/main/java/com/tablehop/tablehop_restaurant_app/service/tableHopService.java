@@ -9,6 +9,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import com.tablehop.tablehop_restaurant_app.entity.User;
+import com.tablehop.tablehop_restaurant_app.entity.Delivery;
 import com.tablehop.tablehop_restaurant_app.entity.Item;
 import com.tablehop.tablehop_restaurant_app.entity.Order;
 import com.tablehop.tablehop_restaurant_app.entity.OrderItem;
@@ -20,12 +21,14 @@ import com.tablehop.tablehop_restaurant_app.repository.orderItemRepository;
 import com.tablehop.tablehop_restaurant_app.repository.orderRepository;
 import com.tablehop.tablehop_restaurant_app.repository.reservationRepository;
 import com.tablehop.tablehop_restaurant_app.repository.tableRepository;
+import com.tablehop.tablehop_restaurant_app.repository.deliveryRepository;
 
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -64,6 +67,9 @@ public class tableHopService {
 
     @Resource
     private tableRepository tableRepository;
+
+    @Resource
+    private deliveryRepository deliveryRepository;
 
     @Autowired
     private JavaMailSender javaMailSender;
@@ -279,47 +285,77 @@ public class tableHopService {
 
         Map<String, Object> reservation = (Map<String, Object>) data.get("reservation");
         Map<String, Object> order = (Map<String, Object>) data.get("order");
+        Map<String, Object> delivery = (Map<String, Object>) data.get("delivery");
         List<Map<String, Object>> orderItemsList = (List<Map<String, Object>>) data.get("orderItemsList");
 
         log.info("reservation details {}", reservation);
         log.info("order details {}", order);
         log.info("orderItemlist details {}", orderItemsList);
-
-        Reservation reservationEntity = new Reservation();
-        reservationEntity.setPax_no((Integer) reservation.get("pax_no"));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-        LocalDateTime dateTime = LocalDateTime.parse((String) reservation.get("reservation_dt"), formatter);
-        Timestamp timestamp = Timestamp.valueOf(dateTime);
-        log.info("reservation_dt {}", timestamp);
-        Timestamp reservation_dt = Timestamp.valueOf(dateTime);
-        reservationEntity.setReservation_dt(reservation_dt);
-        reservationEntity.setReserve_status((String) reservation.get("reserve_status"));
-        reservationEntity.setReserve_remark((String) reservation.get("reserve_remark"));
-        reservationEntity.setReserve_created_dt(new Timestamp(new Date().getTime()));
-        reservationEntity.setTableID((Integer) reservation.get("table_id"));
-        // TODO : need to change
-        reservationEntity.setUserID(1);
-        reservationEntity = reservationRepository.saveAndFlush(reservationEntity);
-        log.info("save reservation done {}", reservationEntity);
 
-        User findUser = userRepository.findById(reservationEntity.getUserID()).orElse(null);
+        // TODO : need to change
+        User findUser = userRepository.findById(1).orElse(null);
+
         Order orderEntity = new Order();
-        orderEntity.setOrder_status("Pending");
-        orderEntity.setReservationID(reservationEntity.getReservationID());
+        orderEntity.setOrder_status((String) order.get("order_status"));
         orderEntity.setDeliverer_address(findUser.getAddress());
         orderEntity.setOrder_created_dt(new Date());
         orderEntity.setOrder_updated_dt(new Date());
-        orderEntity.setOrder_type("");
-        orderEntity.setTableID(reservationEntity.getTableID());
-        orderEntity.setDeliveryID(null);
+        orderEntity.setOrder_type((String) order.get("order_type"));
 
-        Order savedOrderEntity = orderRepository.saveAndFlush(orderEntity);
+        Reservation reservationEntity = new Reservation();
+        Delivery deliveryEntity = new Delivery();
+        Order savedOrderEntity = null;
+        if ("Reservation".equals(orderEntity.getOrder_type())) {
+            reservationEntity.setPax_no((Integer) reservation.get("pax_no"));
+            LocalDateTime dateTime = LocalDateTime.parse((String) reservation.get("reservation_dt"), formatter);
+            Timestamp timestamp = Timestamp.valueOf(dateTime);
+            log.info("reservation_dt {}", timestamp);
+            Timestamp reservation_dt = Timestamp.valueOf(dateTime);
+            reservationEntity.setReservation_dt(reservation_dt);
+            reservationEntity.setReserve_status("Pending");
+            reservationEntity.setReserve_remark((String) reservation.get("reserve_remark"));
+            reservationEntity.setReserve_created_dt(new Timestamp(new Date().getTime()));
+            reservationEntity.setTableID((Integer) reservation.get("table_id"));
+            // TODO : need to change
+            reservationEntity.setUserID(1);
+            reservationEntity = reservationRepository.saveAndFlush(reservationEntity);
+            log.info("save reservation done {}", reservationEntity);
+            orderEntity.setTableID(reservationEntity.getTableID());
+            orderEntity.setReservationID(reservationEntity.getReservationID());
+            savedOrderEntity = orderRepository.saveAndFlush(orderEntity);
+        } else if ("Delivery".equals(orderEntity.getOrder_type())) {
+            savedOrderEntity = orderRepository.saveAndFlush(orderEntity);
+            deliveryEntity.setDelivery_status((String) delivery.get("delivery_status"));
+            deliveryEntity.setDelivery_remark((String) delivery.get("delivery_remark"));
+            LocalDateTime dateTime = LocalDateTime.parse((String) delivery.get("delivery_start_dt"), formatter);
+            Timestamp timestamp = Timestamp.valueOf(dateTime);
+            log.info("delivery_start_dt {}", timestamp);
+            Timestamp delivery_start_dt = Timestamp.valueOf(dateTime);
+            deliveryEntity.setDelivery_start_dt(delivery_start_dt);
+            LocalDateTime dateTime2 = LocalDateTime.parse((String) delivery.get("delivery_completed_dt"), formatter);
+            Timestamp timestamp2 = Timestamp.valueOf(dateTime2);
+            log.info("delivery_completed_dt {}", timestamp2);
+            Timestamp delivery_completed_dt = Timestamp.valueOf(dateTime2);
+            deliveryEntity.setDelivery_completed_dt(delivery_completed_dt);
+            deliveryEntity.setArranged_by("Hardcode user: User A");
+            deliveryEntity.setOrderID(savedOrderEntity.getOrderID());
+            // todo update deliverymanID
+            deliveryEntity.setDeliverymanID("1");
+            Delivery savedDelivery = deliveryRepository.saveAndFlush(deliveryEntity);
+            savedOrderEntity.setDeliveryID(savedDelivery.getDeliveryID());
+            savedOrderEntity.setReservationID(null);
+            savedOrderEntity.setTableID(null);
+            savedOrderEntity = orderRepository.saveAndFlush(savedOrderEntity);
+        }
+
+        Order finalOrder = savedOrderEntity;
 
         List<OrderItem> orderItemEntity = new ArrayList<>();
-        if (orderItemsList.size() > 0) {
+        if (!Objects.isNull(finalOrder) && orderItemsList.size() > 0) {
             orderItemsList.forEach(item -> {
                 OrderItem orderItem = new OrderItem();
-                orderItem.setOrderID(savedOrderEntity.getOrderID());
+                orderItem.setOrderID(finalOrder.getOrderID());
                 orderItem.setItemID((Integer) item.get("item_id"));
                 orderItem.setOrder_quantity((Integer) item.get("order_quantity"));
                 orderItem.setItem_category((String) item.get("item_category"));
