@@ -1,10 +1,13 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { Delivery } from "src/app/core/models/delivery.models";
 import { Menu } from "src/app/core/models/menu.models";
 import { OrderItems } from "src/app/core/models/orderItems.models";
 import { Orders } from "src/app/core/models/orders.models";
 import { Reservation } from "src/app/core/models/reservation.models";
+import { DeliveryService } from "src/app/core/services/delivery.service";
 import { MenusService } from "src/app/core/services/menus.service";
+import { OrdersService } from "src/app/core/services/orders.service";
 import { ReservationService } from "src/app/core/services/reservation";
 import Swal from 'sweetalert2';
 
@@ -14,7 +17,11 @@ import Swal from 'sweetalert2';
   styleUrls: ["./add-orders.component.scss"],
 })
 export class AddOrdersComponent implements OnInit {
-  constructor(private menuService: MenusService, private reservationService: ReservationService, private router: Router) { }
+  constructor(private menuService: MenusService,
+    private reservationService: ReservationService,
+    private router: Router,
+    public orderService: OrdersService,
+    public deliveryService: DeliveryService) { }
 
   breadCrumbItems: Array<{}>;
   searchItem: string = "";
@@ -23,6 +30,7 @@ export class AddOrdersComponent implements OnInit {
   reservation: Reservation = new Reservation();
   order: Orders = new Orders();
   orderItemsList: OrderItems[] = [];
+  delivery: Delivery = new Delivery();
   menuList: Menu[] = [];
   tableList: any[] = [];
 
@@ -73,7 +81,6 @@ export class AddOrdersComponent implements OnInit {
   }
 
   submitOrder() {
-    console.log("this order: ", this.reservation, this.order, this.orderItemsList);
     if (this.reservation.table_id) {
       this.reservation.table_id = parseInt(this.reservation.table_id.toString());
     }
@@ -81,6 +88,8 @@ export class AddOrdersComponent implements OnInit {
     data['reservation'] = this.reservation;
     data['order'] = this.order;
     data['orderItemsList'] = this.orderItemsList;
+    data['delivery'] = this.delivery;
+    console.log("this data: ", data);
 
     this.reservationService.adminAddReservation(data).toPromise().then((res: any) => {
       console.log("res: ", res);

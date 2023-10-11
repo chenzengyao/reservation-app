@@ -4,9 +4,14 @@ import { Menu } from "../../../core/models/menu.models";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {OrderItems} from "../../../core/models/orderItems.models";
 import { Orders } from "src/app/core/models/orders.models";
+import { Delivery } from "src/app/core/models/delivery.models"
 import Swal from "sweetalert2";
 import { OrdersService} from "../../../core/services/orders.service";
 import { Router } from "@angular/router";
+import {SafeUrl} from "@angular/platform-browser";
+import {DomSanitizer} from '@angular/platform-browser';
+import { TablesService } from "../../../core/services/tables.service";
+import {Tables} from "../../../core/models/tables.models";
 
 @Component({
   selector: 'app-menus',
@@ -18,27 +23,62 @@ export class MenusComponent implements OnInit {
   constructor(private modalService: NgbModal,
               private menusService: MenusService,
               private orderService: OrdersService,
-              private router: Router) {
+              private router: Router,
+              private sanitizer: DomSanitizer,
+              private tableService: TablesService) {
   }
 
   menu: Menu[] = [];
+  table: Tables[] = [];
+  table_temp: Tables[] =[];
   selectedCategory: string="All";
   order: Orders = new Orders();
+  delivery: Delivery = new Delivery();
   orderItemsList: OrderItems[] = [];
   totalAmount=0;
   quantity: number[]=[]
   remark: String []=[];
+  status: string = "Available";
+
+  imagePath: any;
+  selectedFile: File | null = null;
+  selectedImage: string | ArrayBuffer | null = null;
+
+  selectedServiceType: string = 'dine'; // Default to 'Dine In'
+  selectedTableNumber: string = 'table1'; // Default table number
+  tablesList: Tables[] = [];
+
+  table_ID: number =null;
+  delivery_ID: number =null;
 
   ngOnInit(): void {
     this.menusService.getAllMenuUser().subscribe(data =>{
       this.menu = data.body as Menu[];
     })
+
+    this.tableService.adminGetTables().subscribe((res: any) => {
+      console.log(res);
+      this.tablesList = res;
+      this.filterTablesByStatus(this.status);
+    });
+    console.log(this.tablesList)
+
+
+    // this.imagePath = "/assets/images/6f9d2228-80a6-4b69-9956-e62b4d5373e0.jfif";
+    this.imagePath = this.getSafeImagePath(this.imagePath);
+    console.log(this.imagePath);
+  }
+
+  filterTablesByStatus(status: string) {
+    this.table_temp = this.tablesList.filter(table => table.table_status === status);
+    console.log(this.table_temp);
   }
 
   addToOrder(item: any, quantity: any, remark: any) {
     console.log("start add");
     console.log("quantity " + quantity);
     console.log("remark " + remark);
+
     let orderItem = new OrderItems();
     orderItem.item_id = item.itemID;
     orderItem.order_remark = remark;
@@ -69,15 +109,26 @@ export class MenusComponent implements OnInit {
     // reset quantity and remark
     this.quantity[i]=0;
     this.remark[i] ='';
-
   }
 
+  onServiceTypeChange() {
+    // You can add logic here if needed when the service type changes
+  }
+
+
   submitOrder() {
-    console.log("this order: ", this.order, this.orderItemsList);
+    this.order.order_type = this.selectedServiceType;
+    console.log(this.selectedServiceType, this.order.order_type);
+
+    if(this.selectedServiceType == 'dine'){
+      this.order.table_id = parseFloat(this.selectedTableNumber);;
+      console.log("this.order.table_id: "+this.order.table_id)
+    }
 
     let data = {}
     data['order'] = this.order;
     data['orderItemsList'] = this.orderItemsList;
+    data['selectedServiceType'] = this.selectedServiceType;
 
     this.orderService.addOder(data).toPromise().then((res: any) => {
       console.log("res: ", res);
@@ -110,6 +161,10 @@ export class MenusComponent implements OnInit {
       console.error("err: ", err);
     });
   }
+
+    getSafeImagePath(path: any): SafeUrl {
+        return this.sanitizer.bypassSecurityTrustUrl(path);
+    }
 
   openModal(content: any) {
     this.modalService.open(content, { centered: true });
