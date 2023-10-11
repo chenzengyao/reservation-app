@@ -30,6 +30,7 @@ export class MenusComponent implements OnInit {
   selectedImage: string | ArrayBuffer | null = null;
   canUploadImage: boolean = false;
 
+
   ngOnInit(): void {
     this.menusService.getAllMenu().subscribe(data =>{
       this.menu = data.body as Menu[];
@@ -54,7 +55,7 @@ export class MenusComponent implements OnInit {
       item_status: [this.viewMenu.item_status],
       item_image: [],
     });
-    this.imagePath = "/assets/images/" + this.viewMenu.item_image;
+    this.imagePath = "https://res.cloudinary.com/hx1dfduy4/assests/images/" + this.viewMenu.item_image;
     // this.imagePath = this.getSafeImagePath(this.imagePath);
     console.log(this.imagePath);
     this.modalService.open(content, { centered: true });

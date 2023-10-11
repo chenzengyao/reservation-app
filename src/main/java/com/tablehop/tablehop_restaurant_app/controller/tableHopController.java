@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import com.cloudinary.utils.ObjectUtils;
 import com.tablehop.tablehop_restaurant_app.entity.Item;
 import com.tablehop.tablehop_restaurant_app.entity.Reservation;
 import com.tablehop.tablehop_restaurant_app.entity.Tables;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import com.tablehop.tablehop_restaurant_app.service.tableHopService;
 import com.tablehop.tablehop_restaurant_app.entity.User;
 import org.springframework.web.multipart.MultipartFile;
+import com.cloudinary.*;
 
 @RestController
 //@CrossOrigin(origins = "http://localhost:4200")
@@ -30,6 +32,12 @@ public class tableHopController {
 
     @Value("${image.upload.directory}")
     private String uploadDirectory;
+
+    Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+            "cloud_name", "hx1dfduy4",
+            "api_key", "181671934764155",
+            "api_secret", "W0O9YLH6yr63xZ1fs2Zs7q_WmX4"
+    ));
 
     @RequestMapping(value = "/users/register", method = RequestMethod.POST)
     public void register(@RequestParam String username, @RequestParam String email, @RequestParam String phone_no, @RequestParam String password, @RequestParam String dob) {
@@ -130,18 +138,22 @@ public class tableHopController {
         String originalFilename = image.getOriginalFilename();
         String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
 
-        String uniqueFileName = UUID.randomUUID().toString() + fileExtension;
+        String uniqueFileName = UUID.randomUUID().toString();
+                //+ fileExtension;
+        String publicId = "assests/images/" + uniqueFileName;
 
-        String projectRoot = System.getProperty("user.dir"); // Get the project root directory
-        String fullUploadDirectory = projectRoot + File.separator + uploadDirectory;
-
-        File directory = new File(fullUploadDirectory);
-        if (!directory.exists()) {
-            directory.mkdirs();
-        }
-        // Save the file to the specified directory
-        String filePath = fullUploadDirectory + File.separator + uniqueFileName;
-        image.transferTo(new File(filePath));
+        Map<String, Object> options = ObjectUtils.asMap("public_id", publicId);
+        Map<?, ?> uploadResult = cloudinary.uploader().upload(image.getBytes(), options);
+//        String projectRoot = System.getProperty("user.dir"); // Get the project root directory
+//        String fullUploadDirectory = projectRoot + File.separator + uploadDirectory;
+//
+//        File directory = new File(fullUploadDirectory);
+//        if (!directory.exists()) {
+//            directory.mkdirs();
+//        }
+//        // Save the file to the specified directory
+//        String filePath = fullUploadDirectory + File.separator + uniqueFileName;
+//        image.transferTo(new File(filePath));
         Date itemCreatedDt = new Date();
         Timestamp currentTimestamp = new Timestamp(itemCreatedDt.getTime());
 
@@ -166,19 +178,12 @@ public class tableHopController {
             String originalFilename = imageFile.getOriginalFilename();
             String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
 
-            String uniqueFileName = UUID.randomUUID().toString() + fileExtension;
-            log.info("file name " + uniqueFileName);
+            String uniqueFileName = UUID.randomUUID().toString();
+            //+ fileExtension;
+            String publicId = "assests/images/" + uniqueFileName;
 
-            String projectRoot = System.getProperty("user.dir"); // Get the project root directory
-            String fullUploadDirectory = projectRoot + File.separator + uploadDirectory;
-
-            File directory = new File(fullUploadDirectory);
-            if (!directory.exists()) {
-                directory.mkdirs();
-            }
-            // Save the file to the specified directory
-            String filePath = fullUploadDirectory + File.separator + uniqueFileName;
-            imageFile.transferTo(new File(filePath));
+            Map<String, Object> options = ObjectUtils.asMap("public_id", publicId);
+            Map<?, ?> uploadResult = cloudinary.uploader().upload(image.getBytes(), options);
 
             tableHopService.modifyMenu(itemID, itemCategory, itemName, itemDescription, itemPrice, itemRemark, itemStatus, itemCreatedDt, "Admin", uniqueFileName);
         } else {
