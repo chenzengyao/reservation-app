@@ -183,7 +183,7 @@ public class tableHopController {
             String publicId = "assests/images/" + uniqueFileName;
 
             Map<String, Object> options = ObjectUtils.asMap("public_id", publicId);
-            Map<?, ?> uploadResult = cloudinary.uploader().upload(image.getBytes(), options);
+            Map<?, ?> uploadResult = cloudinary.uploader().upload(imageFile.getBytes(), options);
 
             tableHopService.modifyMenu(itemID, itemCategory, itemName, itemDescription, itemPrice, itemRemark, itemStatus, itemCreatedDt, "Admin", uniqueFileName);
         } else {
