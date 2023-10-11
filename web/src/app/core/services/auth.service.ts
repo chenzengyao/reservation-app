@@ -96,7 +96,7 @@ export class AuthenticationService {
      * @param email email
      * @param current_password current_password
      */
-    checkCurrentPassword(email: String, current_password: String) {
+        checkCurrentPassword(email: String, current_password: String) {
       return this.http.get(`/users/checkCurrentPassword?email=` + email + '&current_password=' + current_password);
     }
 

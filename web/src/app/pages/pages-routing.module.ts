@@ -14,6 +14,7 @@ import { AddUsersComponent } from "./dashboards/users/add-users/add-users.compon
 import { TablesComponent } from "./dashboards/tables/tables.component";
 import { AddTablesComponent } from "./dashboards/tables/add-tables/add-tables.component";
 import { EditOrdersComponent } from "./dashboards/orders/edit-orders/edit-orders.component";
+import {ChangeAdminPasswordComponent} from "./dashboards/changepassword/changeAdminPassword.component";
 
 
 const routes: Routes = [
@@ -23,6 +24,7 @@ const routes: Routes = [
   { path: "dashboard", loadChildren: () => import("./dashboards/dashboards.module").then((m) => m.DashboardsModule), },
   { path: "users/listing", component: UsersComponent },
   { path: "users/add", component: AddUsersComponent },
+  { path: "users/changeAdminpassword", component: ChangeAdminPasswordComponent },
   { path: "menus/listing", component: MenusComponent },
   { path: "menus/add", component: AddMenusComponent },
   { path: "orders/listing", component: OrdersComponent },
