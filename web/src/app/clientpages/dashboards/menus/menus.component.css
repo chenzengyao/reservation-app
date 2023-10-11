@@ -1,9 +1,17 @@
 /*--------------------------------------------------------------
 # Menu Section
 --------------------------------------------------------------*/
-/*.add-section{*/
-/*  margin-top: 5px;*/
-/*}*/
+
+ #button{
+   margin-top: 20px;
+}
+
+#submit{
+  font-size: unset;
+}
+.d-flex w-100 gap-3{
+  padding: 10px;
+}
 td{
   padding: 5px 9px 5px 9px;
 }
@@ -77,6 +85,14 @@ td{
     color: white;
     transition: 0.3s;
   }
+
+.selectService{
+  padding-right: 10px;
+  background: #343a40;
+  position: relative;
+  font-weight: 700;
+  color: white;
+}
 
   .menu .menu-content a:hover {
     color: #ff914d;

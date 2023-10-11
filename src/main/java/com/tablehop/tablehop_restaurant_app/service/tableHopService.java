@@ -510,23 +510,6 @@ public class tableHopService {
         log.info("order details {}", order);
         log.info("orderItemlist details {}", orderItemsList);
 
-//        Reservation reservationEntity = new Reservation();
-//        reservationEntity.setPax_no((Integer) reservation.get("pax_no"));
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-//        LocalDateTime dateTime = LocalDateTime.parse((String) reservation.get("reservation_dt"), formatter);
-//        Timestamp timestamp = Timestamp.valueOf(dateTime);
-//        log.info("reservation_dt {}", timestamp);
-//        Timestamp reservation_dt = Timestamp.valueOf(dateTime);
-//        reservationEntity.setReservation_dt(reservation_dt);
-//        reservationEntity.setReserve_status((String) reservation.get("reserve_status"));
-//        reservationEntity.setReserve_remark((String) reservation.get("reserve_remark"));
-//        reservationEntity.setReserve_created_dt(new Timestamp(new Date().getTime()));
-//        reservationEntity.setTableID((Integer) reservation.get("table_id"));
-//        // TODO : need to change
-//        reservationEntity.setUserID(1);
-//        reservationEntity = reservationRepository.saveAndFlush(reservationEntity);
-//        log.info("save reservation done {}", reservationEntity);
-
         // Table set ID
         Tables tableEntity = new Tables();
         tableEntity.setTableID(1);
@@ -538,10 +521,10 @@ public class tableHopService {
         orderEntity.setDeliverer_address("Hardcode address: Singapore");
         orderEntity.setOrder_created_dt(new Date());
         orderEntity.setOrder_updated_dt(new Date());
-        orderEntity.setOrder_type("");
-        orderEntity.setTableID(1);
+        orderEntity.setOrder_type((String) order.get("order_type"));
+        orderEntity.setTableID((Integer)order.get("table_id"));
         orderEntity.setUpdated_by("Hardcode user: User A");
-        orderEntity.setDeliveryID(null);
+        orderEntity.setDeliveryID((Integer)order.get(null));
         orderEntity.setReservationID(null);
 
         Order savedOrderEntity = orderRepository.saveAndFlush(orderEntity);
@@ -561,7 +544,6 @@ public class tableHopService {
             });
             orderItemRepository.saveAllAndFlush(orderItemEntity);
         }
-
         Object result = new Object();
         result = orderEntity;
         return result;
@@ -624,7 +606,6 @@ public class tableHopService {
         for (int i = 4; i < length; i++) {
             password.append(allCharacters.charAt(random.nextInt(allCharacters.length())));
         }
-
         return password.toString();
     }
 
