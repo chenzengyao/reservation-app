@@ -49,6 +49,18 @@ public class Orders {
     private Integer userID;
 
     @Transient
+    private Reservation reservation;
+
+    @Transient
+    private Delivery delivery;
+
+    @Transient
+    private Table table;
+
+    @Transient
+    private User user;
+
+    @Transient
     private List<OrderItem> orderItemList;
 
     public Integer getOrderID() {
@@ -147,6 +159,40 @@ public class Orders {
         this.userID = userID;
     }
 
+
+    public Reservation getReservation() {
+        return this.reservation;
+    }
+
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
+    }
+
+    public Delivery getDelivery() {
+        return this.delivery;
+    }
+
+    public void setDelivery(Delivery delivery) {
+        this.delivery = delivery;
+    }
+
+    public Table getTable() {
+        return this.table;
+    }
+
+    public void setTable(Table table) {
+        this.table = table;
+    }
+
+    public User getUser() {
+        return this.user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+
     @Override
     public String toString() {
         return "{" +
@@ -161,6 +207,10 @@ public class Orders {
                 ", deliveryID='" + getDeliveryID() + "'" +
                 ", reservationID='" + getReservationID() + "'" +
                 ", userID='" + getUserID() + "'" +
+                ", reservation='" + getReservation() + "'" +
+                ", delivery='" + getDelivery() + "'" +
+                ", table='" + getTable() + "'" +
+                ", user='" + getUser() + "'" +
                 "}";
     }
 

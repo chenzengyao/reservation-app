@@ -75,7 +75,7 @@ export class LoginComponent implements OnInit {
             if(data == 1){
               this.router.navigate(['/user/dashboard']);
             }
-            else{
+            else if(data == 3){
               console.log("admin login")
               this.router.navigate(['/admin/dashboard']);
             }

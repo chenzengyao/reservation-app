@@ -13,12 +13,12 @@ import { dataService } from "../../../dataService";
 
 @Component({
   selector: 'app-users',
-  templateUrl: './changePassword.component.html',
-  styleUrls: ['./changePassword.component.scss', 'changePassword.component.css']
+  templateUrl: './changeAdminPassword.component.html',
+  styleUrls: ['./changeAdminPassword.component.scss', 'changeAdminPassword.component.css']
 })
-export class ChangePasswordComponent implements OnInit {
+export class ChangeAdminPasswordComponent implements OnInit {
 
-  changepasswordForm: FormGroup;
+  changeAdminPasswordForm: FormGroup;
   submitted = false;
   error = '';
   successmsg = false;
@@ -55,10 +55,10 @@ export class ChangePasswordComponent implements OnInit {
 
 
   ngOnInit() {
-    this.dataService.setCurrentEmail("liz@gmail.com");
+    this.dataService.setCurrentEmail("tablehopSG@gmail.com");
     this.email = this.dataService.getCurrentEmail();
 
-    this.changepasswordForm = this.formBuilder.group({
+    this.changeAdminPasswordForm = this.formBuilder.group({
       current_password: ['', [Validators.required, Validators.minLength(8),Validators.pattern(
         /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)]],
       new_password: ['', [Validators.required, Validators.minLength(8),Validators.pattern(
@@ -70,7 +70,7 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   // convenience getter for easy access to form fields
-  get f() { return this.changepasswordForm.controls; }
+  get f() { return this.changeAdminPasswordForm.controls; }
 
   /**
    * On submit form
@@ -80,7 +80,7 @@ export class ChangePasswordComponent implements OnInit {
     console.log(this.email, this.current_password);
 
     // stop here if form is invalid
-    if (this.changepasswordForm.invalid) {
+    if (this.changeAdminPasswordForm.invalid) {
       return;
     } else {
       this.current_password = this.f.current_password.value;
@@ -99,7 +99,7 @@ export class ChangePasswordComponent implements OnInit {
                   data => {
                     this.successmsg = true;
                     if (this.successmsg) {
-                      this.router.navigate(['/user/changepassword']);
+                      this.router.navigate(['/admin/users/changeAdminpassword']);
                     }
                   },
                   error => {
@@ -127,7 +127,7 @@ export class ChangePasswordComponent implements OnInit {
       this.working = false;
       this.successmsg = false;
       this.submitted = false;
-      this.changepasswordForm.reset();
+      this.changeAdminPasswordForm.reset();
     }, 3000);
   }
 

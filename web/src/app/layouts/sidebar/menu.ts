@@ -23,12 +23,18 @@ export const MENU: MenuItem[] = [
     subItems: [
       {
         id: 4,
+        label: "Change Password",
+        link: "/admin/users/changeAdminpassword",
+        parentId: 3,
+      },
+      {
+        id: 5,
         label: "Users Listing",
         link: "/admin/users/listing",
         parentId: 3,
       },
       {
-        id: 5,
+        id: 6,
         label: "Add New",
         link: "/admin/users/add",
         parentId: 3,

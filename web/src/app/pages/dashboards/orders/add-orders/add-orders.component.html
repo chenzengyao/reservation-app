@@ -7,26 +7,17 @@
                     <div class="row">
                         <div class="col-6">
                             <div class="mb-3">
-                                <label for="" class="form-label">Customer Name</label>
+                                <label for="" class="form-label">Customer Name <span
+                                        class="text-danger">*</span></label>
                                 <input type="text" name="" id="" class="form-control"
                                     placeholder="Please enter customer name..." required>
-                                <input type="hidden" [(ngModel)]="reservation.userID">
-                            </div>
-                            <div class="mb-3">
-                                <label for="" class="form-label">Number of People</label>
-                                <input type="number" name="" id="" class="form-control" [(ngModel)]="reservation.pax_no"
-                                    placeholder="Please enter number of people..." required>
+                                <input type="hidden" [(ngModel)]="order.userID">
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="mb-3">
-                                <label for="" class="form-label">Reservation Date</label>
-                                <input type="datetime-local" name="" id="" class="form-control"
-                                    [(ngModel)]="reservation.reservation_dt" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="" class="form-label">Status</label>
-                                <select name="" class="form-select" id="" [(ngModel)]="reservation.reserve_status" required>
+                                <label for="" class="form-label">Status <span class="text-danger">*</span></label>
+                                <select name="" class="form-select" id="" [(ngModel)]="order.order_status" required>
                                     <option value="Pending" selected>Pending</option>
                                     <option value="Confirmed">Confirmed</option>
                                     <option value="Cancelled">Cancelled</option>
@@ -35,12 +26,91 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-6">
                             <div class="mb-3">
-                                <label for="" class="form-label">Remarks</label>
-                                <textarea name="" id="" class="form-control"
-                                    [(ngModel)]="reservation.reserve_remark"
-                                    placeholder="Please enter remarks (if any)"></textarea>
+                                <label for="" class="form-label">Order Type <span class="text-danger">*</span></label>
+                                <select name="" class="form-select" id="" [(ngModel)]="order.order_type" required>
+                                    <option value="">Please select order type...</option>
+                                    <option *ngFor="let type of orderService.orderTypeList" [value]="type.name">
+                                        {{type.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="order.order_type=='Reservation'">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">Number of People <span
+                                                class="text-danger">*</span></label>
+                                        <input type="number" name="" id="" class="form-control"
+                                            [(ngModel)]="reservation.pax_no"
+                                            placeholder="Please enter number of people..." required>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">Reservation Date <span
+                                                class="text-danger">*</span></label>
+                                        <input type="datetime-local" name="" id="" class="form-control"
+                                            [(ngModel)]="reservation.reservation_dt" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">Remarks</label>
+                                        <textarea name="" id="" class="form-control"
+                                            [(ngModel)]="reservation.reserve_remark"
+                                            placeholder="Please enter remarks (if any)"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="order.order_type=='Delivery'">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label for="">Delivery Man <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="">Delivery Start Date Time <span
+                                                class="text-danger">*</span></label>
+                                        <input type="datetime-local" class="form-control"
+                                            [(ngModel)]="delivery.delivery_start_dt">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label for="">Delivery Status <span class="text-danger">*</span></label>
+                                        <select class=" form-select" [(ngModel)]="delivery.delivery_status">
+                                            <option *ngFor="let status of deliveryService.deliveryStatusList"
+                                                [value]="status.name">
+                                                {{status.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="">Delivery Completed Date Time <span
+                                                class="text-danger">*</span></label>
+                                        <input type="datetime-local" class="form-control"
+                                            [(ngModel)]="delivery.delivery_completed_dt">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="">Delivery Remarks <span class="text-danger">*</span></label>
+                                        <textarea class="form-control"
+                                            [(ngModel)]="delivery.delivery_remark"></textarea>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -67,7 +137,7 @@
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card" *ngIf="order.order_type=='Reservation'">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
@@ -121,7 +191,8 @@
                                             </td>
                                             <td>
                                                 <input type="text" class="form-control"
-                                                [(ngModel)]="items.order_remark">
+                                                    [(ngModel)]="items.order_remark">
+                                                <span class="text-danger">*</span>
                                             </td>
                                             <td>$ {{items.total}}</td>
                                             <td>

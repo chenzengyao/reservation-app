@@ -2,12 +2,12 @@ package com.tablehop.tablehop_restaurant_app.entity;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "delivery")
@@ -15,7 +15,7 @@ public class Delivery {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String deliveryID;
+    private Integer deliveryID;
 
     @Column(name = "delivery_status")
     private String delivery_status;
@@ -36,16 +36,16 @@ public class Delivery {
     private String arranged_by;
 
     @Column(name = "orderID")
-    private String orderID;
+    private Integer orderID;
 
     @Column(name = "deliverymanID")
     private String deliverymanID;
 
-    public String getDeliveryID() {
+    public Integer getDeliveryID() {
         return this.deliveryID;
     }
 
-    public void setDeliveryID(String deliveryID) {
+    public void setDeliveryID(Integer deliveryID) {
         this.deliveryID = deliveryID;
     }
 
@@ -97,11 +97,11 @@ public class Delivery {
         this.arranged_by = arranged_by;
     }
 
-    public String getOrderID() {
+    public Integer getOrderID() {
         return this.orderID;
     }
 
-    public void setOrderID(String orderID) {
+    public void setOrderID(Integer orderID) {
         this.orderID = orderID;
     }
 
