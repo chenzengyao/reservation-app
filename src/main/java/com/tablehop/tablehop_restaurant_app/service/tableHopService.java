@@ -257,7 +257,7 @@ public class tableHopService {
         log.info("admin get reservations ---> service");
         Map<String, Object> result = new HashMap<>();
 
-        List<Order> orderList = orderRepository.findAll();
+        List<Orders> orderList = orderRepository.findAll();
         log.info("{}", orderList.toString());
         orderList.forEach(ord -> {
             User user = userRepository.findById(ord.getUserID()).orElse(null);
@@ -301,7 +301,7 @@ public class tableHopService {
         // TODO : need to change
         User findUser = userRepository.findById(1).orElse(null);
 
-        Order orderEntity = new Order();
+        Orders orderEntity = new Orders();
         orderEntity.setOrder_status((String) order.get("order_status"));
         orderEntity.setDeliverer_address(findUser.getAddress());
         orderEntity.setOrder_created_dt(new Date());
@@ -311,7 +311,7 @@ public class tableHopService {
 
         Reservation reservationEntity = new Reservation();
         Delivery deliveryEntity = new Delivery();
-        Order savedOrderEntity = null;
+        Orders savedOrderEntity = null;
         if ("Reservation".equals(orderEntity.getOrder_type())) {
             reservationEntity.setPax_no((Integer) reservation.get("pax_no"));
             LocalDateTime dateTime = LocalDateTime.parse((String) reservation.get("reservation_dt"), formatter);
@@ -355,7 +355,7 @@ public class tableHopService {
             savedOrderEntity = orderRepository.saveAndFlush(savedOrderEntity);
         }
 
-        Order finalOrder = savedOrderEntity;
+        Orders finalOrder = savedOrderEntity;
 
         List<OrderItem> orderItemEntity = new ArrayList<>();
         if (!Objects.isNull(finalOrder) && orderItemsList.size() > 0) {
