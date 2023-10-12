@@ -7,4 +7,5 @@ export class OrderItems {
     item_price: string;
     order_id: number;
     item_id: number;
+    itemID: number;
 }

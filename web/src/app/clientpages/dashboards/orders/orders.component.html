@@ -5,34 +5,118 @@
   </div>
   <div class="d-flex align-items-center justify-content-center">
     <div class="row">
-      <div>
-        <div class="card" style="width: 25rem;">
-          <img class="card-img-top" src="assets/images/menu/lobster-bisque.jpg" alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title">24 Sept 2023</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <!-- <a class="btn btn-primary float-end">Order Again</a> -->
-          </div>
-          <!-- TODO Need to collapse properly -->
-          <h5 class="card-header">
-            <a (click)="onClick()" data-bs-toggle="collapse" data-bs-target="#collapse-example" aria-expanded="false" aria-controls="collapse-example" id="heading-example" class="btn d-block text-center text-secondary">
-              {{ViewDetails?"View Details":"Hide Details"}} 
-              <i class="fa fa-chevron-down pull-right"></i>
-            </a>
-          </h5>
-          <ng-container *ngIf="visible">
-            <div id="collapse-example" class="collapse show" aria-labelledby="heading-example" aria-expanded="true">
-              <div class="card-body">
-                  Lobster Bisque <span class="float-end">$20.00</span><br>
-                  2x Sides <span class="float-end">$ 0.00</span><br>
-                  1x Coke <span class="float-end">$ 3.00</span><br>
-                  <br>
-                  Total <span class="float-end card-title">$23.00</span>
+      <div class="order-card-container">
+        <div *ngFor="let entry of ordersMap | slice:0:5; let i = index">
+          <div class="card order-card">
+            <div class="card" style="width: 25rem;">
+              <img class="card-img-top" src="assets/images/menu/lobster-bisque.jpg" alt="Card image cap">
+              <div class="card-body-top">
+                <h5 class="card-title">{{ entry.order.order_created_dt | date: 'dd MMM yyyy' }}</h5>
+                <p class="card-text">Status: {{ entry.order.order_status }}</p>
+                <!-- <a class="btn btn-primary float-end">Order Again</a> -->
               </div>
+              <!-- TODO Need to collapse properly -->
+              <h5 class="card-header">
+                <a (click)="toggleDetails(i)" data-bs-toggle="collapse" data-bs-target="#collapse-example" [attr.data-bs-target]="'#collapse-example-' + i" [attr.aria-expanded]="ViewDetails[i]" id="heading-example" class="btn d-block text-center text-secondary">
+                  {{ ViewDetails[i] ? 'Hide Details' : 'View Details' }}
+                  <i class="fa fa-chevron-down pull-right"></i>
+                </a>
+              </h5>
+              <ng-container *ngIf="ViewDetails[i]">
+                <div [attr.id]="'collapse-example-' + i" class="collapse show" [attr.aria-labelledby]="'heading-example-' + i" [attr.aria-expanded]="ViewDetails[i]">
+                  <div class="card-body">
+                    <div *ngFor="let item of entry.orderItems">
+                      {{ item.order_quantity}}x {{ item.item_name }} <span class="float-end">${{ item.item_price }}</span><br>
+                    </div>
+                    <br>
+                      Total <span class="float-end card-title">${{ getTotal(entry.orderItems) }}</span>
+                    <br>
+                    <small>Exclusive of GST and other charges.</small>
+                  </div>
+                </div>
+              </ng-container>
             </div>
-          </ng-container>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
+<div class="container-fluid">
+  <app-page-title title=""></app-page-title>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-2">
+            <div class="col-sm-4">
+              <div class="search-box me-2 mb-2 d-inline-block">
+                <div class="position-relative">
+                  <input type="text" class="form-control" placeholder="Search...">
+                  <i class="bx bx-search-alt search-icon"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive mb-0">
+            <table class="table table-centered table-nowrap">
+              <thead class="table-light">
+              <tr>
+                <th class="align-middle">S/N</th>
+                <th class="align-middle">Date</th>
+                <th class="align-middle">Order Type</th>
+                <th class="align-middle">Total Price $</th>
+                <th class="align-middle">Order Status</th>
+                <th class="align-middle">View Details</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let data of ordersMap ; let i = index">
+                <td>{{i+1}}</td>
+                <td>{{data.order.order_created_dt | date: 'dd/MM/yyyy'}}</td>
+                <td>{{data.order.order_type}}</td>
+                <td>{{getTotal(data.orderItems)}}</td>
+                <td>
+                  <span class="badge badge-pill badge-soft-success font-size-11" [ngClass]=" { 'badge-soft-danger': data.order.order_status === 'Pending',
+                       'badge-soft-warning':data.order.order_status === 'Complete' }">{{data.order.order_status}}</span>
+                </td>
+                <td>
+                  <!-- Button trigger modal -->
+                  <button type="button" class="btn btn-primary btn-sm btn-rounded"
+                          (click)="openModal(content, data.orderItems)">View
+                    Details</button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+
+            <!-- pop up modal -->
+            <ng-template #content role="document" let-modal>
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title mt-0">Menu Details</h5>
+                  <button type="button" class="btn-close" aria-hidden="true"
+                          (click)="modal.dismiss('Cross click')"></button>
+                </div>
+                <div class="modal-body">
+                  <div *ngFor="let item of orderItems">
+                    {{ item.order_quantity}}x {{ item.item_name }} <span class="float-end">${{ item.item_price }}</span><br>
+                  </div>
+                  <br>
+                  Total <span class="float-end card-title">${{ getTotal(orderItems) }}</span>
+                  <br>
+                  <small>Exclusive of GST and other charges.</small>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+          <!-- end table -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

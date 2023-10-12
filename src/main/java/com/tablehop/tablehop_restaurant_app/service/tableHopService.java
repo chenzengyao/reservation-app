@@ -10,7 +10,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import com.tablehop.tablehop_restaurant_app.entity.User;
 import com.tablehop.tablehop_restaurant_app.entity.Item;
-import com.tablehop.tablehop_restaurant_app.entity.Order;
+import com.tablehop.tablehop_restaurant_app.entity.Orders;
 import com.tablehop.tablehop_restaurant_app.entity.OrderItem;
 import com.tablehop.tablehop_restaurant_app.entity.Reservation;
 import com.tablehop.tablehop_restaurant_app.entity.Tables;
@@ -22,7 +22,6 @@ import com.tablehop.tablehop_restaurant_app.repository.reservationRepository;
 import com.tablehop.tablehop_restaurant_app.repository.tableRepository;
 
 import jakarta.annotation.Resource;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -31,7 +30,6 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -257,7 +255,7 @@ public class tableHopService {
         reservationList.forEach((reservation) -> {
             User user = userRepository.findById(reservation.getUserID()).orElse(null);
             reservation.setUser(user);
-            Order order = orderRepository.findByReservationID(reservation.getReservationID());
+            Orders order = orderRepository.findByReservationID(reservation.getReservationID());
             reservation.setOrder(order);
             List<OrderItem> orderItemList = orderItemRepository.findByOrderID(order.getOrderID());
             order.setOrderItemList(orderItemList);
@@ -303,7 +301,7 @@ public class tableHopService {
         log.info("save reservation done {}", reservationEntity);
 
         User findUser = userRepository.findById(reservationEntity.getUserID()).orElse(null);
-        Order orderEntity = new Order();
+        Orders orderEntity = new Orders();
         orderEntity.setOrder_status("Pending");
         orderEntity.setReservationID(reservationEntity.getReservationID());
         orderEntity.setDeliverer_address(findUser.getAddress());
@@ -313,7 +311,7 @@ public class tableHopService {
         orderEntity.setTableID(reservationEntity.getTableID());
         orderEntity.setDeliveryID(null);
 
-        Order savedOrderEntity = orderRepository.saveAndFlush(orderEntity);
+        Orders savedOrderEntity = orderRepository.saveAndFlush(orderEntity);
 
         List<OrderItem> orderItemEntity = new ArrayList<>();
         if (orderItemsList.size() > 0) {
@@ -374,7 +372,7 @@ public class tableHopService {
         Reservation reservation = reservationRepository.findById(id).orElse(null);
         User user = userRepository.findById(reservation.getUserID()).orElse(null);
         reservation.setUser(user);
-        Order order = orderRepository.findByReservationID(reservation.getReservationID());
+        Orders order = orderRepository.findByReservationID(reservation.getReservationID());
         reservation.setOrder(order);
         List<OrderItem> orderItemList = orderItemRepository.findByOrderID(order.getOrderID());
         order.setOrderItemList(orderItemList);
@@ -429,10 +427,10 @@ public class tableHopService {
 
             reservationEntity = reservationRepository.saveAndFlush(reservationEntity);
 
-            Order orderEntity = orderRepository.findById((Integer) order.get("orderID")).orElse(null);
+            Orders orderEntity = orderRepository.findById((Integer) order.get("orderID")).orElse(null);
             orderEntity.setOrder_updated_dt(new Date());
             orderEntity.setTableID(reservationEntity.getTableID());
-            Order savedOrder = orderRepository.saveAndFlush(orderEntity);
+            Orders savedOrder = orderRepository.saveAndFlush(orderEntity);
 
             List<OrderItem> orderItemEntity = new ArrayList<>();
             if (orderItemsList.size() > 0) {
@@ -496,7 +494,7 @@ public class tableHopService {
         tableEntity.setTableID(1);
 
 //        User findUser = userRepository.findById(reservationEntity.getUserID()).orElse(null);
-        Order orderEntity = new Order();
+        Orders orderEntity = new Orders();
         orderEntity.setOrder_status("Pending");
         orderEntity.setReservationID(null);
         orderEntity.setDeliverer_address("Hardcode address: Singapore");
@@ -508,7 +506,7 @@ public class tableHopService {
         orderEntity.setDeliveryID(null);
         orderEntity.setReservationID(null);
 
-        Order savedOrderEntity = orderRepository.saveAndFlush(orderEntity);
+        Orders savedOrderEntity = orderRepository.saveAndFlush(orderEntity);
 
         List<OrderItem> orderItemEntity = new ArrayList<>();
         if (orderItemsList.size() > 0) {
@@ -599,5 +597,27 @@ public class tableHopService {
     public void deleteUser(String userID) {
         userRepository.deleteById(Integer.valueOf(userID));
     }
+
+    public List<Map<String, Object>> getOrder(String email) {
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        int userID = userRepository.checkExistEmail(email).getUserID();
+        List<Orders> orderList = orderRepository.findOrdersByUserID(userID);
+
+        orderList.forEach(order -> {
+            Map<String, Object> orderMap = new HashMap<>();
+            orderMap.put("order", order);
+            orderMap.put("orderItems", orderItemRepository.findByOrderID(order.getOrderID()));
+            result.add(orderMap);
+        });
+
+        return result;
+    }
+
+    public String getImage(int itemID) {
+        log.info(itemRepository.getItemByID(String.valueOf(itemID)).getItem_image());
+        return itemRepository.getItemByID(String.valueOf(itemID)).getItem_image();
+    }
+
 
 }

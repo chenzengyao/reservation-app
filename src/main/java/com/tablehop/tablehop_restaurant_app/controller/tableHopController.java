@@ -8,9 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import com.cloudinary.utils.ObjectUtils;
-import com.tablehop.tablehop_restaurant_app.entity.Item;
-import com.tablehop.tablehop_restaurant_app.entity.Reservation;
-import com.tablehop.tablehop_restaurant_app.entity.Tables;
+import com.tablehop.tablehop_restaurant_app.entity.*;
 
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +16,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.tablehop.tablehop_restaurant_app.service.tableHopService;
-import com.tablehop.tablehop_restaurant_app.entity.User;
 import org.springframework.web.multipart.MultipartFile;
 import com.cloudinary.*;
 
@@ -289,4 +286,17 @@ public class tableHopController {
         log.info("admin delete user -----> controller");
         tableHopService.deleteUser(userID);
     }
+
+    @RequestMapping(value = "/user/getOrder", method = RequestMethod.GET)
+    public List<Map<String, Object>> getOrder(@RequestParam String email) {
+        log.info("user get order -----> controller");
+        return tableHopService.getOrder(email);
+    }
+
+    @RequestMapping(value = "/user/menu/getImage", method = RequestMethod.GET)
+    public String getImage(@RequestParam int itemID) {
+        log.info("user get Image -----> controller");
+        return tableHopService.getImage(itemID);
+    }
+
 }

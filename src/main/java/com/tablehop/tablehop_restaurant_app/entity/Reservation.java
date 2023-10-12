@@ -39,7 +39,7 @@ public class Reservation {
     private Integer userID;
 
     @Transient
-    private Order order;
+    private Orders order;
 
     @Transient
     private User user;
@@ -111,11 +111,11 @@ public class Reservation {
         this.userID = userID;
     }
 
-    public Order getOrder() {
+    public Orders getOrder() {
         return this.order;
     }
 
-    public void setOrder(Order order) {
+    public void setOrder(Orders order) {
         this.order = order;
     }
 

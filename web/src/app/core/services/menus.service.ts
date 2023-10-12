@@ -36,4 +36,8 @@ export class MenusService {
     return this.http.post('/admin/menu/modifyMenu', formData, { headers: headers });
   }
 
+  getImage(itemID: number) {
+    return this.http.get('/user/menu/getImage?itemID='+ itemID, { observe: 'response' });
+  }
+
 }

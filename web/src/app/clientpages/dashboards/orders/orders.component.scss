@@ -1,0 +1,23 @@
+.order-card-container {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.order-card {
+  width: 25rem;
+  margin-right: 10px;
+}
+
+.order-card .card-body {
+  height: 150px;
+  overflow: hidden;
+}
+
+.card-body-top {
+  height: 90px;
+  overflow: hidden;
+  padding: 20px;
+  color: #495057;
+  font: 13px Poppins, sans-serif;
+}
