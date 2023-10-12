@@ -10,4 +10,6 @@ export class AppComponent implements OnInit  {
   ngOnInit() {
     // document.getElementsByTagName("html")[0].setAttribute("dir", "rtl");
   }
+
+  
 }

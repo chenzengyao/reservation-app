@@ -73,6 +73,8 @@ export class LoginComponent implements OnInit {
           this.authenticationService.getUserAccessType(this.email).subscribe(data=>{
             console.log("getUserAccessType",data);
             if(data == 1){
+              // store email as session token
+              sessionStorage.setItem('email', this.email.toString());
               this.router.navigate(['/user/dashboard']);
             }
             else if(data == 3){
@@ -87,6 +89,14 @@ export class LoginComponent implements OnInit {
         }
       });
     }
+  }
+
+  getSession() {
+    return sessionStorage.getItem('email');
+  }
+
+  logout(){
+    sessionStorage.clear();
   }
 
   onClick() {

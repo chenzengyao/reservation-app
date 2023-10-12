@@ -10,6 +10,16 @@ export class SettingsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    //Check for login user
+    if (sessionStorage.getItem('email')==null){
+      window.location.href = '/account/login';
+    } else{
+      true;
+    }
+  }
+
+  logout(){
+    sessionStorage.clear();
   }
 
 }

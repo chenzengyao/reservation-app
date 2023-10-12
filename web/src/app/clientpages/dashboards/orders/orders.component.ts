@@ -26,6 +26,13 @@ export class OrdersComponent implements OnInit {
   orderItems: OrderItems[];
 
   ngOnInit(): void {
+    //Check for login user
+    if (sessionStorage.getItem('email')==null){
+      window.location.href = '/account/login';
+    } else{
+      true;
+    }
+
     this.dataService.setCurrentEmail("liz@gmail.com");
     this.email = this.dataService.getCurrentEmail();
 

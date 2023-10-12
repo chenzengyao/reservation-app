@@ -27,7 +27,12 @@ export class DefaultComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    //Check for login user
+    if (sessionStorage.getItem('email')==null){
+      window.location.href = '/account/login';
+    } else{
+      true;
+    }
     /**
      * horizontal-vertical layput set
      */

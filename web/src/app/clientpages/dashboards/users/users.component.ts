@@ -51,6 +51,13 @@ export class UsersComponent implements OnInit {
 
 
   async ngOnInit() {
+    //Check for login user
+    if (sessionStorage.getItem('email')==null){
+      window.location.href = '/account/login';
+    } else{
+      true;
+    }
+
     await this.dataService.setCurrentEmail("liz@gmail.com");
     console.log("this.dataService.getCurrentEmail()",this.dataService.getCurrentEmail());
 

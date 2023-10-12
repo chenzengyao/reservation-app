@@ -36,6 +36,12 @@ export class TablesComponent implements OnInit {
   jstoday = '';
 
   ngOnInit(): void {
+    //Check for login user
+    if (sessionStorage.getItem('email')==null){
+      window.location.href = '/account/login';
+    } else{
+      true;
+    }
 
     //this one currently invalid, hardcode it first
     // this.current_user = this.authenticationService.currentUser()
