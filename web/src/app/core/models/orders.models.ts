@@ -8,4 +8,5 @@ export class Orders {
     updated_by: string;
     table_id: number;
     delivery_id: number;
+    userID: number;
 }
