@@ -28,40 +28,38 @@
                                     <th class="align-middle">#</th>
                                     <th class="align-middle">Customer Name</th>
                                     <th class="align-middle">Items</th>
-                                    <th class="align-middle">Date</th>
+                                    <th class="align-middle">Type</th>
                                     <th class="align-middle">Status</th>
                                     <th class="align-middle">View Details</th>
                                     <th class="align-middle">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let reservation of reservationList; let i = index">
+                                <tr *ngFor="let order of ordersList; let i = index">
                                     <td>{{i+1}}</td>
                                     <td>
-                                        <span>{{reservation.user.userName}}</span>
-                                        <span class="d-block">Pax: {{reservation.pax_no}}</span>
-                                        <div>
-                                            <label for="" class="font-size-10">Special Remarks:</label><br>
-                                            {{reservation.reserve_remark?? '-'}}
-                                        </div>
+                                        <span>{{order.user.userName}}</span>
+                                        <!-- <span class="d-block">Pax: {{reservation.pax_no}}</span> -->
                                     </td>
                                     <td>
-                                        <span *ngFor="let item of reservation.order.orderItemList" class="d-block">
+                                        <span *ngFor="let item of order.orderItemList" class="d-block">
                                             {{item.item_name}}
                                         </span>
                                     </td>
-                                    <td>{{ reservation.reservation_dt | date:'dd/MM/yyyy hh:mm a' }}</td>
-                                    <td>{{ reservation.reserve_status }}</td>
+                                    <td>{{ order.order_type }}</td>
+                                    <td>
+                                        {{ order.order_created_dt | date:'dd/MM/yyyy hh:mm a' }} <br>
+                                        <span class="badge badge-soft-info">{{ order.order_status }}</span>
+                                    </td>
                                     <td>
                                         <button type="button" class="btn btn-primary btn-sm btn-rounded"
-                                            (click)="openModal(content, reservation)">
+                                            (click)="openModal(content, order)">
                                             View Details
                                         </button>
                                     </td>
                                     <td>
                                         <div class="d-flex gap-3">
-                                            <a [href]="'/admin/orders/edit/'+reservation.reservationID"
-                                                class="text-success">
+                                            <a [href]="'/admin/orders/edit/'+order.orderID" class="text-success">
                                                 <i class="mdi mdi-pencil font-size-18"></i>
                                             </a>
                                             <a class="text-danger">
@@ -70,7 +68,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr *ngIf="reservationList.length == 0">
+                                <tr *ngIf="ordersList.length == 0">
                                     <td colspan="7" class="text-center">No reservation found.</td>
                                 </tr>
                             </tbody>
@@ -79,28 +77,24 @@
                         <!-- pop up modal -->
                         <ng-template #content role="document" let-modal>
                             <div class="modal-header">
-                                <h5 class="modal-title mt-0">Order Details - <b>{{reservationModal.reserve_status}}</b>
+                                <h5 class="modal-title mt-0">Order Details - <b>{{reservationModal.order_status}}</b>
                                 </h5>
                                 <button type="button" class="btn-close" aria-hidden="true"
                                     (click)="modal.dismiss('Cross click')"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="row">
+                                <div class="row" *ngIf="reservationModal.order_type=='Reservation'">
                                     <div class="col-8">
                                         <div class="d-flex gap-5">
                                             <p class="mb-4">
                                                 Customer Name:
                                                 <span class="text-primary">{{ reservationModal.user.userName }}</span>
                                             </p>
-                                            <p class="mb-4">
-                                                Pax No:
-                                                <span class="text-primary">{{ reservationModal.pax_no }}</span>
-                                            </p>
                                         </div>
                                         <p class="mb-4">
                                             Reservation Date:
-                                            <span class="text-primary">
-                                                {{ reservationModal.reservation_dt | date:'dd/MM/yyyy hh:mm a' }}
+                                            <span class="text-primary">{{ reservationModal.reservation.reservation_dt |
+                                                date:'dd/MM/yyyy hh:mm a' }}
                                             </span>
                                         </p>
                                     </div>
@@ -110,10 +104,56 @@
                                             <span class="text-primary">{{reservationModal.tableID ?? '-'}}</span>
                                         </p>
                                     </div>
+                                    <div class="col-12">
+                                        <label>Remarks:</label>
+                                        <p class="border py-2">{{reservationModal.reserve_remark ?? '-'}}</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <label>Remarks:</label>
-                                    <p class="border py-2">{{reservationModal.reserve_remark ?? '-'}}</p>
+                                <div class="row" *ngIf="reservationModal.order_type=='Delivery'">
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p>
+                                                    Delivery Address:
+                                                    <span
+                                                        class="text-primary">{{reservationModal.deliverer_address}}</span>
+                                                </p>
+                                            </div>
+                                            <div class="col-6">
+                                                <p>
+                                                    Delivery Status:
+                                                    <span
+                                                        class="text-primary">{{reservationModal.delivery.delivery_status}}</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p>
+                                                    Delivery Date:
+                                                    <span
+                                                        class="text-primary">{{reservationModal.delivery.delivery_start_dt
+                                                        | date:'dd/MM/yyyy hh:mm a'}}</span>
+                                                </p>
+                                            </div>
+                                            <div class="col-6">
+                                                <p>
+                                                    Delivery End Date:
+                                                    <span
+                                                        class="text-primary">{{reservationModal.delivery.delivery_completed_dt
+                                                        | date:'dd/MM/yyyy hh:mm a'}}</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <p>Delivery Remarks:
+                                                    <span
+                                                        class="text-primary">{{reservationModal.delivery.delivery_remark}}</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="table-responsive overflow-auto" style="height: 30vh;">
                                     <table class="table table-centered table-nowrap">
@@ -126,7 +166,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr *ngFor="let item of reservationModal.order.orderItemList">
+                                            <tr *ngFor="let item of reservationModal.orderItemList">
                                                 <td>
                                                     <div>
                                                         <img src="assets/images/product/img-7.png" alt
@@ -150,7 +190,7 @@
                                                 <td colspan="3">
                                                     <h6 class="m-0 text-end">Total:</h6>
                                                 </td>
-                                                <td>$ {{ reservationModal.order.total_amount }}</td>
+                                                <td>$ {{ reservationModal.total_amount }}</td>
                                             </tr>
                                         </tbody>
                                     </table>

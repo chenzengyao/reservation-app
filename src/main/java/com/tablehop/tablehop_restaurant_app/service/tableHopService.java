@@ -258,22 +258,29 @@ public class tableHopService {
     public Map<String, Object> adminGetReservations() {
         log.info("admin get reservations ---> service");
         Map<String, Object> result = new HashMap<>();
-        List<Reservation> reservationList = reservationRepository.findAll();
 
-        reservationList.forEach((reservation) -> {
-            User user = userRepository.findById(reservation.getUserID()).orElse(null);
-            reservation.setUser(user);
-            Order order = orderRepository.findByReservationID(reservation.getReservationID());
-            reservation.setOrder(order);
-            List<OrderItem> orderItemList = orderItemRepository.findByOrderID(order.getOrderID());
-            order.setOrderItemList(orderItemList);
-            if (reservation.getTableID() != null) {
-                Tables table = tableRepository.findById(reservation.getTableID()).orElse(null);
-                reservation.setTable(table);
+        List<Order> orderList = orderRepository.findAll();
+        log.info("{}", orderList.toString());
+        orderList.forEach(ord -> {
+            User user = userRepository.findById(ord.getUserID()).orElse(null);
+            ord.setUser(user);
+            if (ord.getReservationID() != null) {
+                Reservation reservation = reservationRepository.findById(ord.getReservationID()).orElse(null);
+                ord.setReservation(reservation);
+                if (!Objects.isNull(reservation)) {
+                    Tables table = tableRepository.findById(reservation.getTableID()).orElse(null);
+                    reservation.setTable(table);
+                }
             }
+            if (ord.getDeliveryID() != null) {
+                Delivery delivery = deliveryRepository.findById(ord.getDeliveryID()).orElse(null);
+                ord.setDelivery(delivery);
+            }
+            List<OrderItem> orderItemList = orderItemRepository.findByOrderID(ord.getOrderID());
+            ord.setOrderItemList(orderItemList);
         });
 
-        result.put("reservation", reservationList);
+        result.put("reservation", orderList);
 
         return result;
     }
@@ -302,6 +309,7 @@ public class tableHopService {
         orderEntity.setOrder_created_dt(new Date());
         orderEntity.setOrder_updated_dt(new Date());
         orderEntity.setOrder_type((String) order.get("order_type"));
+        orderEntity.setUserID((Integer) order.get("user_id"));
 
         Reservation reservationEntity = new Reservation();
         Delivery deliveryEntity = new Delivery();

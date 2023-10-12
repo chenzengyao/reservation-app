@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { dateStringToDateLocal } from 'src/app/core/helpers/helper';
+import { Delivery } from 'src/app/core/models/delivery.models';
 import { Menu } from 'src/app/core/models/menu.models';
 import { OrderItems } from 'src/app/core/models/orderItems.models';
 import { Orders } from 'src/app/core/models/orders.models';
 import { Reservation } from 'src/app/core/models/reservation.models';
+import { DeliveryService } from 'src/app/core/services/delivery.service';
 import { MenusService } from 'src/app/core/services/menus.service';
+import { OrdersService } from 'src/app/core/services/orders.service';
 import { ReservationService } from 'src/app/core/services/reservation';
 import Swal from 'sweetalert2';
 
@@ -16,7 +19,12 @@ import Swal from 'sweetalert2';
 })
 export class EditOrdersComponent implements OnInit {
 
-  constructor(private menuService: MenusService, private reservationService: ReservationService, private router: Router, private activeRoute: ActivatedRoute) { }
+  constructor(private menuService: MenusService, 
+    private reservationService: ReservationService, 
+    private router: Router, 
+    private activeRoute: ActivatedRoute,
+    public orderService: OrdersService,
+    public deliveryService: DeliveryService) { }
 
   breadCrumbItems: Array<{}>;
   searchItem: string = "";
@@ -29,6 +37,7 @@ export class EditOrdersComponent implements OnInit {
   tableList: any[] = [];
   reservationID: number = 0;
   userName: string = "";
+  delivery: Delivery = new Delivery();
 
 
   ngOnInit(): void {
