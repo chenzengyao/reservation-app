@@ -17,10 +17,11 @@ import { DeliveryComponent } from './delivery/delivery.component';
 import { SettingsComponent } from './settings/settings.component';
 import {ChangePasswordComponent} from "./changePassword/changePassword.component";
 import { PaymentComponent } from './payment/payment.component';
+import { OrderDetailsComponent } from './order-details/order-details.component';
 
 
 @NgModule({
-  declarations: [DefaultComponent, UsersComponent, MenusComponent, TablesComponent, OrdersComponent, DeliveryComponent, SettingsComponent, ChangePasswordComponent, PaymentComponent],
+  declarations: [DefaultComponent, UsersComponent, MenusComponent, TablesComponent, OrdersComponent, DeliveryComponent, SettingsComponent, ChangePasswordComponent, PaymentComponent, OrderDetailsComponent],
     imports: [
         CommonModule,
         FormsModule,
