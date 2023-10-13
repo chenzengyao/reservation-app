@@ -67,6 +67,8 @@ export class LoginComponent implements OnInit {
       this.authenticationService.checkExistUser(this.email, this.submittedPassword).subscribe(data=>{
         // console.log("checkExistUser", data);
 
+        localStorage.setItem('currentUser', JSON.stringify(this.email));
+
         if(data == 1){
           // this.dataService.setCurrentEmail(this.email);
 
