@@ -7,10 +7,21 @@
                     <div class="row">
                         <div class="col-6">
                             <div class="mb-3">
-                                <label for="" class="form-label">Customer Name <span
-                                        class="text-danger">*</span></label>
-                                <input type="text" name="" id="" class="form-control"
-                                    placeholder="Please enter customer name..." required>
+                                <label for="" class="form-label">Customer Name <span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <input type="text" class="form-control" placeholder="Please enter customer name..."
+                                        required (keyup)="searchUserName($event.target.value)">
+                                    <div class="position-absolute top-100 start-0 translate-middle-y mt-3 border w-100" style="z-index: 999;">
+                                        <ul class="list-unstyled m-0" *ngIf="userList.length > 0">
+                                            <li *ngFor="let user of userList" class="mb-1">
+                                                <button class="btn btn-link bg-white rounded shadow w-100" (click)="selectUser(user)">
+                                                    {{user.userName}}
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                                 <input type="hidden" [(ngModel)]="order.userID">
                             </div>
                         </div>

@@ -307,7 +307,7 @@ public class tableHopService {
         orderEntity.setOrder_created_dt(new Date());
         orderEntity.setOrder_updated_dt(new Date());
         orderEntity.setOrder_type((String) order.get("order_type"));
-        orderEntity.setUserID((Integer) order.get("user_id"));
+        orderEntity.setUserID((Integer) order.get("userID"));
 
         Reservation reservationEntity = new Reservation();
         Delivery deliveryEntity = new Delivery();
@@ -347,7 +347,7 @@ public class tableHopService {
             deliveryEntity.setArranged_by("Hardcode user: User A");
             deliveryEntity.setOrderID(savedOrderEntity.getOrderID());
             // todo update deliverymanID
-            deliveryEntity.setDeliverymanID("1");
+            deliveryEntity.setDeliverymanID(1);
             Delivery savedDelivery = deliveryRepository.saveAndFlush(deliveryEntity);
             savedOrderEntity.setDeliveryID(savedDelivery.getDeliveryID());
             savedOrderEntity.setReservationID(null);
@@ -412,20 +412,32 @@ public class tableHopService {
         reservationRepository.saveAndFlush(reserve);
     }
 
-    public Reservation adminGetOrdersById(Integer id) {
-        Reservation reservation = reservationRepository.findById(id).orElse(null);
-        User user = userRepository.findById(reservation.getUserID()).orElse(null);
-        reservation.setUser(user);
-        Orders order = orderRepository.findByReservationID(reservation.getReservationID());
-        reservation.setOrder(order);
-        List<OrderItem> orderItemList = orderItemRepository.findByOrderID(order.getOrderID());
-        order.setOrderItemList(orderItemList);
-        if (reservation.getTableID() != null) {
-            Tables table = tableRepository.findById(reservation.getTableID()).orElse(null);
-            reservation.setTable(table);
+    public Orders adminGetOrdersById(Integer id) {
+        Orders order = orderRepository.findById(id).orElse(null);
+
+        if (Objects.isNull(order)) {
+            return null;
+        } else {
+            User user = userRepository.findById(order.getUserID()).orElse(null);
+            order.setUser(user);
+            if (order.getReservationID() != null) {
+                Reservation reservation = reservationRepository.findById(order.getReservationID()).orElse(null);
+                order.setReservation(reservation);
+                if (!Objects.isNull(reservation)) {
+                    Tables table = tableRepository.findById(reservation.getTableID()).orElse(null);
+                    reservation.setTable(table);
+                }
+            }
+            if (order.getDeliveryID() != null) {
+                Delivery delivery = deliveryRepository.findById(order.getDeliveryID()).orElse(null);
+                order.setDelivery(delivery);
+            }
+            List<OrderItem> orderItemList = orderItemRepository.findByOrderID(order.getOrderID());
+            order.setOrderItemList(orderItemList);
+
+            log.info("Order log:: {}", order);
         }
-        log.info(reservation.toString());
-        return reservation;
+        return order;
     }
 
     public User getUserProfile(String email) {
@@ -452,29 +464,80 @@ public class tableHopService {
         Map<String, Object> reservation = (Map<String, Object>) data.get("reservation");
         Map<String, Object> order = (Map<String, Object>) data.get("order");
         List<Map<String, Object>> orderItemsList = (List<Map<String, Object>>) data.get("orderItemsList");
+        Map<String, Object> delivery = (Map<String, Object>) data.get("delivery");
 
-        Reservation reservationEntity = reservationRepository.findById((Integer) reservation.get("reservationID")).orElse(null);
+        log.info("{} {} {} {} {}", reservation, order, orderItemsList, delivery);
 
-        if (Objects.isNull(reservationEntity)) {
+        // Reservation reservationEntity = reservationRepository.findById((Integer) reservation.get("reservationID")).orElse(null);
+        Orders orderEntity = orderRepository.findById((Integer) order.get("orderID")).orElse(null);
+
+        if (Objects.isNull(orderEntity)) {
             return null;
         } else {
-            reservationEntity.setPax_no((Integer) reservation.get("pax_no"));
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
-            LocalDateTime dateTime = LocalDateTime.parse((String) reservation.get("reservation_dt"), formatter);
-            Timestamp timestamp = Timestamp.valueOf(dateTime);
-            log.info("reservation_dt {}", timestamp);
-            Timestamp reservation_dt = Timestamp.valueOf(dateTime);
-            reservationEntity.setReservation_dt(reservation_dt);
-            reservationEntity.setReserve_status((String) reservation.get("reserve_status"));
-            reservationEntity.setReserve_remark((String) reservation.get("reserve_remark"));
-            reservationEntity.setTableID((Integer) reservation.get("table_id"));
-
-            reservationEntity = reservationRepository.saveAndFlush(reservationEntity);
-
-            Orders orderEntity = orderRepository.findById((Integer) order.get("orderID")).orElse(null);
             orderEntity.setOrder_updated_dt(new Date());
-            orderEntity.setTableID(reservationEntity.getTableID());
+            orderEntity.setTableID((Integer) order.get("table_id"));
+            orderEntity.setOrder_status((String) order.get("order_status"));
+            orderEntity.setUpdated_by("Hardcode user: User A");
+            orderEntity.setOrder_type((String) order.get("order_type"));
             Orders savedOrder = orderRepository.saveAndFlush(orderEntity);
+
+            if (orderEntity.getOrder_type().equals("Reservation")) {
+                Reservation reservationEntity = null;
+                if (Objects.isNull(orderEntity.getReservationID())) {
+                    log.info("new reservation");
+                    reservationEntity = new Reservation();
+                } else {
+                    reservationEntity = reservationRepository.findById(orderEntity.getReservationID()).orElse(null);
+                }
+                reservationEntity.setPax_no((Integer) reservation.get("pax_no"));
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+                LocalDateTime dateTime = LocalDateTime.parse((String) reservation.get("reservation_dt"), formatter);
+                Timestamp timestamp = Timestamp.valueOf(dateTime);
+                log.info("reservation_dt {}", timestamp);
+                Timestamp reservation_dt = Timestamp.valueOf(dateTime);
+                reservationEntity.setReservation_dt(reservation_dt);
+                reservationEntity.setReserve_status((String) reservation.get("reserve_status"));
+                reservationEntity.setReserve_remark((String) reservation.get("reserve_remark"));
+                reservationEntity.setTableID((Integer) reservation.get("table_id"));
+                // reservationEntity.setUserID(savedOrder.getUserID());
+                reservationEntity = reservationRepository.saveAndFlush(reservationEntity);
+                savedOrder.setReservationID(reservationEntity.getReservationID());
+                savedOrder.setDeliveryID(null);
+                orderRepository.saveAndFlush(savedOrder);
+
+            } if (orderEntity.getOrder_type().equals("Delivery")) {
+                Delivery deliveryEntity = null;
+                if (Objects.isNull(orderEntity.getReservationID())) {
+                    log.info("new delivery");
+                    deliveryEntity = new Delivery();
+                } else {
+                    deliveryEntity = deliveryRepository.findById(orderEntity.getDeliveryID()).orElse(null);
+                }
+                deliveryEntity.setDelivery_status((String) delivery.get("delivery_status"));
+                deliveryEntity.setDelivery_remark((String) delivery.get("delivery_remark"));
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+                LocalDateTime dateTime = LocalDateTime.parse((String) delivery.get("delivery_start_dt"), formatter);
+                Timestamp timestamp = Timestamp.valueOf(dateTime);
+                log.info("delivery_start_dt {}", timestamp);
+                Timestamp delivery_start_dt = Timestamp.valueOf(dateTime);
+                deliveryEntity.setDelivery_start_dt(delivery_start_dt);
+                log.info("delivery completed dt {}", (String) delivery.get("delivery_completed_dt"));
+                LocalDateTime dateTime2 = LocalDateTime.parse((String) delivery.get("delivery_completed_dt"), formatter);
+                Timestamp timestamp2 = Timestamp.valueOf(dateTime2);
+                log.info("delivery_completed_dt {}", timestamp2);
+                Timestamp delivery_completed_dt = Timestamp.valueOf(dateTime2);
+                deliveryEntity.setDelivery_completed_dt(delivery_completed_dt);
+                deliveryEntity.setArranged_by("Hardcode user: User A");
+                deliveryEntity.setOrderID(savedOrder.getOrderID());
+                // todo update deliverymanID
+                deliveryEntity.setDeliverymanID(1);
+                deliveryRepository.saveAndFlush(deliveryEntity);
+                savedOrder.setDeliveryID(deliveryEntity.getDeliveryID());
+                savedOrder.setReservationID(null);
+                savedOrder.setTableID(null);
+                orderRepository.saveAndFlush(savedOrder);
+            }
+            
 
             List<OrderItem> orderItemEntity = new ArrayList<>();
             if (orderItemsList.size() > 0) {
@@ -503,7 +566,7 @@ public class tableHopService {
         }
 
         Object result = new Object();
-        result = reservationEntity;
+        result = orderEntity;
 
         return result;
     }
@@ -644,5 +707,9 @@ public class tableHopService {
         return itemRepository.getItemByID(String.valueOf(itemID)).getItem_image();
     }
 
-
+    public List<User> getUserByName(String name) {
+        List<User> userList = new ArrayList<User>();
+        userList = userRepository.getCustomerByName(name);
+        return userList;
+    }
 }

@@ -299,4 +299,10 @@ public class tableHopController {
         return tableHopService.getImage(itemID);
     }
 
+    @RequestMapping(value = "/admin/user/getUserByName", method = RequestMethod.GET)
+    public List<User> getUserByName(@RequestParam String userName) {
+        log.info("admin get user by name -----> controller");
+        return tableHopService.getUserByName(userName);
+    }
+
 }

@@ -28,4 +28,8 @@ export class UserProfileService {
       return this.http.post("/admin/deleteUser?userID=" + userID, { observe: 'response' });
     }
 
+    getUserByName(userName: string) {
+      return this.http.get("/admin/user/getUserByName?userName=" + userName, { observe: 'response' });
+    }
+
 }

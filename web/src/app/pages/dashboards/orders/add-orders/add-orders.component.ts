@@ -9,6 +9,7 @@ import { DeliveryService } from "src/app/core/services/delivery.service";
 import { MenusService } from "src/app/core/services/menus.service";
 import { OrdersService } from "src/app/core/services/orders.service";
 import { ReservationService } from "src/app/core/services/reservation";
+import { UserProfileService } from "src/app/core/services/user.service";
 import Swal from 'sweetalert2';
 
 @Component({
@@ -21,7 +22,8 @@ export class AddOrdersComponent implements OnInit {
     private reservationService: ReservationService,
     private router: Router,
     public orderService: OrdersService,
-    public deliveryService: DeliveryService) { }
+    public deliveryService: DeliveryService,
+    public userService: UserProfileService) { }
 
   breadCrumbItems: Array<{}>;
   searchItem: string = "";
@@ -33,6 +35,7 @@ export class AddOrdersComponent implements OnInit {
   delivery: Delivery = new Delivery();
   menuList: Menu[] = [];
   tableList: any[] = [];
+  userList: any[] = [];
 
   ngOnInit(): void {
     this.breadCrumbItems = [{ label: "Reservation" }, { label: "Add Orders", active: true },];
@@ -130,5 +133,23 @@ export class AddOrdersComponent implements OnInit {
     this.orderItemsList.forEach(item => {
       this.totalAmount += item['total'];
     });
+  }
+
+  searchUserName(name: string) {
+    console.log("this name: ", name);
+    if (name.length > 2) {
+      this.userService.getUserByName(name).toPromise().then((res: any) => {
+        console.log("this user: ", res);
+        this.userList = res.body;
+      }).catch((err: any) => { });
+    } else {
+      this.userList = [];
+    }
+  }
+
+  selectUser(user: any) {
+    console.log("this user: ", user);
+    this.order.userID = user.userID;
+    this.userList = [];
   }
 }
