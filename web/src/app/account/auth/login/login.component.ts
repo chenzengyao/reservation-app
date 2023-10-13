@@ -4,6 +4,7 @@ import { AuthenticationService } from '../../../core/services/auth.service';
 import { AuthfakeauthenticationService } from '../../../core/services/authfake.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { dataService } from "../../../dataService";
+import { User } from 'src/app/core/models/auth.models';
 
 
 @Component({
@@ -34,7 +35,8 @@ export class LoginComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router,
               private authenticationService: AuthenticationService,
-              private dataService: dataService
+              private dataService: dataService,
+              private authFackservice: AuthfakeauthenticationService
   ) { }
 
   ngOnInit() {
@@ -68,6 +70,9 @@ export class LoginComponent implements OnInit {
         // console.log("checkExistUser", data);
 
         localStorage.setItem('currentUser', JSON.stringify(this.email));
+        const user = new User();
+        user.email = this.email as string;
+        this.authFackservice.currentUserSubject.next(user);
 
         if(data == 1){
           // this.dataService.setCurrentEmail(this.email);
