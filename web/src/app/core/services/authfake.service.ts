@@ -7,7 +7,7 @@ import { User } from '../models/auth.models';
 
 @Injectable({ providedIn: 'root' })
 export class AuthfakeauthenticationService {
-    private currentUserSubject: BehaviorSubject<User>;
+    public currentUserSubject: BehaviorSubject<User>;
     public currentUser: Observable<User>;
 
     constructor(private http: HttpClient) {
