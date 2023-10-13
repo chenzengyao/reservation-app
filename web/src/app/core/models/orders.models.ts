@@ -9,4 +9,5 @@ export class Orders {
     table_id: number;
     delivery_id: number;
     userID: number;
+    user: any;
 }

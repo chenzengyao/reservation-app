@@ -7,6 +7,12 @@ import { Menu } from '../models/menu.models'
 export class ReservationService {
   constructor(private http: HttpClient) { }
 
+  reservationStatusList: any[] = [
+    { id: 0, name: "Pending" },
+    { id: 1, name: "Confirmed" },
+    { id: 2, name: "Cancelled" },
+  ]
+
   getAllReservation() {
     return this.http.post<any[]>(`${apiLink()}/admin/reservation/all`, { observe: "response" });
   }

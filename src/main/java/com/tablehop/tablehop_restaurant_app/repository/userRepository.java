@@ -34,4 +34,7 @@ public interface userRepository extends JpaRepository<User, Integer> {
     @Query(value="SELECT * FROM user ORDER BY user_type;", nativeQuery=true)
     public List<User> getAllUser();
 
+    @Query(value="SELECT * FROM user WHERE username like %:name%", nativeQuery=true)
+    public List<User> getCustomerByName(String name);
+
 }

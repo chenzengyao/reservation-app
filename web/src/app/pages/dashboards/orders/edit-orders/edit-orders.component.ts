@@ -19,9 +19,9 @@ import Swal from 'sweetalert2';
 })
 export class EditOrdersComponent implements OnInit {
 
-  constructor(private menuService: MenusService, 
-    private reservationService: ReservationService, 
-    private router: Router, 
+  constructor(private menuService: MenusService,
+    public reservationService: ReservationService,
+    private router: Router,
     private activeRoute: ActivatedRoute,
     public orderService: OrdersService,
     public deliveryService: DeliveryService) { }
@@ -56,11 +56,18 @@ export class EditOrdersComponent implements OnInit {
         this.router.navigate(["/admin/orders/listing"]);
       }
       console.log("res: ", res);
-      this.reservation = res;
-      this.reservation.reservation_dt = dateStringToDateLocal(res.reservation_dt);
+      this.order = res;
+      if (res.reservation) {
+        this.reservation = res.reservation
+        this.reservation.reservation_dt = dateStringToDateLocal(res.reservation_dt);
+      }
+      if (res.delivery) {
+        this.delivery = res.delivery;
+        this.delivery.delivery_start_dt = dateStringToDateLocal(res.delivery.delivery_start_dt);
+        this.delivery.delivery_completed_dt = dateStringToDateLocal(res.delivery.delivery_completed_dt);
+      }
       this.userName = res.user.userName;
-      this.order = res.order;
-      this.orderItemsList = res.order.orderItemList;
+      this.orderItemsList = res.orderItemList;
       this.orderItemsList.forEach(item => {
         item['total'] = parseFloat(item.item_price) * item.order_quantity;
         this.totalAmount += (parseFloat(item.item_price) * item.order_quantity);
@@ -114,14 +121,15 @@ export class EditOrdersComponent implements OnInit {
   }
 
   submitOrder() {
-    console.log("this order: ", this.reservation, this.order, this.orderItemsList);
-    if (this.reservation.table_id) {
+    console.log("this order: ", this.reservation, this.order, this.orderItemsList, this.delivery);
+    if (this.reservation) {
       this.reservation.table_id = parseInt(this.reservation.table_id.toString());
     }
     let data = {}
     data['reservation'] = this.reservation;
     data['order'] = this.order;
     data['orderItemsList'] = this.orderItemsList;
+    data['delivery'] = this.delivery;
 
     this.reservationService.adminUpdateReservation(data).toPromise().then((res: any) => {
       console.log("res: ", res);

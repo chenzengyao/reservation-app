@@ -39,7 +39,7 @@ public class Delivery {
     private Integer orderID;
 
     @Column(name = "deliverymanID")
-    private String deliverymanID;
+    private Integer deliverymanID;
 
     public Integer getDeliveryID() {
         return this.deliveryID;
@@ -105,11 +105,11 @@ public class Delivery {
         this.orderID = orderID;
     }
 
-    public String getDeliverymanID() {
+    public Integer getDeliverymanID() {
         return this.deliverymanID;
     }
 
-    public void setDeliverymanID(String deliverymanID) {
+    public void setDeliverymanID(Integer deliverymanID) {
         this.deliverymanID = deliverymanID;
     }
 
