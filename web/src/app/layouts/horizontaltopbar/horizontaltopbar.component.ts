@@ -6,12 +6,14 @@ import { LanguageService } from '../../core/services/language.service';
 import { EventService } from '../../core/services/event.service';
 import { AuthenticationService } from '../../core/services/auth.service';
 import { AuthfakeauthenticationService } from '../../core/services/authfake.service';
+import {UserProfileService} from "../../core/services/user.service";
 
 import { DOCUMENT } from '@angular/common';
 
 import { MENU } from './menu';
 import { MenuItem } from './menu.model';
 import { environment } from '../../../environments/environment';
+import {User} from "../../core/models/auth.models";
 
 @Component({
   selector: 'app-horizontaltopbar',
@@ -29,6 +31,8 @@ export class HorizontaltopbarComponent implements OnInit, AfterViewInit {
   flagvalue;
   countryName;
   valueset;
+  username: string;
+  currentUser: User;
 
   menuItems = [];
 
@@ -44,6 +48,7 @@ export class HorizontaltopbarComponent implements OnInit, AfterViewInit {
   constructor(@Inject(DOCUMENT) private document: any, private router: Router, private eventService: EventService, private authService: AuthenticationService,
     private authFackservice: AuthfakeauthenticationService,
     public languageService: LanguageService,
+    public userService: UserProfileService,
     // tslint:disable-next-line: variable-name
     public _cookiesService: CookieService) {
     router.events.subscribe(event => {
@@ -54,6 +59,13 @@ export class HorizontaltopbarComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    //Check for login user
+    console.log(sessionStorage.getItem('email'));
+
+    this.userService.getUserProfile(sessionStorage.getItem('email')).subscribe(data => {
+      this.currentUser = data.body as User;
+      this.username = this.currentUser.userName;
+    })
     this.element = document.documentElement;
 
     this.initialize();
