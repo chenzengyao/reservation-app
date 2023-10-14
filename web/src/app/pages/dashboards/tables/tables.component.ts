@@ -28,11 +28,18 @@ export class TablesComponent implements OnInit {
     });
     const cthis = this;
     setTimeout(() => {
-      console.warn("after ", $(this.el.nativeElement).find('.tables').length);
-      $(this.el.nativeElement).find('.tables').draggable({
-        stop: function (event, ui) {
+      // console.warn("after ", $('.tables').length);
+      $('.tables').draggable({
+        drag: function(e, ui) {
+          var offset = $(this).offset();
           var left = Math.abs(ui.position.left);
           var top = Math.abs(ui.position.top);
+          // console.log(ui.position, $(this).offset());
+        },
+        stop: function (event, ui) {
+          console.log(ui.position, $(this).offset());
+          var left = ui.position.left;
+          var top = ui.position.top;
           cthis.tableEntity = cthis.tablesList.filter((table: any) => {
             return table.tableID == this.id.split('_')[1];
           })[0];
@@ -43,7 +50,7 @@ export class TablesComponent implements OnInit {
           console.log(cthis.tableEntity);
           cthis.saveTablePosition();
         },
-        containment: '#containment',
+        containment: $('#containment'),
       });
     }, 1000);
   }
