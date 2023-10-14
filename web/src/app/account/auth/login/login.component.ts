@@ -87,6 +87,7 @@ export class LoginComponent implements OnInit {
             }
             else if(data == 3){
               console.log("admin login")
+              sessionStorage.setItem('email', this.email.toString());
               this.router.navigate(['/admin/dashboard']);
             }
           })

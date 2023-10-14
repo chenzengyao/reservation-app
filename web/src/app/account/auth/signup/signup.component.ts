@@ -35,6 +35,7 @@ export class SignupComponent implements OnInit {
   username: string;
   email: string;
   submittedPassword: string;
+  confirmPassword:string;
   phone_no: string;
   dob: string;
 
@@ -96,20 +97,26 @@ export class SignupComponent implements OnInit {
         }
         else {
           this.username = this.f.username.value;
-          console.log(this.username, this.email, this.phone_no, this.submittedPassword, this.dob);
-          this.authenticationService.register(this.username, this.email, this.phone_no, this.submittedPassword, this.dob)
-            .subscribe(
-              data => {
-                this.successmsg = true;
-                if (this.successmsg) {
-                  this.router.navigate(['/account/login']);
-                }
-                alert('Register Successfully.');
-              },
-              error => {
-                this.error = error ? error : '';
-              });
-
+          this.submittedPassword = this.f.password.value;
+          this.confirmPassword = this.f.confirm_password.value;
+          if(this.submittedPassword == this.confirmPassword){
+            console.log(this.username, this.email, this.phone_no, this.submittedPassword, this.dob);
+            this.authenticationService.register(this.username, this.email, this.phone_no, this.submittedPassword, this.dob)
+              .subscribe(
+                data => {
+                  this.successmsg = true;
+                  if (this.successmsg) {
+                    this.router.navigate(['/account/login']);
+                  }
+                  alert('Register Successfully.');
+                },
+                error => {
+                  this.error = error ? error : '';
+                });
+          }
+          else{
+            alert('Please make sure your password and confirm password is the same');
+          }
         }
       });
     }

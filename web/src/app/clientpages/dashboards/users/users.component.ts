@@ -26,11 +26,7 @@ export class UsersComponent implements OnInit {
   working = false;
   minDate:String;
   maxDate:String;
-  userName;
-  email;
-  dobdate;
-  phone_no;
-  address;
+  email: string;
   show1: boolean = false;
   show2: boolean = false;
   userProfile: User;
@@ -47,21 +43,28 @@ export class UsersComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private authenticationService: AuthenticationService,
               private userService: UserProfileService, private dataService: dataService, private fb: FormBuilder) {
+    this.userprofileForm = this.fb.group({
+      userName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
+      email: [''],
+      phone_no: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(8)]],
+      dob: [''],
+      address: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
+    });
   }
 
 
-  async ngOnInit() {
+   ngOnInit() {
     //Check for login user
+    console.log(sessionStorage.getItem('email'));
     if (sessionStorage.getItem('email')==null){
+
       window.location.href = '/account/login';
     } else{
+      this.email = sessionStorage.getItem('email');
       true;
     }
 
-    await this.dataService.setCurrentEmail("liz@gmail.com");
-    console.log("this.dataService.getCurrentEmail()",this.dataService.getCurrentEmail());
-
-    await this.userService.getUserProfile(this.dataService.getCurrentEmail()).subscribe(data => {
+    this.userService.getUserProfile(this.email).subscribe(data => {
       this.userProfile = data.body as User;
 
       this.userprofileForm = this.fb.group({

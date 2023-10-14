@@ -55,8 +55,15 @@ export class ChangeAdminPasswordComponent implements OnInit {
 
 
   ngOnInit() {
-    this.dataService.setCurrentEmail("tablehopSG@gmail.com");
-    this.email = this.dataService.getCurrentEmail();
+    console.log(sessionStorage.getItem('email'));
+    //Check for login user
+    if (sessionStorage.getItem('email')==null){
+      window.location.href = '/account/login';
+
+    } else{
+      this.email = sessionStorage.getItem('email');
+      true;
+    }
 
     this.changeAdminPasswordForm = this.formBuilder.group({
       current_password: ['', [Validators.required, Validators.minLength(8),Validators.pattern(
@@ -99,7 +106,9 @@ export class ChangeAdminPasswordComponent implements OnInit {
                   data => {
                     this.successmsg = true;
                     if (this.successmsg) {
+                      alert('Update Password Successful');
                       this.router.navigate(['/admin/users/changeAdminpassword']);
+                      this.changeAdminPasswordForm.reset();
                     }
                   },
                   error => {
@@ -127,7 +136,7 @@ export class ChangeAdminPasswordComponent implements OnInit {
       this.working = false;
       this.successmsg = false;
       this.submitted = false;
-      this.changeAdminPasswordForm.reset();
+      // this.changeAdminPasswordForm.reset();
     }, 3000);
   }
 

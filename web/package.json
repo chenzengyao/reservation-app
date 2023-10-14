@@ -2,7 +2,7 @@
   "name": "skote-angular-vertical",
   "version": "1.0.0",
   "engines": {
-    "node": "8.5.0"
+    "node": "v16.14.2", "npm": "8.5.0"
   },
   "scripts": {
     "ng": "ng",

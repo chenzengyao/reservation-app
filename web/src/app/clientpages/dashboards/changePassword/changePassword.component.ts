@@ -55,9 +55,15 @@ export class ChangePasswordComponent implements OnInit {
 
 
   ngOnInit() {
-    this.dataService.setCurrentEmail("liz@gmail.com");
-    this.email = this.dataService.getCurrentEmail();
 
+    //Check for login user
+    if (sessionStorage.getItem('email')==null){
+      window.location.href = '/account/login';
+
+    } else{
+      this.email = sessionStorage.getItem('email');
+      true;
+    }
     this.changepasswordForm = this.formBuilder.group({
       current_password: ['', [Validators.required, Validators.minLength(8),Validators.pattern(
         /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)]],
@@ -99,7 +105,9 @@ export class ChangePasswordComponent implements OnInit {
                   data => {
                     this.successmsg = true;
                     if (this.successmsg) {
+                      alert('Update Password Successful');
                       this.router.navigate(['/user/changepassword']);
+                      this.changepasswordForm.reset();
                     }
                   },
                   error => {
@@ -127,7 +135,7 @@ export class ChangePasswordComponent implements OnInit {
       this.working = false;
       this.successmsg = false;
       this.submitted = false;
-      this.changepasswordForm.reset();
+      // this.changepasswordForm.reset();
     }, 3000);
   }
 
