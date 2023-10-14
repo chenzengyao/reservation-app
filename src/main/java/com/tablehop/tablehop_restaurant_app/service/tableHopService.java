@@ -262,8 +262,10 @@ public class tableHopService {
         orderList.forEach(ord -> {
             User user = userRepository.findById(ord.getUserID()).orElse(null);
             ord.setUser(user);
+            log.info("user {}", user.toString());
             if (ord.getReservationID() != null) {
                 Reservation reservation = reservationRepository.findById(ord.getReservationID()).orElse(null);
+                log.info("reservation {}", reservation.toString());
                 ord.setReservation(reservation);
                 if (!Objects.isNull(reservation)) {
                     Tables table = tableRepository.findById(reservation.getTableID()).orElse(null);
@@ -272,9 +274,11 @@ public class tableHopService {
             }
             if (ord.getDeliveryID() != null) {
                 Delivery delivery = deliveryRepository.findById(ord.getDeliveryID()).orElse(null);
+                log.info("delivery {}", delivery.toString());
                 ord.setDelivery(delivery);
             }
             List<OrderItem> orderItemList = orderItemRepository.findByOrderID(ord.getOrderID());
+            log.info("orderItemList {}", orderItemList.toString());
             ord.setOrderItemList(orderItemList);
         });
 
