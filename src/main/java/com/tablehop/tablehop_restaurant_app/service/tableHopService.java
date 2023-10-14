@@ -1,6 +1,7 @@
 package com.tablehop.tablehop_restaurant_app.service;
 
 import com.tablehop.tablehop_restaurant_app.controller.tableHopController;
+import com.tablehop.tablehop_restaurant_app.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import com.tablehop.tablehop_restaurant_app.entity.User;
 import com.tablehop.tablehop_restaurant_app.entity.Delivery;
-import com.tablehop.tablehop_restaurant_app.entity.DeliveryMan;
 import com.tablehop.tablehop_restaurant_app.entity.Item;
 import com.tablehop.tablehop_restaurant_app.entity.Orders;
 import com.tablehop.tablehop_restaurant_app.entity.OrderItem;
@@ -24,6 +24,7 @@ import com.tablehop.tablehop_restaurant_app.repository.reservationRepository;
 import com.tablehop.tablehop_restaurant_app.repository.tableRepository;
 import com.tablehop.tablehop_restaurant_app.repository.deliveryManRepository;
 import com.tablehop.tablehop_restaurant_app.repository.deliveryRepository;
+import com.tablehop.tablehop_restaurant_app.repository.paymentRepository;
 
 import jakarta.annotation.Resource;
 import org.springframework.web.multipart.MultipartFile;
@@ -70,9 +71,6 @@ public class tableHopService {
 
     @Resource
     private deliveryRepository deliveryRepository;
-
-    @Resource
-    private deliveryManRepository deliveryManRepository;
 
     @Autowired
     private JavaMailSender javaMailSender;
@@ -726,23 +724,5 @@ public class tableHopService {
         List<User> userList = new ArrayList<User>();
         userList = userRepository.getCustomerByName(name);
         return userList;
-    }
-
-    public List<DeliveryMan> adminGetDeliveryMan() {
-        List<DeliveryMan> deliveryManList = new ArrayList<DeliveryMan>();
-        deliveryManList = deliveryManRepository.findAll();
-        return deliveryManList;
-    }
-
-    public List<DeliveryMan> adminSaveDeliveryMan(String phone) {
-        List<DeliveryMan> deliveryManList = new ArrayList<DeliveryMan>();
-        DeliveryMan deliveryMan = new DeliveryMan();
-        deliveryMan.setDeliveryman_phone_no(phone);
-        deliveryMan.setDeliveryman_created_dt(new Date());
-        deliveryMan.setDeliveryman_updated_dt(new Date());
-        deliveryMan.setDeliveryID(null);
-        deliveryManRepository.saveAndFlush(deliveryMan);
-        deliveryManList = deliveryManRepository.findAll();
-        return deliveryManList;
     }
 }

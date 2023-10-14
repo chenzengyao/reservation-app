@@ -1,1 +1,63 @@
-<p>order-details works!</p>
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="label">Order Items</h4>
+        <div class="row">
+          <div class="col-12">
+            <div class="table-responsive">
+              <table class="table table-centered table-nowrap">
+                <thead class="table-light">
+                <tr>
+                  <th>#</th>
+                  <th>Menu</th>
+                  <th>Quality</th>
+                  <th>Price</th>
+                  <th>Remarks</th>
+                  <th>Total</th>
+<!--                  <th>Action</th>-->
+                </tr>
+                </thead>
+                <tbody>
+                <!-- <tr *ngIf="orderItems.length == 0"></tr> -->
+                <tr *ngFor="let items of orderItemsList; let i = index">
+                  <td>{{i+1}}</td>
+                  <td>{{items.item_name}}</td>
+                  <td>{{items.order_quantity}}</td>
+                  <td>{{items.item_price}}</td>
+                  <td>{{items.order_remark}}</td>
+<!--                  <td>-->
+<!--                    <input type="number" [(ngModel)]="items.order_quantity"-->
+<!--                           class="form-control" min="0" (change)="setTotalAmount(i)">-->
+<!--                  </td>-->
+<!--                  <td>-->
+<!--                    <input type="text" [(ngModel)]="items.item_price" class="form-control"-->
+<!--                           min="0" (change)="setTotalAmount(i)" readonly>-->
+<!--                  </td>-->
+<!--                  <td>-->
+<!--                    <input type="text" class="form-control"-->
+<!--                           [(ngModel)]="items.order_remark">-->
+<!--                  </td>-->
+                  <td>$ {{items.total}}</td>
+<!--                  <td>-->
+<!--                    <button class="btn btn-sm" (click)="removeOrderItem(i, items)">-->
+<!--                      <i class="text-danger mdi mdi-delete font-size-18"></i>-->
+<!--                    </button>-->
+<!--                  </td>-->
+                </tr>
+                </tbody>
+              </table>
+              <div>
+                <p>Total Amount: <span id="total-amount">${{totalAmount}}</span></p>
+              </div>
+              <div class="d-flex w-100 gap-3" id="button">
+                <button id="submit" class="btn btn-primary btn-sm" (click)="submitOrder()">Payment</button>
+                <button id="cancel" class="btn btn-primary btn-sm" (click)="goBack()">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

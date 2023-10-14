@@ -10,6 +10,9 @@ import { OrdersComponent } from "./dashboards/orders/orders.component";
 import { DeliveryComponent } from "./dashboards/delivery/delivery.component";
 import { SettingsComponent } from "./dashboards/settings/settings.component";
 import { TablesComponent } from "../clientpages/dashboards/tables/tables.component";
+import { PaymentComponent } from "../clientpages/dashboards/payment/payment.component";
+import { OrderDetailsComponent } from "./dashboards/order-details/order-details.component";
+
 const routes: Routes = [
   // { path: '', redirectTo: 'admin/dashboard' },
   { path: "", component: ClientComponent },
@@ -22,6 +25,8 @@ const routes: Routes = [
   { path: "tables", component: TablesComponent },
   { path: "delivery", component: DeliveryComponent },
   { path: "settings", component: SettingsComponent },
+  { path: "orders/payment/:orderID", component: PaymentComponent },
+  { path: "orders/orderDetail/:orderID", component: OrderDetailsComponent},
 ];
 
 @NgModule({

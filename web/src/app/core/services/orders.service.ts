@@ -19,4 +19,9 @@ export class OrdersService {
     return this.http.get('/user/getOrder?email=' + email);
   }
 
+  userOrderByID(orderID: number) {
+    console.log("userOrderByID id: ", orderID);
+    return this.http.get(`${apiLink()}/user/order/getOrderByID?orderID=` + orderID);
+  }
+
 }

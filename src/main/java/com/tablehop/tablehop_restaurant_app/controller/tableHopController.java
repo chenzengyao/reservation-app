@@ -293,6 +293,14 @@ public class tableHopController {
         return tableHopService.getOrder(email);
     }
 
+    // get order by id
+    @RequestMapping(value = "/user/order/getOrderByID", method = RequestMethod.GET)
+    public ResponseEntity<Object> userGetOrderById(@RequestParam Integer orderID) {
+        log.info("user get order by id -----> controller");
+        return ResponseEntity.ok(tableHopService.userGetOrderById(orderID));
+    }
+
+
     @RequestMapping(value = "/user/menu/getImage", method = RequestMethod.GET)
     public String getImage(@RequestParam int itemID) {
         log.info("user get Image -----> controller");
@@ -303,17 +311,6 @@ public class tableHopController {
     public List<User> getUserByName(@RequestParam String userName) {
         log.info("admin get user by name -----> controller");
         return tableHopService.getUserByName(userName);
-    }
-
-    @RequestMapping(value = "/admin/deliveryMan/all", method = RequestMethod.GET)
-    public List<DeliveryMan> adminGetDeliveryMan() {
-        return tableHopService.adminGetDeliveryMan();
-    }
-
-    @RequestMapping(value = "/admin/deliveryMan/add", method = RequestMethod.POST)
-    public List<DeliveryMan> adminSaveDeliveryMan(@RequestBody String phone) {
-        log.info("admin save delivery mane {}", phone);
-        return tableHopService.adminSaveDeliveryMan(phone);
     }
 
 }
