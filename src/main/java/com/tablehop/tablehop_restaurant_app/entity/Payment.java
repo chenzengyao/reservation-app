@@ -2,19 +2,19 @@ package com.tablehop.tablehop_restaurant_app.entity;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "payment")
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String paymentID;
+    private Integer paymentID;
 
     @Column(name = "payment_type")
     private String payment_type;
@@ -38,16 +38,16 @@ public class Payment {
     private String total_price;
 
     @Column(name = "userID")
-    private String userID;
+    private Integer userID;
 
     @Column(name = "orderID")
-    private String orderID;
+    private Integer orderID;
 
-    public String getPaymentID() {
+    public Integer getPaymentID() {
         return this.paymentID;
     }
 
-    public void setPaymentID(String paymentID) {
+    public void setPaymentID(Integer paymentID) {
         this.paymentID = paymentID;
     }
 
@@ -67,11 +67,10 @@ public class Payment {
         this.payment_dt = payment_dt;
     }
 
-    public String getSub_total_price() {
-        return this.sub_total_price;
-    }
+    public String getSub_total_price() { return this.sub_total_price;}
 
     public void setSub_total_price(String sub_total_price) {
+        System.out.println("set sub_total: " + sub_total_price);
         this.sub_total_price = sub_total_price;
     }
 
@@ -107,19 +106,19 @@ public class Payment {
         this.total_price = total_price;
     }
 
-    public String getUserID() {
+    public Integer getUserID() {
         return this.userID;
     }
 
-    public void setUserID(String userID) {
+    public void setUserID(Integer userID) {
         this.userID = userID;
     }
 
-    public String getOrderID() {
+    public Integer getOrderID() {
         return this.orderID;
     }
 
-    public void setOrderID(String orderID) {
+    public void setOrderID(Integer orderID) {
         this.orderID = orderID;
     }
 

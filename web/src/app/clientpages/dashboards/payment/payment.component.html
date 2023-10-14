@@ -1,1 +1,73 @@
-<p>payment works!</p>
+<div class="container" style="width: 50%;">
+  <h2>Credit/Debit card validation</h2>
+  <div class="panel panel-default">
+    <div class="panel-heading">Enter Card Details</div>
+    <div class="panel-body">
+      <div class="right-payment-sec">
+        <form class="needs-validation" name="paymentForm" (ngSubmit)="onSubmit()" [formGroup]="paymentForm" novalidate>
+          <div class="row">
+            <div class="col-lg-12 col-xs-12">
+              <div class="form-group">
+                <label for="name">Name On Card</label>
+                <input type="text" class="form-control" formControlName="name" id="name"  placeholder="Name On Card">
+              </div>
+            </div>
+            <div class="col-lg-12 col-xs-12">
+              <div class="form-group">
+                <label for="cardnumber">Card Number</label>
+                <input type="text" class="form-control" formControlName="cardnumber" id="cardnumber"
+                       maxlength = "12" pattern="[0-9]{12}"
+                       [ngClass]="{ 'is-invalid': submitted && f.cardnumber.errors }"
+                       placeholder="XXXX-XXXX-XXXX-XXXX">
+
+                <div *ngIf="submitted && f.cardnumber.errors" class="invalid-feedback">
+                  <div *ngIf="f.cardnumber.errors.required">cardnumber is required</div>
+                  <div *ngIf="f.cardnumber.errors.maxlength || f.cardnumber.errors.pattern ">Please enter 12 digits card number</div>
+                </div>
+              </div>
+
+            </div>
+            <div class="col-lg-6 col-md-6 xol-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="expirationDate">Expiration Date:</label>
+                <input type="text" class="form-control" formControlName="expirationDate"  id="expirationDate"
+                       maxlength = "5"
+                       [ngClass]="{ 'is-invalid': submitted && f.expirationDate.errors }"
+                       placeholder="MM/YY">
+                <div *ngIf="paymentForm.get('expirationDate').hasError('invalidCreditCardExpiry')" class="invalid-feedback">
+                  Please enter a valid MM/YY date.
+                </div>
+
+<!--                <div *ngIf="submitted && f.expirationDate.errors" class="invalid-feedback">-->
+<!--                  <div *ngIf="f.expirationDate.errors.required">Expiration Date is required</div>-->
+<!--                  <div *ngIf="f.expirationDate.errors.maxlength || f.expirationDate.errors.pattern ">Please enter MM/YY.</div>-->
+<!--                </div>-->
+              </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 xol-sm-6 col-xs-12">
+              <div class="form-group">
+                <label for="ccv">CCV</label>
+                <input type="text" class="form-control" formControlName="ccv" id="ccv"
+                       pattern="[0-9]{3}" maxlength = "3"
+                       [ngClass]="{ 'is-invalid': submitted && f.ccv.errors }" placeholder="CCV">
+
+                <div *ngIf="submitted && f.ccv.errors" class="invalid-feedback">
+                  <div *ngIf="f.ccv.errors.required">CCV is required</div>
+                  <div *ngIf="f.ccv.errors.maxlength">Please enter 3 digits.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 xol-sm-6 col-xs-12">
+              <div class="form-group" id="button">
+                <button type="submit" class="btn btn-primary" style="margin-right: 10px ;">Save</button>
+                <button type="button" class="btn btn-primary" (click)="ClearCardDetails()">Clear</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
