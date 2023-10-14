@@ -12,6 +12,9 @@ import {SafeUrl} from "@angular/platform-browser";
 import {DomSanitizer} from '@angular/platform-browser';
 import { TablesService } from "../../../core/services/tables.service";
 import {Tables} from "../../../core/models/tables.models";
+import {User} from "../../../core/models/auth.models";
+import { UserProfileService} from "../../../core/services/user.service";
+import {Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-menus',
@@ -25,7 +28,8 @@ export class MenusComponent implements OnInit {
               private orderService: OrdersService,
               private router: Router,
               private sanitizer: DomSanitizer,
-              private tableService: TablesService) {
+              private tableService: TablesService,
+              private userService: UserProfileService) {
   }
 
   menu: Menu[] = [];
@@ -47,6 +51,11 @@ export class MenusComponent implements OnInit {
   selectedServiceType: string = 'dine'; // Default to 'Dine In'
   selectedTableNumber: string = 'table1'; // Default table number
   tablesList: Tables[] = [];
+  returnOrder: Orders = new Orders();
+  orderID: number;
+  email: string;
+  userProfile: User;
+  userID: number;
 
   table_ID: number =null;
   delivery_ID: number =null;
@@ -59,8 +68,16 @@ export class MenusComponent implements OnInit {
       true;
     }
 
+    this.userService.getUserProfile(this.email).subscribe(data => {
+      this.userProfile = data.body as User;
+      this.userID = this.userProfile.userId;
+      console.log(this.userID);
+    })
+
     this.menusService.getAllMenuUser().subscribe(data =>{
       this.menu = data.body as Menu[];
+      this.imagePath = "https://res.cloudinary.com/hx1dfduy4/assests/images/"
+
     })
 
     this.tableService.adminGetTables().subscribe((res: any) => {
@@ -81,7 +98,7 @@ export class MenusComponent implements OnInit {
     console.log(this.table_temp);
   }
 
-  addToOrder(item: any, quantity: any, remark: any) {
+  addToOrder(item: any, quantity: any, remark: any, i: any) {
     console.log("start add");
     console.log("quantity " + quantity);
     console.log("remark " + remark);
@@ -96,6 +113,10 @@ export class MenusComponent implements OnInit {
 
     this.orderItemsList.push(orderItem);
     console.log("item in order list " + this.orderItemsList.length);
+
+    // reset quantity and remark
+    this.quantity[i]=null;
+    this.remark[i] ='';
   }
 
   setTotalAmount(index) {
@@ -108,14 +129,12 @@ export class MenusComponent implements OnInit {
   }
 
   async removeOrderItem(item: any, i: number) {
-    const index = this.orderItemsList.indexOf(item.item_id);
-    console.log("item.name "+ item.item_name)
-    this.orderItemsList.splice(index, 1);
-    console.log("after remove" + this.orderItemsList.length);
+    // const index = this.orderItemsList.indexOf(item.item_id);
+    // console.log("item.name "+ item.item_name)
+    this.orderItemsList.splice(i, 1);
 
-    // reset quantity and remark
-    this.quantity[i]=0;
-    this.remark[i] ='';
+
+    console.log("after remove" + this.orderItemsList.length);
   }
 
   onServiceTypeChange() {
@@ -131,6 +150,7 @@ export class MenusComponent implements OnInit {
       this.order.table_id = parseFloat(this.selectedTableNumber);;
       console.log("this.order.table_id: "+this.order.table_id)
     }
+    this.order.userID = this.userID;
 
     let data = {}
     data['order'] = this.order;
@@ -139,31 +159,36 @@ export class MenusComponent implements OnInit {
 
     this.orderService.addOder(data).toPromise().then((res: any) => {
       console.log("res: ", res);
-      // redirect to reservation list
-      let timerInterval;
-      Swal.fire({
-        title: 'Success',
-        html: 'Order added successfully! ',
-        timer: 2000,
-        icon: 'success',
+      this.returnOrder = res;
+      this.orderID = this.returnOrder.orderID;
+      console.log("Order ID: " + this.orderID);
+      this.router.navigate(['/user/orders/orderDetail', this.orderID]);
 
-        didOpen: () => {
-          timerInterval = setInterval(() => {
-            const content = Swal.getHtmlContainer()
-            if (content) {
-              const b = content.querySelector('b')
-              if (b) {
-                b.textContent = Swal.getTimerLeft() + ''
-              }
-            }
-          }, 100);
-        },
-        willClose: () => {
-          clearInterval(timerInterval);
-        }
-      }).then((result) => {
-        // this.router.navigate(['/admin/orders/listing']);
-      });
+      // redirect to reservation list
+      // let timerInterval;
+      // Swal.fire({
+      //   title: 'Success',
+      //   html: 'Order added successfully! ',
+      //   timer: 3000,
+      //   icon: 'success',
+      //
+      //   didOpen: () => {
+      //     timerInterval = setInterval(() => {
+      //       const content = Swal.getHtmlContainer()
+      //       if (content) {
+      //         const b = content.querySelector('b')
+      //         if (b) {
+      //           b.textContent = Swal.getTimerLeft() + ''
+      //         }
+      //       }
+      //     }, 100);
+      //   },
+      //   willClose: () => {
+      //     clearInterval(timerInterval);
+      //   }
+      // }).then((result) => {
+      //   this.router.navigate(['/user/orders/orderDetail', this.orderID]);
+      // });
     }).catch((err: any) => {
       console.error("err: ", err);
     });

@@ -9,6 +9,20 @@
 #submit{
   font-size: unset;
 }
+
+.order{
+  font-size: medium;
+  color: white;
+}
+
+.order-detail {
+  color: white;
+}
+
+#order-detail{
+  padding-top: 20px;
+}
+
 .d-flex w-100 gap-3{
   padding: 10px;
 }
@@ -40,6 +54,10 @@ td{
   .menu #menu-flters li.filter-active {
     color: #ff914d;
   }
+
+.table-o{
+  color: #ff914d;
+}
 
   .menu #menu-flters li:last-child {
     margin-right: 0;
