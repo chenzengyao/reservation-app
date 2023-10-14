@@ -19,14 +19,13 @@ export class TablesComponent implements OnInit {
 
   ngOnInit(): void {
     this.breadCrumbItems = [{ label: 'Reservation' }, { label: 'Tables', active: true }];
+  }
 
-    this.tablesService.adminGetTables().subscribe((res: any) => {
+  async ngAfterViewInit() {
+    await this.tablesService.adminGetTables().toPromise().then((res: any) => {
       console.log(res);
       this.tablesList = res;
     });
-  }
-
-  ngAfterViewInit() {
     const cthis = this;
     setTimeout(() => {
       console.warn("after ", $(this.el.nativeElement).find('.tables').length);
