@@ -40,6 +40,7 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    sessionStorage.clear();
     this.password = 'password';
     this.loginForm = this.formBuilder.group({
       email: ['admin@themesbrand.com', [Validators.required, Validators.email]],
