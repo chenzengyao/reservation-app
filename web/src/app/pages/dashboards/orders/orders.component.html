@@ -5,15 +5,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row mb-2">
-                        <div class="col-sm-4">
-                            <div class="search-box me-2 mb-2 d-inline-block">
-                                <div class="position-relative">
-                                    <input type="text" class="form-control" placeholder="Search...">
-                                    <i class="bx bx-search-alt search-icon"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-8">
+                        <div class="col-12">
                             <div class="text-sm-end">
                                 <a href="/admin/orders/add" type="button"
                                     class="btn btn-success btn-rounded mb-2 me-2"><i class="mdi mdi-plus mr-1"></i>
@@ -35,6 +27,15 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <tr *ngIf="fetchingOrders">
+                                    <td colspan="7">
+                                        <div class="d-flex justify-content-center">
+                                            <div class="spinner-border" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
                                 <tr *ngFor="let order of ordersList; let i = index">
                                     <td>{{i+1}}</td>
                                     <td>
@@ -46,7 +47,7 @@
                                             {{item.item_name}}
                                         </span>
                                     </td>
-                                    <td>{{ order.order_type }}</td>
+                                    <td>{{ findOrderType(order.order_type) }}</td>
                                     <td>
                                         {{ order.order_created_dt | date:'dd/MM/yyyy hh:mm a' }} <br>
                                         <span class="badge badge-soft-info">{{ order.order_status }}</span>
@@ -68,7 +69,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr *ngIf="ordersList.length == 0">
+                                <tr *ngIf="!fetchingOrders && ordersList.length == 0">
                                     <td colspan="7" class="text-center">No reservation found.</td>
                                 </tr>
                             </tbody>
@@ -83,7 +84,7 @@
                                     (click)="modal.dismiss('Cross click')"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="row" *ngIf="reservationModal.order_type=='Reservation'">
+                                <div class="row" *ngIf="reservationModal.order_type=='dine'">
                                     <div class="col-8">
                                         <div class="d-flex gap-5">
                                             <p class="mb-4">
@@ -109,7 +110,7 @@
                                         <p class="border py-2">{{reservationModal.reserve_remark ?? '-'}}</p>
                                     </div>
                                 </div>
-                                <div class="row" *ngIf="reservationModal.order_type=='Delivery'">
+                                <div class="row" *ngIf="reservationModal.order_type=='delivery'">
                                     <div class="col-12">
                                         <div class="row">
                                             <div class="col-6">
