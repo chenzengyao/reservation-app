@@ -4,52 +4,37 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+                    <label for="">Delivery Man Phone: </label>
                     <div class="row mb-2">
-                        <div class="col-sm-4">
-                            <div class="search-box me-2 mb-2 d-inline-block">
-                                <div class="position-relative">
-                                    <input type="text" class="form-control" placeholder="Search...">
-                                    <i class="bx bx-search-alt search-icon"></i>
-                                </div>
+                        <div class="col-6">
+                            <div class="mb-3 d-flex gap-3">
+                                <input type="tel" class="form-control" [(ngModel)]="deliveryMan.deliveryman_phone_no">
+                                <button class="btn btn-success btn-rounded" (click)="submit()">
+                                    <i class="mdi mdi-plus mr-1"></i>
+                                    Add
+                                </button>
                             </div>
                         </div>
-                        <div class="col-sm-8">
-                            <div class="text-sm-end">
-                                <a href="/admin/menus/add" type="button"
-                                    class="btn btn-success btn-rounded mb-2 me-2"><i class="mdi mdi-plus mr-1"></i>
-                                    Add New Order</a>
-                            </div>
-                        </div><!-- end col-->
                     </div>
                     <div class="table-responsive mb-0">
                         <table class="table table-centered table-nowrap">
                             <thead class="table-light">
                                 <tr>
+                                    <th class="align-middle">#</th>
+                                    <th class="align-middle">Delivery Man Phone</th>
+                                    <th class="align-middle">Created Date Time</th>
+                                    <th class="align-middle">Updated Date Time</th>
                                     <th class="align-middle">Order ID</th>
-                                    <th class="align-middle">Billing Name</th>
-                                    <th class="align-middle">Date</th>
-                                    <th class="align-middle">Total</th>
-                                    <th class="align-middle">Payment Status</th>
-                                    <th class="align-middle">Payment Method</th>
-                                    <th class="align-middle">View Details</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let data of transactions">
+                                <tr *ngFor="let data of deliveryManList; let i = index">
                                     <td>
-                                        <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
+                                        <a href="javascript: void(0);" class="text-body fw-bold">{{i+1}}</a>
                                     </td>
-                                    <td>{{data.name}}</td>
-                                    <td>{{data.date}}</td>
-                                    <td>{{data.total}}</td>
-                                    <td>
-                                        <span class="badge badge-pill badge-soft-success font-size-11" [ngClass]=" { 'badge-soft-danger': data.status === 'Chargeback',
-                                              'badge-soft-warning':data.status === 'Refund' }">{{data.status}}</span>
-                                    </td>
-                                    <td>
-                                        <i :class="`fab ${data.payment[0]} mr-1`"></i>
-                                        {{data.payment[1]}}
-                                    </td>
+                                    <td>{{data.deliveryman_phone_no}}</td>
+                                    <td>{{data.deliveryman_created_dt | date:'dd/MM/yyyy hh:mm a'}}</td>
+                                    <td>{{data.deliveryman_updated_dt | date:'dd/MM/yyyy hh:mm a'}}</td>
                                     <td>
                                         <!-- Button trigger modal -->
                                         <button type="button" class="btn btn-primary btn-sm btn-rounded"
