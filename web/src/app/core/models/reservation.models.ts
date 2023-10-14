@@ -5,7 +5,7 @@ export class Reservation {
     reserve_status: string;
     reserve_remark: string;
     reservation_created_dt: string;
-    table_id: number;
+    tableID: number;
     userID: number;
     user: {
         userName: any

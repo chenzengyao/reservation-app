@@ -298,12 +298,15 @@ public class tableHopService {
         log.info("orderItemlist details {}", orderItemsList);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 
-        // TODO : need to change
-        User findUser = userRepository.findById(1).orElse(null);
+        User findUser = userRepository.findById((Integer) order.get("userID")).orElse(null);
 
         Orders orderEntity = new Orders();
         orderEntity.setOrder_status((String) order.get("order_status"));
-        orderEntity.setDeliverer_address(findUser.getAddress());
+        if (!Objects.isNull(findUser.getAddress())) {
+            orderEntity.setDeliverer_address(findUser.getAddress());
+        } else {
+            orderEntity.setDeliverer_address("Hardcode address: Singapore");
+        }
         orderEntity.setOrder_created_dt(new Date());
         orderEntity.setOrder_updated_dt(new Date());
         orderEntity.setOrder_type((String) order.get("order_type"));
@@ -312,7 +315,7 @@ public class tableHopService {
         Reservation reservationEntity = new Reservation();
         Delivery deliveryEntity = new Delivery();
         Orders savedOrderEntity = null;
-        if ("Reservation".equals(orderEntity.getOrder_type())) {
+        if ("dine".equals(orderEntity.getOrder_type())) {
             reservationEntity.setPax_no((Integer) reservation.get("pax_no"));
             LocalDateTime dateTime = LocalDateTime.parse((String) reservation.get("reservation_dt"), formatter);
             Timestamp timestamp = Timestamp.valueOf(dateTime);
@@ -322,15 +325,14 @@ public class tableHopService {
             reservationEntity.setReserve_status("Pending");
             reservationEntity.setReserve_remark((String) reservation.get("reserve_remark"));
             reservationEntity.setReserve_created_dt(new Timestamp(new Date().getTime()));
-            reservationEntity.setTableID((Integer) reservation.get("table_id"));
-            // TODO : need to change
-            reservationEntity.setUserID(1);
+            reservationEntity.setTableID((Integer) reservation.get("tableID"));
+            reservationEntity.setUserID((Integer) order.get("userID"));
             reservationEntity = reservationRepository.saveAndFlush(reservationEntity);
             log.info("save reservation done {}", reservationEntity);
             orderEntity.setTableID(reservationEntity.getTableID());
             orderEntity.setReservationID(reservationEntity.getReservationID());
             savedOrderEntity = orderRepository.saveAndFlush(orderEntity);
-        } else if ("Delivery".equals(orderEntity.getOrder_type())) {
+        } else if ("delivery".equals(orderEntity.getOrder_type())) {
             savedOrderEntity = orderRepository.saveAndFlush(orderEntity);
             deliveryEntity.setDelivery_status((String) delivery.get("delivery_status"));
             deliveryEntity.setDelivery_remark((String) delivery.get("delivery_remark"));
@@ -481,7 +483,7 @@ public class tableHopService {
             orderEntity.setOrder_type((String) order.get("order_type"));
             Orders savedOrder = orderRepository.saveAndFlush(orderEntity);
 
-            if (orderEntity.getOrder_type().equals("Reservation")) {
+            if (orderEntity.getOrder_type().equals("dine")) {
                 Reservation reservationEntity = null;
                 if (Objects.isNull(orderEntity.getReservationID())) {
                     log.info("new reservation");
@@ -498,14 +500,17 @@ public class tableHopService {
                 reservationEntity.setReservation_dt(reservation_dt);
                 reservationEntity.setReserve_status((String) reservation.get("reserve_status"));
                 reservationEntity.setReserve_remark((String) reservation.get("reserve_remark"));
-                reservationEntity.setTableID((Integer) reservation.get("table_id"));
-                // reservationEntity.setUserID(savedOrder.getUserID());
+                reservationEntity.setTableID((Integer) reservation.get("tableID"));
+                reservationEntity.setUserID(savedOrder.getUserID());
+                reservationEntity.setReserve_created_dt(new Timestamp(new Date().getTime()));
                 reservationEntity = reservationRepository.saveAndFlush(reservationEntity);
+
                 savedOrder.setReservationID(reservationEntity.getReservationID());
                 savedOrder.setDeliveryID(null);
                 orderRepository.saveAndFlush(savedOrder);
 
-            } if (orderEntity.getOrder_type().equals("Delivery")) {
+            } 
+            if (orderEntity.getOrder_type().equals("delivery")) {
                 Delivery deliveryEntity = null;
                 if (Objects.isNull(orderEntity.getReservationID())) {
                     log.info("new delivery");
@@ -528,6 +533,7 @@ public class tableHopService {
                 Timestamp delivery_completed_dt = Timestamp.valueOf(dateTime2);
                 deliveryEntity.setDelivery_completed_dt(delivery_completed_dt);
                 deliveryEntity.setArranged_by("Hardcode user: User A");
+                deliveryEntity.setUpdated_by("Hardcode user: User A");
                 deliveryEntity.setOrderID(savedOrder.getOrderID());
                 // todo update deliverymanID
                 deliveryEntity.setDeliverymanID(1);

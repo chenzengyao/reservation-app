@@ -7,8 +7,8 @@ export class OrdersService {
   constructor(private http: HttpClient) { }
 
   orderTypeList: any[] = [
-    { id: 1, name: "Reservation" },
-    { id: 2, name: "Delivery" },
+    { id: 1, name: "Reservation", value: "dine" },
+    { id: 2, name: "Delivery", value: "delivery" },
   ]
 
   addOder(data: any) {

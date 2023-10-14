@@ -42,13 +42,13 @@
                                 <label for="" class="form-label">Order Type <span class="text-danger">*</span></label>
                                 <select name="" class="form-select" id="" [(ngModel)]="order.order_type" required>
                                     <option value="">Please select order type...</option>
-                                    <option *ngFor="let type of orderService.orderTypeList" [value]="type.name">
+                                    <option *ngFor="let type of orderService.orderTypeList" [value]="type.value">
                                         {{type.name}}</option>
                                 </select>
                             </div>
                         </div>
                     </div>
-                    <div class="row" *ngIf="order.order_type=='Reservation'">
+                    <div class="row" *ngIf="order.order_type=='dine'">
                         <div class="col-12">
                             <div class="row">
                                 <div class="col-6">
@@ -81,7 +81,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row" *ngIf="order.order_type=='Delivery'">
+                    <div class="row" *ngIf="order.order_type=='delivery'">
                         <div class="col-12">
                             <div class="row">
                                 <div class="col-6">
@@ -148,17 +148,17 @@
                 </div>
             </div>
 
-            <div class="card" *ngIf="order.order_type=='Reservation'">
+            <div class="card" *ngIf="order.order_type=='dine'">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
                             <div class="mb-3">
                                 <label for="" class="form-label">Table</label>
-                                <select name="" class="form-select" id="" [(ngModel)]="reservation.table_id">
+                                <select name="" class="form-select" id="" [(ngModel)]="reservation.tableID">
                                     <option value="" selected>Please select table...</option>
-                                    <option value="1">Table 1</option>
-                                    <option value="2">Confirmed</option>
-                                    <option value="3">Cancelled</option>
+                                    <option *ngFor="let table of tableList" [value]="table.tableID">Table
+                                        {{table.tableID}}
+                                    </option>
                                 </select>
                             </div>
                         </div>

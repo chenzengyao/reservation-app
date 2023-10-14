@@ -9,6 +9,7 @@ import { DeliveryService } from "src/app/core/services/delivery.service";
 import { MenusService } from "src/app/core/services/menus.service";
 import { OrdersService } from "src/app/core/services/orders.service";
 import { ReservationService } from "src/app/core/services/reservation";
+import { TablesService } from "src/app/core/services/tables.service";
 import { UserProfileService } from "src/app/core/services/user.service";
 import Swal from 'sweetalert2';
 
@@ -23,7 +24,7 @@ export class AddOrdersComponent implements OnInit {
     private router: Router,
     public orderService: OrdersService,
     public deliveryService: DeliveryService,
-    public userService: UserProfileService) { }
+    public userService: UserProfileService, public tableService: TablesService) { }
 
   breadCrumbItems: Array<{}>;
   searchItem: string = "";
@@ -46,6 +47,11 @@ export class AddOrdersComponent implements OnInit {
     }).catch((err: any) => {
       console.log("err: ", err);
     });
+
+    this.tableService.adminGetTables().toPromise().then((res: any) => {
+      console.log("this table list: ", res);
+      this.tableList = res;
+    }).catch((err: any) => { });
   }
 
   addOrderItem() {
@@ -84,8 +90,8 @@ export class AddOrdersComponent implements OnInit {
   }
 
   submitOrder() {
-    if (this.reservation.table_id) {
-      this.reservation.table_id = parseInt(this.reservation.table_id.toString());
+    if (this.reservation.tableID) {
+      this.reservation.tableID = parseInt(this.reservation.tableID.toString());
     }
     let data = {}
     data['reservation'] = this.reservation;
