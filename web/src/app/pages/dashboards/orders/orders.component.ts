@@ -23,6 +23,14 @@ export class OrdersComponent implements OnInit {
   fetchingOrders: boolean = false;
 
   ngOnInit(): void {
+
+    //Check for login user
+    if (sessionStorage.getItem('email')==null){
+      window.location.href = '/account/login';
+    } else{
+      true;
+    }
+
     this.breadCrumbItems = [{ label: 'Reservation' }, { label: 'Orders', active: true }];
 
     this.fetchingOrders = true;

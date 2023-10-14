@@ -20,6 +20,14 @@ export class DeliveryComponent implements OnInit {
   deliveryManList: DeliveryMan[] = [];
 
   ngOnInit(): void {
+    
+    //Check for login user
+    if (sessionStorage.getItem('email')==null){
+      window.location.href = '/account/login';
+    } else{
+      true;
+    }
+
     this.breadCrumbItems = [{ label: 'Reservation' }, { label: 'Delivery', active: true }];
     this.deliveryManService.adminGetAllDeliveryMan().toPromise().then((res: any) => {
       console.log(res)

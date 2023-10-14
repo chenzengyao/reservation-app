@@ -32,6 +32,14 @@ export class MenusComponent implements OnInit {
 
 
   ngOnInit(): void {
+    
+    //Check for login user
+    if (sessionStorage.getItem('email')==null){
+      window.location.href = '/account/login';
+    } else{
+      true;
+    }
+
     this.menusService.getAllMenu().subscribe(data =>{
       this.menu = data.body as Menu[];
     })

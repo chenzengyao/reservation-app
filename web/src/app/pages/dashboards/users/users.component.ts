@@ -19,6 +19,14 @@ export class UsersComponent implements OnInit {
   breadCrumbItems: Array<{}>;
 
   ngOnInit(): void {
+
+    //Check for login user
+    if (sessionStorage.getItem('email')==null){
+      window.location.href = '/account/login';
+    } else{
+      true;
+    }
+    
     this.breadCrumbItems = [{ label: 'Reservation' }, { label: 'Users', active: true }];
     this.userProfileService.getAllUser().subscribe(data => {
       this.users = data.body as User[];

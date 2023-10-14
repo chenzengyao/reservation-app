@@ -18,6 +18,14 @@ export class TablesComponent implements OnInit {
   tableEntity: Tables = new Tables();
 
   ngOnInit(): void {
+    
+    //Check for login user
+    if (sessionStorage.getItem('email')==null){
+      window.location.href = '/account/login';
+    } else{
+      true;
+    }
+
     this.breadCrumbItems = [{ label: 'Reservation' }, { label: 'Tables', active: true }];
   }
 
