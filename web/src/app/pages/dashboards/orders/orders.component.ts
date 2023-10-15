@@ -39,7 +39,11 @@ export class OrdersComponent implements OnInit {
       this.fetchingOrders = false;
       console.log("this reservation list: ", res);
       this.ordersList = res.reservation;
-    }).catch((err: any) => { });
+    }).catch((err: any) => { 
+      this.fetchingOrders = false;
+      alert("Error fetching orders :: " + err);
+      console.log("error: ", err);
+    });
   }
 
   openModal(content: any, reservation: any) {

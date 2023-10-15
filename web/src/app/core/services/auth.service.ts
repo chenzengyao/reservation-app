@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { getFirebaseBackend } from '../../authUtils';
 import { User } from '../models/auth.models';
 import { HttpClient } from '@angular/common/http';
+import { apiLink } from '../helpers/helper';
 
 
 @Injectable({ providedIn: 'root' })
@@ -54,7 +55,7 @@ export class AuthenticationService {
      * @param email email
      */
     checkExistEmail(email: String) {
-      return this.http.get(`/users/checkExistEmail?email=` + email);
+      return this.http.get(apiLink() + `/users/checkExistEmail?email=` + email);
     }
 
     /**
@@ -70,7 +71,7 @@ export class AuthenticationService {
      * @param email email
      */
     getUserAccessType(email: String) {
-      return this.http.get(`/users/useraccesstype?email=` + email);
+      return this.http.get(apiLink() + `/users/useraccesstype?email=` + email);
     }
 
     /**
@@ -79,7 +80,7 @@ export class AuthenticationService {
      * @param password password
      */
     checkExistUser(email: String, password: String) {
-      return this.http.get(`/users/checkExistUser?email=` + email + '&password=' + password);
+      return this.http.get(apiLink() + `/users/checkExistUser?email=` + email + '&password=' + password);
     }
 
     /**

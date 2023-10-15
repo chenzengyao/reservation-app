@@ -1,14 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { dateStringToDateLocal } from 'src/app/core/helpers/helper';
+import { DeliveryMan } from 'src/app/core/models/delivery-man.models';
 import { Delivery } from 'src/app/core/models/delivery.models';
 import { Menu } from 'src/app/core/models/menu.models';
 import { OrderItems } from 'src/app/core/models/orderItems.models';
 import { Orders } from 'src/app/core/models/orders.models';
+import { Payment } from 'src/app/core/models/payment.models';
 import { Reservation } from 'src/app/core/models/reservation.models';
 import { DeliveryService } from 'src/app/core/services/delivery.service';
+import { DeliveryManService } from 'src/app/core/services/deliveryman.service';
 import { MenusService } from 'src/app/core/services/menus.service';
 import { OrdersService } from 'src/app/core/services/orders.service';
+import { PaymentService } from 'src/app/core/services/payment.service';
 import { ReservationService } from 'src/app/core/services/reservation';
 import { TablesService } from 'src/app/core/services/tables.service';
 import Swal from 'sweetalert2';
@@ -26,7 +31,10 @@ export class EditOrdersComponent implements OnInit {
     private activeRoute: ActivatedRoute,
     public orderService: OrdersService,
     public deliveryService: DeliveryService,
-    public tableService: TablesService) { }
+    public tableService: TablesService,
+    public deliveryManService: DeliveryManService,
+    private modalService: NgbModal,
+    private paymentSerivce: PaymentService) { }
 
   breadCrumbItems: Array<{}>;
   searchItem: string = "";
@@ -40,6 +48,9 @@ export class EditOrdersComponent implements OnInit {
   reservationID: number = 0;
   userName: string = "";
   delivery: Delivery = new Delivery();
+  deliveryManList: any[] = [];
+  deliveryMan: DeliveryMan = new DeliveryMan();
+  payment: Payment = new Payment();
 
 
   ngOnInit(): void {
@@ -89,7 +100,12 @@ export class EditOrdersComponent implements OnInit {
     this.tableService.adminGetTables().toPromise().then((res: any) => {
       console.log("this table list: ", res);
       this.tableList = res;
-    }).catch((err: any) => {});
+    }).catch((err: any) => { });
+
+    this.deliveryManService.adminGetAllDeliveryMan().toPromise().then((res: any) => {
+      console.log("deliveryman list: ", res);
+      this.deliveryManList = res;
+    }).catch((err: any) => { });
   }
 
   addOrderItem() {
@@ -163,6 +179,37 @@ export class EditOrdersComponent implements OnInit {
     this.orderItemsList.forEach(item => {
       this.totalAmount += item['total'];
     });
+  }
+
+  openModal(content: any) {
+    this.modalService.open(content, { centered: true, size: 'md' });
+  }
+
+  doPayment() {
+    this.payment.orderID = this.order.orderID;
+    this.payment.sub_total_price = this.totalAmount.toString();
+    this.payment.gst = ((this.totalAmount * 0.08).toFixed(2)).toString();
+    this.payment.service_tax = ((this.totalAmount * 0.1).toFixed(2)).toString();
+    this.payment.total_price = (this.totalAmount + (this.totalAmount * 0.08) + (this.totalAmount * 0.1)).toString();
+    this.payment.userID = this.order.userID;
+    this.payment.payment_type = "Credit Card";
+
+    console.log("this payment: ", this.payment);
+
+    this.paymentSerivce.adminAddPayment(this.payment).toPromise().then((res: any) => {
+      console.log("res: ", res);
+      Swal.fire({
+        title: 'Success!',
+        text: 'Payment done successfully!',
+        icon: 'success',
+        confirmButtonText: 'Ok'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.modalService.dismissAll();
+          // this.router.navigate(["/admin/orders/listing"]);
+        }
+      });
+    }).catch((err: any) => {});
   }
 
 }

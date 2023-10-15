@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { User } from '../models/auth.models';
+import { apiLink } from '../helpers/helper';
 
 @Injectable({ providedIn: 'root' })
 export class UserProfileService {
@@ -29,7 +30,7 @@ export class UserProfileService {
     }
 
     getUserByName(userName: string) {
-      return this.http.get("/admin/user/getUserByName?userName=" + userName, { observe: 'response' });
+      return this.http.get(apiLink() + "/admin/user/getUserByName?userName=" + userName, { observe: 'response' });
     }
 
 }

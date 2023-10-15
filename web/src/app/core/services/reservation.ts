@@ -10,7 +10,7 @@ export class ReservationService {
   reservationStatusList: any[] = [
     { id: 0, name: "Pending" },
     { id: 1, name: "Confirmed" },
-    { id: 2, name: "Cancelled" },
+    { id: 2, name: "Completed" },
   ]
 
   getAllReservation() {

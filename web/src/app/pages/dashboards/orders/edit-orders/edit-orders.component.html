@@ -21,7 +21,7 @@
                                 <select name="" class="form-select" id="" [(ngModel)]="order.order_status" required>
                                     <option value="Pending" selected>Pending</option>
                                     <option value="Confirmed">Confirmed</option>
-                                    <option value="Cancelled">Cancelled</option>
+                                    <option value="Completed">Completed</option>
                                 </select>
                             </div>
                         </div>
@@ -90,7 +90,11 @@
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <label for="">Delivery Man <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control">
+                                        <select class="form-select" [(ngModel)]="delivery.deliverymanID">
+                                            <option *ngFor="let man of deliveryManList" [value]="man.deliverymanID">
+                                                Phone - {{ man.deliveryman_phone_no }}
+                                            </option>
+                                        </select>
                                     </div>
                                     <div class="mb-3">
                                         <label for="">Delivery Start Date Time <span
@@ -144,8 +148,10 @@
                     </div>
 
                     <div class="row mt-5">
-                        <div class="col-12">
-                            Total Amount: <span class="font-weight-semibold">$ {{totalAmount}}</span>
+                        <div class="col-12 gap-3 d-flex align-items-center justify-content-between">
+                            <p>Total Amount: <span class="font-weight-semibold">$ {{totalAmount}}</span></p>
+                            <h4 *ngIf="order?.payment" class="btn btn-success">Paid</h4>
+                            <button class="btn btn-primary" *ngIf="order?.payment == null" (click)="openModal(content)">Payment</button>
                         </div>
                     </div>
                 </div>
@@ -234,4 +240,66 @@
             </div>
         </div>
     </div>
+    <ng-template #content role="document" let-modal>
+        <div class="modal-header">
+            <h5 class="modal-title mt-0"><b>Make Payment</b>
+            </h5>
+            <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <div class="card">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="">Card Number</label>
+                        <input type="text" class="form-control" >
+                    </div>
+                    <div class="mb-3">
+                        <label for="">Card Holder Name</label>
+                        <input type="text" class="form-control" >
+                    </div>
+                    <div class="mb-3 row">
+                        <div class="col-6">
+                            <label for="">Expiry Date</label>
+                            <input type="text" class="form-control" >
+                        </div>
+                        <div class="col-6">
+                            <label for="">CVV</label>
+                        <input type="password" class="form-control" >
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <table class="table">
+                            <tr>
+                                <td><input type="radio" name="payment" id="" checked></td>
+                                <td><label for="">Pay with Cash</label></td>
+                            </tr>
+                            <tr>
+                                <td>Sub Total</td>
+                                <td>${{totalAmount}}</td>
+                            </tr>
+                            <tr>
+                                <td>Discount</td>
+                                <td><input type="text" class="form-control" [(ngModel)]="payment.discount_coupun"></td>
+                            </tr>
+                            <tr>
+                                <td>GST (8%)</td>
+                                <td>${{ payment.gst || totalAmount * 0.08 | number: '1.0-9' }}</td>
+                            </tr>
+                            <tr>
+                                <td>Service Tax</td>
+                                <td>${{ payment.service_tax || totalAmount * 0.10 | number: '1.0-9' }}</td>
+                            </tr>
+                            <tr>
+                                <td>Total Price</td>
+                                <td>${{payment.total_price || totalAmount * 1.18 | number: '1.0-9' }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="mb-3 d-flex justify-content-end">
+                        <button class="btn btn-primary" (click)="doPayment()">Pay</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
 </div>
