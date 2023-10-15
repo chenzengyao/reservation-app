@@ -9,13 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-import com.tablehop.tablehop_restaurant_app.entity.User;
-import com.tablehop.tablehop_restaurant_app.entity.Delivery;
-import com.tablehop.tablehop_restaurant_app.entity.Item;
-import com.tablehop.tablehop_restaurant_app.entity.Orders;
-import com.tablehop.tablehop_restaurant_app.entity.OrderItem;
-import com.tablehop.tablehop_restaurant_app.entity.Reservation;
-import com.tablehop.tablehop_restaurant_app.entity.Tables;
 import com.tablehop.tablehop_restaurant_app.repository.userRepository;
 import com.tablehop.tablehop_restaurant_app.repository.itemRepository;
 import com.tablehop.tablehop_restaurant_app.repository.orderItemRepository;
@@ -71,6 +64,9 @@ public class tableHopService {
 
     @Resource
     private deliveryRepository deliveryRepository;
+
+    @Resource
+    private deliveryManRepository deliveryManRepository;
 
     @Autowired
     private JavaMailSender javaMailSender;
@@ -724,5 +720,27 @@ public class tableHopService {
         List<User> userList = new ArrayList<User>();
         userList = userRepository.getCustomerByName(name);
         return userList;
+    }
+
+    public Orders userGetOrderById(Integer id) {
+        return null;
+    }
+
+    public List<DeliveryMan> adminGetDeliveryMan() {
+        List<DeliveryMan> deliveryManList = new ArrayList<DeliveryMan>();
+        deliveryManList = deliveryManRepository.findAll();
+        return deliveryManList;
+    }
+
+    public List<DeliveryMan> adminSaveDeliveryMan(String phone) {
+        List<DeliveryMan> deliveryManList = new ArrayList<DeliveryMan>();
+        DeliveryMan deliveryMan = new DeliveryMan();
+        deliveryMan.setDeliveryman_phone_no(phone);
+        deliveryMan.setDeliveryman_created_dt(new Date());
+        deliveryMan.setDeliveryman_updated_dt(new Date());
+        deliveryMan.setDeliveryID(null);
+        deliveryManRepository.saveAndFlush(deliveryMan);
+        deliveryManList = deliveryManRepository.findAll();
+        return deliveryManList;
     }
 }
