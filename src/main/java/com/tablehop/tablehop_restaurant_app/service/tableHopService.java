@@ -392,10 +392,6 @@ public class tableHopService {
 
         Reservation reserve = new Reservation();
 
-//        LocalDateTime dateTime = LocalDateTime.parse((String) reservation.get("reservation_dt"), formatter);
-//        Timestamp timestamp = Timestamp.valueOf(dateTime);
-//        Timestamp reservation_dt = Timestamp.valueOf(dateTime);
-
         // convert reservation_dt  from string to timestamp
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
         LocalDateTime dateTime_reservation_dt = LocalDateTime.parse( reservation_dt.toString(), formatter);
@@ -417,6 +413,7 @@ public class tableHopService {
         reserve.setReserve_created_dt(dateTime_reserve_created_dt2);
         reserve.setTableID(tableID);
         reservationRepository.saveAndFlush(reserve);
+
     }
 
     public Orders adminGetOrdersById(Integer id) {
@@ -602,14 +599,15 @@ public class tableHopService {
         Orders orderEntity = new Orders();
         orderEntity.setOrder_status("Pending");
         orderEntity.setReservationID(null);
-        orderEntity.setDeliverer_address("Hardcode address: Singapore");
+        orderEntity.setDeliverer_address((String) order.get("delivery_address"));
         orderEntity.setOrder_created_dt(new Date());
         orderEntity.setOrder_updated_dt(new Date());
         orderEntity.setOrder_type((String) order.get("order_type"));
         orderEntity.setTableID((Integer)order.get("table_id"));
-        orderEntity.setUpdated_by("Hardcode user: User A");
+        orderEntity.setUpdated_by((String) order.get("updated_by"));
         orderEntity.setDeliveryID((Integer)order.get(null));
         orderEntity.setReservationID(null);
+        orderEntity.setUserID((Integer)order.get("userID"));
 
         Orders savedOrderEntity = orderRepository.saveAndFlush(orderEntity);
 
@@ -773,11 +771,10 @@ public class tableHopService {
         // Save Payment
         Payment paymentEntity = new Payment();
         paymentEntity.setPayment_type((String) payment.get("payment_type"));
-//        paymentEntity.setOrderID((Integer) payment.get("orderID"));
+        paymentEntity.setOrderID((Integer) payment.get("orderID"));
         paymentEntity.setPayment_dt(new Date());
-//        paymentEntity.setUserID((Integer) order.get("userID"));
-        paymentEntity.setUserID(1);
-        paymentEntity.setOrderID(2);
+        paymentEntity.setUserID((Integer) payment.get("userId"));
+//        paymentEntity.setOrderID(2);
         paymentEntity.setDiscount_coupun("no discount");
         paymentEntity.setGst((String) payment.get("gst"));
         paymentEntity.setService_tax((String) payment.get("service_tax"));

@@ -205,7 +205,7 @@ public class tableHopController {
                                            @RequestParam("userID") int userID,
                                            @RequestParam("tableID") int tableID) throws IOException {
         tableHopService.addReservation(pax_no, reservation_dt, reserve_status, reserve_remark, reserve_created_dt, userID, tableID);
-        return ResponseEntity.ok("Table reserved successfully.");
+        return ResponseEntity.ok("Reserve Success");
     }
 
     // get reservation by id

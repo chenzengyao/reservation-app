@@ -49,7 +49,7 @@ export class PaymentComponent implements OnInit {
   gst: number = 1.08;
   serviceTax: number = 1.10;
   discount_coupun: string = "no";
-  userID: number = 1;
+  userID: string;
 
   ngOnInit(): void {
     //Check for login user
@@ -58,6 +58,7 @@ export class PaymentComponent implements OnInit {
     } else{
       true;
     }
+    this.userID = sessionStorage.getItem('userId');
 
     this.breadCrumbItems = [{ label: "Order" }, { label: "Add Orders", active: true },];
 
@@ -142,7 +143,7 @@ export class PaymentComponent implements OnInit {
     this.payment.orderID = this.orderID;
     this.payment.discount_coupun = this.discount_coupun;
     // need update
-    this.payment.userID = this.userID;
+    this.payment.userID = parseFloat(this.userID);
 
     console.log("this payment: ", this.payment);
 
