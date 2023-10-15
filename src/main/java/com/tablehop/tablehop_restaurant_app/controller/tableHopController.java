@@ -332,4 +332,10 @@ public class tableHopController {
         return ResponseEntity.ok(result);
     }
 
+    @RequestMapping(value = "/admin/addOrder/payment", method = RequestMethod.POST)
+    public ResponseEntity<Object> adminAddPayment(@RequestBody Payment payment) {
+        log.info("admin get orders -----> controller");
+        return ResponseEntity.ok(tableHopService.adminAddPayment(payment));
+    }
+
 }

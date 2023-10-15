@@ -10,4 +10,5 @@ export class Orders {
     delivery_id: number;
     userID: number;
     user: any;
+    payment: any;
 }

@@ -12,6 +12,8 @@ export class PaymentService {
     return this.http.post(`${apiLink()}/user/addOrder/payment`, data);
   }
 
-
+  adminAddPayment(data: any) {
+    return this.http.post(`${apiLink()}/admin/addOrder/payment`, data);
+  }
 
 }

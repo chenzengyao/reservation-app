@@ -354,8 +354,7 @@ public class tableHopService {
             deliveryEntity.setDelivery_completed_dt(delivery_completed_dt);
             deliveryEntity.setArranged_by("Hardcode user: User A");
             deliveryEntity.setOrderID(savedOrderEntity.getOrderID());
-            // todo update deliverymanID
-            deliveryEntity.setDeliverymanID(1);
+            deliveryEntity.setDeliverymanID((Integer) delivery.get("deliverymanID"));
             Delivery savedDelivery = deliveryRepository.saveAndFlush(deliveryEntity);
             savedOrderEntity.setDeliveryID(savedDelivery.getDeliveryID());
             savedOrderEntity.setReservationID(null);
@@ -442,6 +441,11 @@ public class tableHopService {
             }
             List<OrderItem> orderItemList = orderItemRepository.findByOrderID(order.getOrderID());
             order.setOrderItemList(orderItemList);
+
+            Payment payment = paymentRepository.findByOrderID(order.getOrderID());
+            if (!Objects.isNull(payment)) {
+                order.setPayment(payment);
+            }
 
             log.info("Order log:: {}", order);
         }
@@ -541,8 +545,7 @@ public class tableHopService {
                 deliveryEntity.setArranged_by("Hardcode user: User A");
                 deliveryEntity.setUpdated_by("Hardcode user: User A");
                 deliveryEntity.setOrderID(savedOrder.getOrderID());
-                // todo update deliverymanID
-                deliveryEntity.setDeliverymanID(1);
+                deliveryEntity.setDeliverymanID((Integer) delivery.get("deliverymanID"));
                 deliveryRepository.saveAndFlush(deliveryEntity);
                 savedOrder.setDeliveryID(deliveryEntity.getDeliveryID());
                 savedOrder.setReservationID(null);
@@ -799,6 +802,25 @@ public class tableHopService {
         Object result = new Object();
         result = paymentEntity;
         return result;
+    }
+
+    public Payment adminAddPayment(Payment payment) {
+        log.info("payment details {}", payment);
+        Payment paymentEntity = new Payment();
+
+        paymentEntity.setPayment_type(payment.getPayment_type());
+        paymentEntity.setOrderID(payment.getOrderID());
+        paymentEntity.setPayment_dt(new Date());
+        paymentEntity.setUserID(payment.getUserID());
+        paymentEntity.setDiscount_coupun(payment.getDiscount_coupun());
+        paymentEntity.setGst(payment.getGst());
+        paymentEntity.setService_tax(payment.getService_tax());
+        paymentEntity.setSub_total_price(payment.getSub_total_price());
+        paymentEntity.setTotal_price(payment.getTotal_price());
+
+        log.info("paymentEntity details {}", paymentEntity);
+
+        return paymentRepository.saveAndFlush(paymentEntity);
     }
 
 

@@ -61,6 +61,9 @@ public class Orders {
     private User user;
 
     @Transient
+    private Payment payment;
+
+    @Transient
     private List<OrderItem> orderItemList;
 
     public Integer getOrderID() {
@@ -192,6 +195,13 @@ public class Orders {
         this.user = user;
     }
 
+    public Payment getPayment() {
+        return this.payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
 
     @Override
     public String toString() {
@@ -211,6 +221,7 @@ public class Orders {
                 ", delivery='" + getDelivery() + "'" +
                 ", table='" + getTable() + "'" +
                 ", user='" + getUser() + "'" +
+                ", payment='" + getPayment() + "'" +
                 "}";
     }
 
