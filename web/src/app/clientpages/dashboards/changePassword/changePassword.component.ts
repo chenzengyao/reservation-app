@@ -64,6 +64,7 @@ export class ChangePasswordComponent implements OnInit {
       this.email = sessionStorage.getItem('email');
       true;
     }
+    
     this.changepasswordForm = this.formBuilder.group({
       current_password: ['', [Validators.required, Validators.minLength(8),Validators.pattern(
         /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)]],

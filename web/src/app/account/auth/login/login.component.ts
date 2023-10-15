@@ -25,6 +25,7 @@ export class LoginComponent implements OnInit {
   password;
   show = false;
   email: String;
+  userId: number;
   submittedPassword: String;
 
   // set the currenr year
@@ -73,6 +74,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('currentUser', JSON.stringify(this.email));
         const user = new User();
         user.email = this.email as string;
+        user.userId = this.userId as number;
         this.authFackservice.currentUserSubject.next(user);
 
         if(data == 1){
@@ -83,11 +85,16 @@ export class LoginComponent implements OnInit {
             if(data == 1){
               // store email as session token
               sessionStorage.setItem('email', this.email.toString());
+              // store email as session token
+              sessionStorage.setItem('userId', this.userId.toString());
               this.router.navigate(['/user/dashboard']);
             }
             else if(data == 3){
               console.log("admin login")
+              // store email as session token
               sessionStorage.setItem('email', this.email.toString());
+              // store email as session token
+              sessionStorage.setItem('userId', this.userId.toString());
               this.router.navigate(['/admin/dashboard']);
             }
           })
