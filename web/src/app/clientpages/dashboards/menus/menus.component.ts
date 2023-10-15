@@ -81,9 +81,10 @@ export class MenusComponent implements OnInit {
     console.log("this address: "+ this.address)
 
     this.menusService.getAllMenuUser().subscribe(data =>{
+      const url_path = "https://res.cloudinary.com/hx1dfduy4/assests/images/";
       this.menu = data.body as Menu[];
       this.menu.forEach((element: Menu) => {
-        this.imagePath[this.index] = "https://res.cloudinary.com/hx1dfduy4/assests/images/" + element.item_image;
+        this.imagePath[this.index] = url_path + element.item_image;
         this.index++;
         console.log(this.index);
         console.log("img path: "+ this.imagePath[this.index]);
