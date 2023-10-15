@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.invalid) {
       return;
     } else {
-      this.authenticationService.checkExistUser(this.email, this.submittedPassword).subscribe(data=>{
+      this.authenticationService.checkExistUser(this.email, this.submittedPassword).subscribe(async data=>{
         // console.log("checkExistUser", data);
 
         localStorage.setItem('currentUser', JSON.stringify(this.email));
@@ -80,7 +80,13 @@ export class LoginComponent implements OnInit {
         if(data == 1){
           // this.dataService.setCurrentEmail(this.email);
 
-          this.authenticationService.getUserAccessType(this.email).subscribe(data=>{
+          this.authenticationService.getUserAccessType(this.email).subscribe(async data=>{
+            await this.authenticationService.getUserDetails(this.email).toPromise().then(data=>{
+              console.log("getUserDetails",data);
+              this.userId = data['userID'];
+              this.email = data['email'];
+              this.dataService.setCurrentEmail(this.email);
+            })
             console.log("getUserAccessType",data);
             if(data == 1){
               // store email as session token
