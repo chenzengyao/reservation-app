@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { apiLink } from "../helpers/helper";
 import { getFirebaseBackend } from '../../authUtils';
@@ -38,7 +38,11 @@ export class ReservationService {
     return this.http.post(`${apiLink()}/admin/reservation/updateReservation`, data);
   }
 
-  addReservation(data: any) {
-    return this.http.post(`${apiLink()}/user/reservation/addReservation`, data);
+  addReservation(formData: FormData) {
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+    return this.http.post(apiLink() + '/user/reservation/addReservation', formData, { headers: headers });
+
   }
+
 }
