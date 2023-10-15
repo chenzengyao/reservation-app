@@ -44,7 +44,7 @@ export class MenusComponent implements OnInit {
   remark: String []=[];
   status: string = "Available";
 
-  imagePath: any;
+  imagePath: any =[];
   selectedFile: File | null = null;
   selectedImage: string | ArrayBuffer | null = null;
 
@@ -54,8 +54,11 @@ export class MenusComponent implements OnInit {
   returnOrder: Orders = new Orders();
   orderID: number;
   email: string;
-  userProfile: User;
-  userID: number;
+  currentUser: User;
+  userID: string;
+  index: number=0;
+  address: string;
+  username: string;
 
   table_ID: number =null;
   delivery_ID: number =null;
@@ -67,17 +70,24 @@ export class MenusComponent implements OnInit {
     } else{
       true;
     }
+    this.userID = sessionStorage.getItem('userId');
 
-    this.userService.getUserProfile(this.email).subscribe(data => {
-      this.userProfile = data.body as User;
-      this.userID = this.userProfile.userId;
-      console.log(this.userID);
-    })
+    this.userService.getUserProfile(sessionStorage.getItem('email')).subscribe(data => {
+      this.currentUser = data.body as User;
+      this.address = this.currentUser.address;
+      this.username = this.currentUser.userName;
+    });
+    console.log("this userID: "+ this.userID)
+    console.log("this address: "+ this.address)
 
     this.menusService.getAllMenuUser().subscribe(data =>{
       this.menu = data.body as Menu[];
-      this.imagePath = "https://res.cloudinary.com/hx1dfduy4/assests/images/"
-
+      this.menu.forEach((element: Menu) => {
+        this.imagePath[this.index] = "https://res.cloudinary.com/hx1dfduy4/assests/images/" + element.item_image;
+        this.index++;
+        console.log(this.index);
+        console.log("img path: "+ this.imagePath[this.index]);
+      });
     })
 
     this.tableService.adminGetTables().subscribe((res: any) => {
@@ -88,7 +98,6 @@ export class MenusComponent implements OnInit {
     console.log(this.tablesList)
 
 
-    // this.imagePath = "/assets/images/6f9d2228-80a6-4b69-9956-e62b4d5373e0.jfif";
     this.imagePath = this.getSafeImagePath(this.imagePath);
     console.log(this.imagePath);
   }
@@ -150,7 +159,15 @@ export class MenusComponent implements OnInit {
       this.order.table_id = parseFloat(this.selectedTableNumber);;
       console.log("this.order.table_id: "+this.order.table_id)
     }
-    this.order.userID = this.userID;
+    this.order.userID = parseFloat(this.userID);
+    console.log("this.userID "+this.userID);
+    console.log("this.order.userID "+this.order.userID);
+
+    this.order.delivery_address = this.address;
+    console.log("order address: "+ this.order.delivery_address);
+
+    this.order.updated_by = this.username;
+    console.log("updated by: "+ this.order.updated_by);
 
     let data = {}
     data['order'] = this.order;
@@ -164,31 +181,7 @@ export class MenusComponent implements OnInit {
       console.log("Order ID: " + this.orderID);
       this.router.navigate(['/user/orders/orderDetail', this.orderID]);
 
-      // redirect to reservation list
-      // let timerInterval;
-      // Swal.fire({
-      //   title: 'Success',
-      //   html: 'Order added successfully! ',
-      //   timer: 3000,
-      //   icon: 'success',
-      //
-      //   didOpen: () => {
-      //     timerInterval = setInterval(() => {
-      //       const content = Swal.getHtmlContainer()
-      //       if (content) {
-      //         const b = content.querySelector('b')
-      //         if (b) {
-      //           b.textContent = Swal.getTimerLeft() + ''
-      //         }
-      //       }
-      //     }, 100);
-      //   },
-      //   willClose: () => {
-      //     clearInterval(timerInterval);
-      //   }
-      // }).then((result) => {
-      //   this.router.navigate(['/user/orders/orderDetail', this.orderID]);
-      // });
+
     }).catch((err: any) => {
       console.error("err: ", err);
     });

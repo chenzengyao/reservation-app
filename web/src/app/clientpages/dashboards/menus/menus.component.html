@@ -18,7 +18,7 @@
 
       <div *ngIf="selectedServiceType === 'dine'">
         <label class="selectService" for="tableNumber">Select Table Number:</label>
-        <select id="tableNumber" [(ngModel)]="selectedTableNumber" >
+        <select id="tableNumber" [(ngModel)]="selectedTableNumber" required >
           <option value="" disabled>Select a Table ID</option>
           <option *ngFor="let table of table_temp" [value]="table.tableID">Table {{ table.tableID }}</option>
         </select>
@@ -45,7 +45,7 @@
           <div class="col-lg-6 menu-item filter-specialty" >
 
             <div class="image-section">
-              <img [src]="imagePath" alt="image" class="custom-dropzone" *ngIf="!selectedImage">
+              <img [src]="imagePath[i]" alt="image" class="custom-dropzone" *ngIf="!selectedImage">
               <img [src]="selectedImage" alt="Selected Image" class="custom-dropzone" *ngIf="selectedImage">
             </div>
 
@@ -104,7 +104,7 @@
       </div>
 
       <div class="d-flex w-100 gap-3" id="button">
-        <button id="submit" class="btn btn-primary btn-sm" (click)="submitOrder()">Next</button>
+        <button id="submit" class="btn btn-primary btn-sm" *ngIf="orderItemsList.length>=1" (click)="submitOrder()">Next</button>
 <!--        <a class="btn btn-debug btn-sm" href="/user/orderhistory">Cancel</a>-->
       </div>
 
