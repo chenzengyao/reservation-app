@@ -313,4 +313,15 @@ public class tableHopController {
         return tableHopService.getUserByName(userName);
     }
 
+    @RequestMapping(value = "/admin/deliveryMan/all", method = RequestMethod.GET)
+    public List<DeliveryMan> adminGetDeliveryMan() {
+        return tableHopService.adminGetDeliveryMan();
+    }
+
+    @RequestMapping(value = "/admin/deliveryMan/add", method = RequestMethod.POST)
+    public List<DeliveryMan> adminSaveDeliveryMan(@RequestBody String phone) {
+        log.info("admin save delivery mane {}", phone);
+        return tableHopService.adminSaveDeliveryMan(phone);
+    }
+
 }
