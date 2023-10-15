@@ -15,6 +15,7 @@ import {Tables} from "../../../core/models/tables.models";
 import {User} from "../../../core/models/auth.models";
 import { UserProfileService} from "../../../core/services/user.service";
 import {Validators} from "@angular/forms";
+import { getSafeImagePath } from 'src/app/core/helpers/helper';
 
 @Component({
   selector: 'app-menus',
@@ -81,10 +82,9 @@ export class MenusComponent implements OnInit {
     console.log("this address: "+ this.address)
 
     this.menusService.getAllMenuUser().subscribe(data =>{
-      const url_path = "https://res.cloudinary.com/hx1dfduy4/assests/images/";
       this.menu = data.body as Menu[];
       this.menu.forEach((element: Menu) => {
-        this.imagePath[this.index] = url_path + element.item_image;
+        this.imagePath[this.index] = getSafeImagePath(element.item_image);
         this.index++;
         console.log(this.index);
         console.log("img path: "+ this.imagePath[this.index]);

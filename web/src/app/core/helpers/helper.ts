@@ -25,3 +25,13 @@ export function dateStringToDateLocal(dateString: string) {
   console.log("isoDateString: ", isoDateString);
   return isoDateString;
 }
+
+export const getSafeImagePath = (imagePath: string) => {
+  const protocol = "https://"
+  const domain = "res.cloudinary.com"
+  const path = "/hx1dfduy4/assests/images/"
+
+  const url_path = protocol + domain + path;
+
+  return url_path + imagePath;
+};
