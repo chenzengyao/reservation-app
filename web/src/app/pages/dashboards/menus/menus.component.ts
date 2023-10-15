@@ -4,6 +4,7 @@ import {MenusService} from "../../../core/services/menus.service";
 import {Menu} from "../../../core/models/menu.models";
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
+import { getSafeImagePath } from "src/app/core/helpers/helper";
 
 @Component({
   selector: "app-menus",
@@ -63,7 +64,8 @@ export class MenusComponent implements OnInit {
       item_status: [this.viewMenu.item_status],
       item_image: [],
     });
-    this.imagePath = "https://res.cloudinary.com/hx1dfduy4/assests/images/" + this.viewMenu.item_image;
+    // this.imagePath = "https://res.cloudinary.com/hx1dfduy4/assests/images/" + this.viewMenu.item_image;
+    this.imagePath = getSafeImagePath(this.viewMenu.item_image);
     // this.imagePath = this.getSafeImagePath(this.imagePath);
     console.log(this.imagePath);
     this.modalService.open(content, { centered: true });
