@@ -324,4 +324,12 @@ public class tableHopController {
         return tableHopService.adminSaveDeliveryMan(phone);
     }
 
+    @RequestMapping(value = "/user/addOrder/payment", method = RequestMethod.POST)
+    public ResponseEntity<Object> userMakesPayment(@RequestBody Map<String, Object> payload) {
+        log.info("user makes payment -----> controller");
+        Object result = tableHopService.userMakesPayment(payload);
+        log.info("Result ----> {} ",result);
+        return ResponseEntity.ok(result);
+    }
+
 }

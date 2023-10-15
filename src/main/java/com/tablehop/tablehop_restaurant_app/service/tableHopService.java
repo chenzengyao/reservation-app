@@ -68,6 +68,9 @@ public class tableHopService {
     @Resource
     private deliveryManRepository deliveryManRepository;
 
+    @Resource
+    private paymentRepository paymentRepository;
+
     @Autowired
     private JavaMailSender javaMailSender;
 
@@ -722,8 +725,19 @@ public class tableHopService {
         return userList;
     }
 
+
     public Orders userGetOrderById(Integer id) {
-        return null;
+        Orders order = orderRepository.findById(id).orElse(null);
+
+        if (Objects.isNull(order)) {
+            return null;
+        } else {
+            List<OrderItem> orderItemList = orderItemRepository.findByOrderID(order.getOrderID());
+            order.setOrderItemList(orderItemList);
+
+            log.info("Order log:: {}", order);
+        }
+        return order;
     }
 
     public List<DeliveryMan> adminGetDeliveryMan() {
@@ -743,4 +757,49 @@ public class tableHopService {
         deliveryManList = deliveryManRepository.findAll();
         return deliveryManList;
     }
+
+    public Object userMakesPayment(Map<String, Object> data) {
+
+        Map<String, Object> payment = (Map<String, Object>) data.get("payment");
+        Map<String, Object> order = (Map<String, Object>) data.get("order");
+//        List<Map<String, Object>> orderItemsList = (List<Map<String, Object>>) data.get("orderItemsList");
+
+        log.info("order details {}", order);
+        log.info("payment {}", payment);
+
+        // Save Payment
+        Payment paymentEntity = new Payment();
+        paymentEntity.setPayment_type((String) payment.get("payment_type"));
+//        paymentEntity.setOrderID((Integer) payment.get("orderID"));
+        paymentEntity.setPayment_dt(new Date());
+//        paymentEntity.setUserID((Integer) order.get("userID"));
+        paymentEntity.setUserID(1);
+        paymentEntity.setOrderID(2);
+        paymentEntity.setDiscount_coupun("no discount");
+        paymentEntity.setGst((String) payment.get("gst"));
+        paymentEntity.setService_tax((String) payment.get("service_tax"));
+        paymentEntity.setSub_total_price((String) payment.get("sub_total_price"));
+        paymentEntity.setTotal_price((String) payment.get("total_price"));
+        log.info("paymentEntity {}", paymentEntity);
+
+
+        paymentRepository.saveAndFlush(paymentEntity);
+
+        Orders orderEntity = orderRepository.findById((Integer) order.get("orderID")).orElse(null);
+        log.info("orderEntity {}", orderEntity);
+
+        if (Objects.isNull(orderEntity)) {
+            return null;
+        } else {
+            orderEntity.setOrder_status("Confirmed");
+            orderRepository.saveAndFlush(orderEntity);
+        }
+        log.info(orderEntity.getOrder_status());
+
+        Object result = new Object();
+        result = paymentEntity;
+        return result;
+    }
+
+
 }
