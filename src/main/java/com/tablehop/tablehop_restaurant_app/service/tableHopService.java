@@ -82,6 +82,8 @@ public class tableHopService {
     private static final String DIGITS = "0123456789";
     private static final String SPECIAL_CHARACTERS = "@$!%*#?&^_-";
     private static final SecureRandom random = new SecureRandom();
+    Date itemCreatedDt = new Date();
+    Timestamp currentTimestamp = new Timestamp(itemCreatedDt.getTime());
 
     public void register(String username, String email, String phone_no, String password, String dob) {
         // Init
@@ -197,20 +199,23 @@ public class tableHopService {
         }
     }
 
-    public void updateNewPassword(String email, String new_password) {
+    public void updateNewPassword(String email, String new_password, Date currentTimestamp) {
         log.warn(new_password);
-        User set_new_password = userRepository.checkExistEmail(email);
-        set_new_password.setPassword(new_password);
-        userRepository.saveAndFlush(set_new_password);
+        User curentUser = userRepository.checkExistEmail(email);
+        curentUser.setPassword(new_password);
+        curentUser.setUpdated_dt(currentTimestamp);
+        userRepository.saveAndFlush(curentUser);
     }
 
     public void resetPassword(String email) {
+
         User user = userRepository.checkExistEmail(email);
         if(Objects.isNull(user)){
             return;
         }
         String temporaryPassword = generatePassword(8);
         user.setPassword(temporaryPassword);
+        user.setUpdated_dt(currentTimestamp);
 
         String subject = "TableHop Restaurant App - Password Reset";
         String body = "Dear " + user.getUserName() + ",\n\n"
@@ -463,6 +468,7 @@ public class tableHopService {
 
     public void editUserProfile(User userProfile) {
         log.info(userProfile.toString());
+        userProfile.setUpdated_dt(currentTimestamp);
         userRepository.saveAndFlush(userProfile);
     }
 
