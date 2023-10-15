@@ -6,6 +6,10 @@ import { ReservationService } from'../../../core/services/reservation';
 import {AuthenticationService} from "../../../core/services/auth.service";
 import {formatDate} from "@angular/common";
 import Swal from "sweetalert2";
+import {User} from "../../../core/models/auth.models";
+import { UserProfileService } from "../../../core/services/user.service";
+import { Tables} from "../../../core/models/tables.models";
+import { TablesService} from "../../../core/services/tables.service";
 
 @Component({
   selector: 'app-tables',
@@ -16,7 +20,9 @@ export class TablesComponent implements OnInit {
 
   constructor(private reservationService: ReservationService, private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService, private httpClient: HttpClient,
-              private route: ActivatedRoute, private router: Router) {
+              private route: ActivatedRoute, private router: Router,
+              private userService: UserProfileService,
+              private tableService: TablesService) {
     this.setMinDate();
   }
 
@@ -37,6 +43,13 @@ export class TablesComponent implements OnInit {
   minDate: string;
   selectedDate: string = '';
   isPastDate: boolean = false;
+  currentUser: User;
+  username: string;
+  email: string;
+  table_status: string = "Available";
+  tablesList: Tables[] = [];
+  table_temp: Tables[] =[];
+
 
   today= new Date();
   jstoday = '';
@@ -49,7 +62,19 @@ export class TablesComponent implements OnInit {
       true;
     }
     this.userID = sessionStorage.getItem('userId');
+    this.email = sessionStorage.getItem('email');
     console.log(this.userID);
+
+    this.userService.getUserProfile(sessionStorage.getItem('email')).subscribe(data => {
+      this.currentUser = data.body as User;
+      this.username = this.currentUser.userName;
+    });
+
+    // this.tableService.adminGetTables().subscribe((res: any) => {
+    //   console.log(res);
+    //   this.tablesList = res;
+    //   this.filterTablesByStatus(this.table_status);
+    // });
 
 
     this.table = "1";
@@ -62,8 +87,15 @@ export class TablesComponent implements OnInit {
       reserve_created_dt: [''],
       userID: [ ],
       tableID: [''],
+      username: [''],
+      email: [''],
     });
   }
+
+  // filterTablesByStatus(table_status: string) {
+  //   this.table_temp = this.tablesList.filter(table => table.table_status === status);
+  //   console.log(this.table_temp);
+  // }
 
   setMinDate() {
     const today = new Date();
@@ -127,6 +159,8 @@ export class TablesComponent implements OnInit {
         formData.append('reserve_created_dt', this.addReservationForm.value.reservation_dt);
         formData.append('userID', this.addReservationForm.value.userID);
         formData.append('tableID', this.addReservationForm.value.tableID);
+        formData.append('username', this.username);
+        formData.append('email', this.email);
 
         this.reservationService.addReservation(formData).subscribe(res => {
 

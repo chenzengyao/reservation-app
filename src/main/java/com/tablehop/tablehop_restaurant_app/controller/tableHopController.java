@@ -205,8 +205,10 @@ public class tableHopController {
                                            @RequestParam("reserve_remark") String reserve_remark,
                                            @RequestParam("reserve_created_dt") String reserve_created_dt,
                                            @RequestParam("userID") int userID,
-                                           @RequestParam("tableID") int tableID) throws IOException {
-        tableHopService.addReservation(pax_no, reservation_dt, reserve_status, reserve_remark, reserve_created_dt, userID, tableID);
+                                           @RequestParam("tableID") int tableID,
+                                                  @RequestParam("username") String username,
+                                                  @RequestParam("email") String email) throws IOException {
+        tableHopService.addReservation(pax_no, reservation_dt, reserve_status, reserve_remark, reserve_created_dt, userID, tableID, username, email);
         return ResponseEntity.ok("Reserve Success");
     }
 

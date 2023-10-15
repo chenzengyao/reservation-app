@@ -392,7 +392,7 @@ public class tableHopService {
     }
 
     public void addReservation(int pax_no, String reservation_dt, String reserve_status, String reserve_remark,
-                               String reserve_created_dt, Integer userID, Integer tableID) {
+                               String reserve_created_dt, Integer userID, Integer tableID, String username, String email) {
         // Init
 
         Reservation reserve = new Reservation();
@@ -418,6 +418,22 @@ public class tableHopService {
         reserve.setReserve_created_dt(dateTime_reserve_created_dt2);
         reserve.setTableID(tableID);
         reservationRepository.saveAndFlush(reserve);
+
+        String subject = "Reservation Confirmation\n\n";
+        String body = "Dear " + username + ",\n\n"
+                + "We are thrilled to inform you that your reservation has been successfully confirmed. Thank you for choosing TableHop"
+                + "Here are the details of your reservation:\n\n"
+                + "Date and Time: " + reservation_dt2 + "\n"
+                + "Number of Guests: " + pax_no + "\n\n"
+                + "Reservation Name: "+ username+ "\n\n"
+                + "Special Requests: "+ reserve_remark+ "\n\n"
+                + "We look forward to hosting you and providing you with an exceptional experience. If you need to make any changes or have any questions, please don't hesitate to contact us through tablehopSG@gmail.com.\n\n"
+                + "Please be sure to bring this confirmation with you on the day of your reservation for a smooth check-in process.\n\n"
+                + "Once again, thank you for choosing TableHop. We can't wait to serve you and make your dining a memorable one.\n\n"
+                + "Warm regards,\n\n"
+                + "TableHop Customer Support Team\n";
+
+        sendEmail(email, subject, body);
 
     }
 
