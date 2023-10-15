@@ -83,7 +83,9 @@ public class tableHopController {
     @RequestMapping(value = "/users/UpdateNewPassword", method = RequestMethod.POST)
     public void updateNewPassword(@RequestParam String email, @RequestParam String new_password) {
         log.info("users UpdateNewPassword -----> controller");
-        tableHopService.updateNewPassword(email, new_password);
+        Date itemCreatedDt = new Date();
+        Timestamp currentTimestamp = new Timestamp(itemCreatedDt.getTime());
+        tableHopService.updateNewPassword(email, new_password, currentTimestamp);
     }
 
     @RequestMapping(value = "/users/resetPassword", method = RequestMethod.POST)
