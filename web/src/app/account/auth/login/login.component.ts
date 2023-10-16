@@ -90,17 +90,13 @@ export class LoginComponent implements OnInit {
             console.log("getUserAccessType",data);
             if(data == 1){
               // store email as session token
-              sessionStorage.setItem('email', this.email.toString());
-              // store email as session token
-              sessionStorage.setItem('userId', this.userId.toString());
+              sessionStorage.setItem('email', this.email as string);
               this.router.navigate(['/user/dashboard']);
             }
             else if(data == 3){
               console.log("admin login")
               // store email as session token
-              sessionStorage.setItem('email', this.email.toString());
-              // store email as session token
-              sessionStorage.setItem('userId', this.userId.toString());
+              sessionStorage.setItem('email', this.email as string);
               this.router.navigate(['/admin/dashboard']);
             }
           })
